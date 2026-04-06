@@ -10,7 +10,7 @@ int	main(int argc, char **argv)
 	{
 		for (int i = 1; i < argc; i++)
 			Megaphone(argv[i]);
-		std::cout << "\n";
+		std::cout << std::endl;
 	}
 	return 0;
 }

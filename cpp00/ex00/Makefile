@@ -1,16 +1,12 @@
 NAME = megaphone
-CC = c++
+CPP = c++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = \
 	megaphone.cpp \
 
 OBJDIR = obj
-OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
-
-# ------------  HEADER  ------------------------------------------------------ #
-HEADER = \
-	
+OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 
 # ------------  RULES  ------------------------------------------------------- #
 all: $(NAME)
@@ -18,11 +14,11 @@ all: $(NAME)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: %.c
-	$(CC) $(CPPFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: %.cpp
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJDIR) $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CPP) $(OBJ) -o $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)
