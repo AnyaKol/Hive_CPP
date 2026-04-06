@@ -1,5 +1,5 @@
 NAME = MyAwesomePhoneBook
-CC = c++
+CPP = c++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = \
@@ -7,12 +7,12 @@ SRC = \
 	Contact.cpp \
 
 OBJDIR = obj
-OBJ = $(SRC:%.c=$(OBJDIR)/%.o)
+OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 
 # ------------  HEADER  ------------------------------------------------------ #
 HEADER = \
-	PhoneBook.h \
-	Contact.h \
+	PhoneBook.hpp \
+	Contact.hpp \
 
 # ------------  RULES  ------------------------------------------------------- #
 all: $(NAME)
@@ -20,11 +20,11 @@ all: $(NAME)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: %.c
-	$(CC) $(CPPFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: %.cpp
+	$(CPP) $(CPPFLAGS) -c $< -o $@
 
 $(NAME): $(OBJDIR) $(OBJ) $(HEADER)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CPP) $(OBJ) -o $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)
