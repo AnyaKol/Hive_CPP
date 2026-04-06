@@ -37,5 +37,16 @@
 *.out
 *.app
 
-# debug information files
+# Debug information files
 *.dwo
+
+# cpp00
+*Megaphone
+
+# cpp01
+
+# cpp02
+
+# cpp03
+
+# cpp04
