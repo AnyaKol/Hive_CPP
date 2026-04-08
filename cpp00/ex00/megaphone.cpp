@@ -1,11 +1,13 @@
 #include <iostream>
+#include <string>
+#include <algorithm>
 
-static void	Megaphone(char *str);
+static void	Megaphone(std::string str);
 
 int	main(int argc, char **argv)
 {
 	if (argc == 1)
-		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *\n";
+		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
 	else
 	{
 		for (int i = 1; i < argc; i++)
@@ -15,15 +17,8 @@ int	main(int argc, char **argv)
 	return 0;
 }
 
-static void	Megaphone(char *str)
+static void	Megaphone(std::string str)
 {
-	if (!str)
-		return ;
-	for (int i = 0; str[i] != '\0'; i++)
-	{
-		if ('a' <= str[i] && str[i] <= 'z')
-			std::cout << (char) (str[i] - ('a' - 'A'));
-		else
-			std::cout << (char) str[i];
-	}
+	std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+	std::cout << str;
 }
