@@ -6,20 +6,23 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 17:43:17 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/08 19:42:46 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/11 18:33:02 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CONTACT_HPP
 # define CONTACT_HPP
 
+# include <iostream>
+# include <string>
+
 class Contact {
 	public:
-		string	firstName;
-		string	lastName;
-		string	nickname;
-		string	phoneNumber;
-		string	darkestSecret;
+		std::string	firstName;
+		std::string	lastName;
+		std::string	nickname;
+		std::string	phoneNumber;
+		std::string	darkestSecret;
 
 		Contact(void);
 		~Contact(void);

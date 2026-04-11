@@ -6,9 +6,11 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 19:33:53 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/08 19:55:36 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/11 18:29:29 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "Contact.hpp"
 
 // Constructor
 Contact::Contact(void) {

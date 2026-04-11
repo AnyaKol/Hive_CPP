@@ -6,7 +6,7 @@
 #    By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/08 17:45:11 by akolupae          #+#    #+#              #
-#    Updated: 2026/04/08 17:45:13 by akolupae         ###   ########.fr        #
+#    Updated: 2026/04/11 18:27:14 by akolupae         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ CPP = c++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++98
 
 SRC = \
+	main.cpp \
 	PhoneBook.cpp \
 	Contact.cpp \
 

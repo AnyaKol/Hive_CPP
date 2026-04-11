@@ -6,29 +6,32 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 17:45:24 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/08 19:50:16 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/11 18:48:53 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "PhoneBook.hpp"
+
 // Constructor
 PhoneBook::PhoneBook(void)
-	: count(0)
-	: max_count(0) {}
+	: count(0), max_count(0) {}
 
 void	add(void) {
-	if (this->count == 8)
-		this->count = 0;
-	this->contacts[count] = Contact contact;
-	this->count++;
-	if (this->max_count < 8)
-		this->max_count++;
+	if (PhoneBook::count == 8) {
+		delete PhoneBook::contacts[0];
+		PhoneBook::count = 0;
+	}
+	PhoneBook::contacts[PhoneBook::count] = new Contact;
+	PhoneBook::count++;
+	if (PhoneBook::max_count < 8)
+		PhoneBook::max_count++;
 }
 
 void	search(void) {
 	std::string	input;
 	int			index;
 
-	print_table();
+	PhoneBook::print_table();
 	std::cin >> input;
 	if (!input) {
 		std::cout << "No input." << std::endl;
@@ -43,11 +46,11 @@ void	search(void) {
 		std::cout << "Number out of range. Expected number in range [1, 8]." << std::endl;
 		return ;
 	}
-	if (index > this->max_count) {
+	if (index > PhoneBook::max_count) {
 		std::cout << "No contact with this index." << std::endl;
 		return ;
 	}
-	this->contacts[index].print_contact();
+	PhoneBook::contacts[PhoneBook::index].print_contact();
 }
 
 void	print_table(void) {
@@ -59,12 +62,12 @@ void	print_table(void) {
 		<< print_content("Nickname") << "|"
 		<< std::endl;
 	std::cout << "_____________________________________________" << std::endl;
-	for (int i = 0; i < this->max_count; i++) {
+	for (int i = 0; i < PhoneBook::max_count; i++) {
 		std::cout << "|"
 			<< print_content(to_string(i)) << "|"
-			<< print_content(this->contacts[i].firstName) << "|" 
-			<< print_content(this->contacts[i].lastName) << "|" 
-			<< print_content(this->contacts[i].nickname) << "|"
+			<< print_content(PhoneBook::contacts[i].firstName) << "|" 
+			<< print_content(PhoneBook::contacts[i].lastName) << "|" 
+			<< print_content(PhoneBook::contacts[i].nickname) << "|"
 			<< std::endl;
 		std::cout << "_____________________________________________" << std::endl;
 	}
@@ -73,8 +76,8 @@ void	print_table(void) {
 void	print_content(std::string str) {
 	if (!str)
 		return ;
-	if (str.length <= 10)
-		std::cout << std::string(10 - std::strlen(str), ' ') << str;
+	if (str.length() <= 10)
+		std::cout << std::string(10 - str.length(), ' ') << str;
 	else
 		std::cout << str.substr(0, 9) << ".";
 }
