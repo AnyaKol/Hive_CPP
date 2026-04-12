@@ -25,12 +25,12 @@ class PhoneBook {
 		void	search(void);
 
 	private:
-		static Contact	contacts[8];
-		static int		count;
-		static int		max_count;
+		Contact	contacts[8];
+		int		count;
+		int		max_count;
 
-		void	print_table(void);
-		void	print_content(std::string str);
+		void		print_table(void);
+		std::string	print_content(std::string str);
 };
 
 #endif

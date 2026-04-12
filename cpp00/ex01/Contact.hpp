@@ -26,10 +26,11 @@ class Contact {
 
 		Contact(void);
 		~Contact(void);
+		void	create(void);
+		void	print_contact(void);
 
 	private:
-		void		create(void);
-		std::string	get_input(void);
+		std::string	get_input(std::string field);
 };
 
 #endif

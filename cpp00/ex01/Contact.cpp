@@ -13,19 +13,21 @@
 #include "Contact.hpp"
 
 // Constructor
-Contact::Contact(void) {
-	create();
+Contact::Contact(void) {}
+
+// Destructor
+Contact::~Contact(void) {}
+
+void	Contact::create(void) {
+	firstName = get_input("the first name");
+	lastName = get_input("the last name");
+	nickname = get_input("the nickname");
+	phoneNumber = get_input("the phone number");
+	darkestSecret = get_input("the darkest secret");
+	std::cout << "Contact added!" << std::endl << std::endl;
 }
 
-void	create(void) {
-	this->firstName = get_input("the first name");
-	this->lastName = get_input("the last name");
-	this->nickname = get_input("the nickname");
-	this->phoneNumber = get_input("the phone number");
-	this->darkestSecret = get_input("the darkest secret");
-}
-
-std::string	get_input(std::string field) {
+std::string	Contact::get_input(std::string field) {
 	std::string	input;
 
 	input = "";
@@ -34,4 +36,12 @@ std::string	get_input(std::string field) {
 		std::cin >> input;
 	}
 	return (input);
+}
+
+void	Contact::print_contact(void) {	
+	std::cout << "First name: " << this->firstName << std::endl;
+	std::cout << "Last name: " << this->lastName << std::endl;
+	std::cout << "Nickname: " << this->nickname << std::endl;
+	std::cout << "Phone number: " << this->phoneNumber << std::endl;
+	std::cout << "Darkest secret: " << this->darkestSecret << std::endl << std::endl;
 }

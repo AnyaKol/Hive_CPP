@@ -12,7 +12,8 @@
 
 NAME = MyAwesomePhoneBook
 CPP = c++
-CPPFLAGS = -Wall -Werror -Wextra -std=c++98
+CPPFLAGS = -Wall -Werror -Wextra -std=c++17
+INKFLAGS = -I.
 
 SRC = \
 	main.cpp \
@@ -33,10 +34,10 @@ all: $(NAME)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: %.cpp
-	$(CPP) $(CPPFLAGS) -c $< -o $@
+$(OBJDIR)/%.o: %.cpp $(HEADER)
+	$(CPP) $(CPPFLAGS) $(INCFLAGS) -c $< -o $@
 
-$(NAME): $(OBJDIR) $(OBJ) $(HEADER)
+$(NAME): $(OBJDIR) $(OBJ)
 	$(CPP) $(OBJ) -o $(NAME)
 
 clean:

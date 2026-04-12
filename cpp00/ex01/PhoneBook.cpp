@@ -16,44 +16,52 @@
 PhoneBook::PhoneBook(void)
 	: count(0), max_count(0) {}
 
-void	add(void) {
-	if (PhoneBook::count == 8) {
-		delete PhoneBook::contacts[0];
-		PhoneBook::count = 0;
-	}
-	PhoneBook::contacts[PhoneBook::count] = new Contact;
-	PhoneBook::count++;
-	if (PhoneBook::max_count < 8)
-		PhoneBook::max_count++;
+// Destructor
+PhoneBook::~PhoneBook(void) {}
+
+void	PhoneBook::add(void) {
+	if (this->count == 8)
+		this->count = 0;
+	this->contacts[this->count].create();
+	this->count++;
+	if (this->max_count < 8)
+		this->max_count++;
 }
 
-void	search(void) {
+void	PhoneBook::search(void) {
 	std::string	input;
 	int			index;
 
 	PhoneBook::print_table();
+	std::cout << "Please enter index of contact:" << std::endl;
 	std::cin >> input;
-	if (!input) {
-		std::cout << "No input." << std::endl;
+	if (input.empty()) {
+		std::cout << "No input." << std::endl << std::endl;
 		return ;
 	}
-	index = stoi(input);
-	if (input != to_string(index)) {
-		std::cout << "Wrong input. Expected number." << std::endl;
+	try {
+		index = std::stoi(input);
+	}
+	catch (const std::invalid_argument & e) {
+		std::cout << "Invalid input: Expected number." << std::endl << std::endl;
+		return ;
+	}
+	catch (const std::out_of_range & e) {
+		std::cout << "Invalid input: Number out of range." << std::endl << std::endl;
 		return ;
 	}
 	if (index < 1 || index > 8) {
-		std::cout << "Number out of range. Expected number in range [1, 8]." << std::endl;
+		std::cout << "Number out of range. Expected number in range [1, 8]." << std::endl << std::endl;
 		return ;
 	}
-	if (index > PhoneBook::max_count) {
-		std::cout << "No contact with this index." << std::endl;
+	if (index > this->max_count) {
+		std::cout << "No contact with this index." << std::endl << std::endl;
 		return ;
 	}
-	PhoneBook::contacts[PhoneBook::index].print_contact();
+	this->contacts[index - 1].print_contact();
 }
 
-void	print_table(void) {
+void	PhoneBook::print_table(void) {
 	std::cout << "_____________________________________________" << std::endl;
 	std::cout << "|"
 		<< print_content("Index") << "|"
@@ -62,22 +70,26 @@ void	print_table(void) {
 		<< print_content("Nickname") << "|"
 		<< std::endl;
 	std::cout << "_____________________________________________" << std::endl;
-	for (int i = 0; i < PhoneBook::max_count; i++) {
+	for (int i = 0; i < this->max_count; i++) {
 		std::cout << "|"
-			<< print_content(to_string(i)) << "|"
-			<< print_content(PhoneBook::contacts[i].firstName) << "|" 
-			<< print_content(PhoneBook::contacts[i].lastName) << "|" 
-			<< print_content(PhoneBook::contacts[i].nickname) << "|"
+			<< this->print_content(std::to_string(i + 1)) << "|"
+			<< this->print_content(this->contacts[i].firstName) << "|" 
+			<< this->print_content(this->contacts[i].lastName) << "|" 
+			<< this->print_content(this->contacts[i].nickname) << "|"
 			<< std::endl;
 		std::cout << "_____________________________________________" << std::endl;
 	}
+	std::cout << std::endl;
 }
 
-void	print_content(std::string str) {
-	if (!str)
-		return ;
+std::string	PhoneBook::print_content(std::string str) {
+	std::string	content;
+
+	if (str.empty())
+		return "";
 	if (str.length() <= 10)
-		std::cout << std::string(10 - str.length(), ' ') << str;
+		content = std::string(10 - str.length(), ' ') + str;
 	else
-		std::cout << str.substr(0, 9) << ".";
+		content =  str.substr(0, 9) + ".";
+	return (content);
 }
