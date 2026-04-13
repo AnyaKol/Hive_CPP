@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
 #ifndef CONTACT_HPP
 # define CONTACT_HPP
 
@@ -17,20 +18,21 @@
 # include <string>
 
 class Contact {
-	public:
-		std::string	firstName;
-		std::string	lastName;
-		std::string	nickname;
-		std::string	phoneNumber;
-		std::string	darkestSecret;
 
-		Contact(void);
-		~Contact(void);
-		void	create(void);
-		void	print_contact(void);
+public:
+	std::string	firstName;
+	std::string	lastName;
+	std::string	nickname;
+	std::string	phoneNumber;
+	std::string	darkestSecret;
 
-	private:
-		std::string	get_input(std::string field);
+	Contact(void);
+	~Contact(void);
+	void	create(void);
+	void	printContact(void);
+
+private:
+	std::string	_getInput(std::string field);
 };
 
 #endif

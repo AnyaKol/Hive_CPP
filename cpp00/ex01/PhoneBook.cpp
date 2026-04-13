@@ -14,25 +14,25 @@
 
 // Constructor
 PhoneBook::PhoneBook(void)
-	: count(0), max_count(0) {}
+	: _count(0), _maxCount(0) {}
 
 // Destructor
 PhoneBook::~PhoneBook(void) {}
 
 void	PhoneBook::add(void) {
-	if (this->count == 8)
-		this->count = 0;
-	this->contacts[this->count].create();
-	this->count++;
-	if (this->max_count < 8)
-		this->max_count++;
+	if (this->_count == 8)
+		this->_count = 0;
+	this->_contacts[this->_count].create();
+	this->_count++;
+	if (this->_maxCount < 8)
+		this->_maxCount++;
 }
 
 void	PhoneBook::search(void) {
 	std::string	input;
 	int			index;
 
-	PhoneBook::print_table();
+	PhoneBook::_printTable();
 	std::cout << "Please enter index of contact:" << std::endl;
 	std::cin >> input;
 	if (input.empty()) {
@@ -54,35 +54,35 @@ void	PhoneBook::search(void) {
 		std::cout << "Number out of range. Expected number in range [1, 8]." << std::endl << std::endl;
 		return ;
 	}
-	if (index > this->max_count) {
+	if (index > this->_maxCount) {
 		std::cout << "No contact with this index." << std::endl << std::endl;
 		return ;
 	}
-	this->contacts[index - 1].print_contact();
+	this->_contacts[index - 1].printContact();
 }
 
-void	PhoneBook::print_table(void) {
+void	PhoneBook::_printTable(void) {
 	std::cout << "_____________________________________________" << std::endl;
 	std::cout << "|"
-		<< print_content("Index") << "|"
-		<< print_content("First name") << "|" 
-		<< print_content("Last name") << "|" 
-		<< print_content("Nickname") << "|"
+		<< _printContent("Index") << "|"
+		<< _printContent("First name") << "|" 
+		<< _printContent("Last name") << "|" 
+		<< _printContent("Nickname") << "|"
 		<< std::endl;
 	std::cout << "_____________________________________________" << std::endl;
-	for (int i = 0; i < this->max_count; i++) {
+	for (int i = 0; i < this->_maxCount; i++) {
 		std::cout << "|"
-			<< this->print_content(std::to_string(i + 1)) << "|"
-			<< this->print_content(this->contacts[i].firstName) << "|" 
-			<< this->print_content(this->contacts[i].lastName) << "|" 
-			<< this->print_content(this->contacts[i].nickname) << "|"
+			<< this->_printContent(std::to_string(i + 1)) << "|"
+			<< this->_printContent(this->_contacts[i].firstName) << "|" 
+			<< this->_printContent(this->_contacts[i].lastName) << "|" 
+			<< this->_printContent(this->_contacts[i].nickname) << "|"
 			<< std::endl;
 		std::cout << "_____________________________________________" << std::endl;
 	}
 	std::cout << std::endl;
 }
 
-std::string	PhoneBook::print_content(std::string str) {
+std::string	PhoneBook::_printContent(std::string str) {
 	std::string	content;
 
 	if (str.empty())

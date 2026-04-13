@@ -19,15 +19,15 @@ Contact::Contact(void) {}
 Contact::~Contact(void) {}
 
 void	Contact::create(void) {
-	firstName = get_input("the first name");
-	lastName = get_input("the last name");
-	nickname = get_input("the nickname");
-	phoneNumber = get_input("the phone number");
-	darkestSecret = get_input("the darkest secret");
+	firstName = _getInput("the first name");
+	lastName = _getInput("the last name");
+	nickname = _getInput("the nickname");
+	phoneNumber = _getInput("the phone number");
+	darkestSecret = _getInput("the darkest secret");
 	std::cout << "Contact added!" << std::endl << std::endl;
 }
 
-std::string	Contact::get_input(std::string field) {
+std::string	Contact::_getInput(std::string field) {
 	std::string	input;
 
 	input = "";
@@ -38,7 +38,7 @@ std::string	Contact::get_input(std::string field) {
 	return (input);
 }
 
-void	Contact::print_contact(void) {	
+void	Contact::printContact(void) {	
 	std::cout << "First name: " << this->firstName << std::endl;
 	std::cout << "Last name: " << this->lastName << std::endl;
 	std::cout << "Nickname: " << this->nickname << std::endl;

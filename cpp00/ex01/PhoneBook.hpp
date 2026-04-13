@@ -10,27 +10,29 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#pragma once
 #ifndef PHONEBOOK_HPP
 # define PHONEBOOK_HPP
 
 # include "Contact.hpp"
 
 class PhoneBook {
-	public:
-		// Constructor to initialise private member
-		PhoneBook(void);
-		~PhoneBook(void);
 
-		void	add(void);
-		void	search(void);
+public:
+	// Constructor to initialise private member
+	PhoneBook(void);
+	~PhoneBook(void);
 
-	private:
-		Contact	contacts[8];
-		int		count;
-		int		max_count;
+	void	add(void);
+	void	search(void);
 
-		void		print_table(void);
-		std::string	print_content(std::string str);
+private:
+	Contact	_contacts[8];
+	int		_count;
+	int		_maxCount;
+
+	void		_printTable(void);
+	std::string	_printContent(std::string str);
 };
 
 #endif
