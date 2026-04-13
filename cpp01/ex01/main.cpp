@@ -26,4 +26,5 @@ int	main(void) {
 	horde[1].announce();
 	std::cout << std::endl;
 	delete[] horde;
+	return (0);
 }

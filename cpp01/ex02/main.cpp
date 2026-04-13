@@ -5,29 +5,26 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/13 18:18:55 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/13 18:34:03 by akolupae         ###   ########.fr       */
+/*   Created: 2026/04/13 19:18:53 by akolupae          #+#    #+#             */
+/*   Updated: 2026/04/13 19:31:25 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Zombie.hpp"
+#include <iostream>
+#include <string>
 
 int	main(void) {
-	Zombie	stackZombie;
-	Zombie *newZombie;
-	Zombie *anotherZombie;
+	std::string		str = "HI THIS IS BRAIN";
+	std::string*	stringPTR;
+	std::string&	stringREF = str;
 
-	newZombie = stackZombie.newZombie("NewZombie");
-	anotherZombie = stackZombie.newZombie("AnotherZombie");
+	stringPTR = &str;
+	std::cout << "The address of the string variable: " << &str << std::endl;
+	std::cout << "The address held by stringPTR: " << stringPTR << std::endl;
+	std::cout << "The address held by stringREF: " << &stringREF << std::endl;
 	std::cout << std::endl;
-	newZombie->announce();
-	anotherZombie->announce();
-	std::cout << std::endl;
-	for (int i = 0; i < 5; i++) {
-		stackZombie.randomChump("Chump");
-	}
-	std::cout << std::endl;
-	delete newZombie;
-	delete anotherZombie;
+	std::cout << "The value of the string variable: " << str << std::endl;
+	std::cout << "The value pointed to by stringPTR: " << *stringPTR << std::endl;
+	std::cout << "The value pointed to by stringREF: " << stringREF << std::endl;
 	return (0);
 }
