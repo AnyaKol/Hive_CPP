@@ -6,11 +6,11 @@
 #    By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/08 17:45:11 by akolupae          #+#    #+#              #
-#    Updated: 2026/04/13 18:50:27 by akolupae         ###   ########.fr        #
+#    Updated: 2026/04/13 19:13:44 by akolupae         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = BraiiiiiiinnnzzzZ
+NAME = Moar_brainz
 CPP = c++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++98
 INKFLAGS = -I.
@@ -18,8 +18,7 @@ INKFLAGS = -I.
 SRC = \
 	main.cpp \
 	Zombie.cpp \
-	newZombie.cpp \
-	randomChump.cpp
+	zombieHorde.cpp
 
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
