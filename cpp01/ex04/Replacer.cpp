@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 11:50:25 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/14 14:00:07 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/14 17:12:14 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,30 @@ Replacer::Replacer(void) {}
 Replacer::~Replacer(void) {}
 
 void	Replacer::replace(std::string filename, std::string s1, std::string s2) {
-	std::string	line;
+	std::string		line;
+	std::ifstream	input(filename);
 
-	(void)s1;
-	(void)s2;
-	try {
-		std::ifstream input(filename);
-		if (!input.is_open()) {
-			throw
-				""
-		}
+	if (!input) {
+		std::cerr << "Failde to open file" << std::endl;
+		return ;
 	}
 	std::ofstream output(filename + ".replace");
 	while (getline(input, line)) {
-		std::cout << line + "\n";
-		output << line + "\n";
+		size_t	start;
+		size_t	end;
+
+		line += "\n";
+		start = 0;
+		end = 0;
+		while (1) {
+			end = line.find(s1, start);
+			if (end == std::string::npos) {
+				output << line.substr(start);
+				break ;
+			}
+			output << line.substr(start, end - start) << s2;
+			start = end + s1.length();
+		}
 	}
 	input.close();
 	output.close();
