@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 17:45:24 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/11 18:48:53 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:09:19 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,10 @@ void	PhoneBook::_printTable(void) {
 	std::cout << "_____________________________________________" << std::endl;
 	for (int i = 0; i < this->_maxCount; i++) {
 		std::cout << "|"
-			<< this->_printContent(std::to_string(i + 1)) << "|"
-			<< this->_printContent(this->_contacts[i].firstName) << "|" 
-			<< this->_printContent(this->_contacts[i].lastName) << "|" 
-			<< this->_printContent(this->_contacts[i].nickname) << "|"
+			<< this->_printContent((const std::string)std::to_string(i + 1)) << "|"
+			<< this->_printContent(this->_contacts[i].getFirstName()) << "|" 
+			<< this->_printContent(this->_contacts[i].getLastName()) << "|" 
+			<< this->_printContent(this->_contacts[i].getNickname()) << "|"
 			<< std::endl;
 		std::cout << "_____________________________________________" << std::endl;
 	}

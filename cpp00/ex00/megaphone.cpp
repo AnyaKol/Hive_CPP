@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/08 17:44:42 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/08 17:44:46 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:11:35 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ int	main(int argc, char **argv) {
 /* Using C++11 for range-based for-loop */
 static void	Megaphone(std::string str) {
 	for (char &c : str)
-		c = std::toupper(c);
+		c = std::toupper((unsigned char) c);
 	std::cout << str;
 }

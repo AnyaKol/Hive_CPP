@@ -1,42 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Contact.hpp                                        :+:      :+:    :+:   */
+/*   Replacer.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/08 17:43:17 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/14 15:09:30 by akolupae         ###   ########.fr       */
+/*   Created: 2026/04/14 11:23:24 by akolupae          #+#    #+#             */
+/*   Updated: 2026/04/14 13:28:03 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#ifndef CONTACT_HPP
-# define CONTACT_HPP
+#ifndef REPLACER_HPP
+# define REPLACER_HPP
 
 # include <iostream>
+// Library to work with files
+# include <fstream>
 # include <string>
 
-class Contact {
+class Replacer {
 
 public:
-	Contact(void);
-	~Contact(void);
+	Replacer(void);
+	~Replacer(void);
 
-	void				create(void);
-	void				printContact(void);	
-	const std::string	getFirstName(void);
-	const std::string	getLastName(void);
-	const std::string	getNickname(void);
+	void	replace(std::string filename, std::string s1, std::string s2);
+	bool	checkArgs(int argc, char** argv);
 
 private:
-	std::string	_getInput(std::string field);
 
-	std::string	_firstName;
-	std::string	_lastName;
-	std::string	_nickname;
-	std::string	_phoneNumber;
-	std::string	_darkestSecret;
 };
 
 #endif
