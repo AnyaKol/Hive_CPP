@@ -12,28 +12,24 @@
 
 #include "Harl.hpp"
 
-Harl::Harl (void) {
-	std::cout << "Harl created." << std::endl;
-}
+Harl::Harl (void) {}
 
-Harl::~Harl (void) {
-	std::cout << "Harl destroyed." << std::endl;
-}
+Harl::~Harl (void) {}
 
 void	Harl::debug(void) {
-	std::cout << " * DEBUG message * " << std::endl;
+	std::cout << "[ DEBUG ]\n * DEBUG message * \n" << std::endl;
 }
 
 void	Harl::info(void) {
-	std::cout << " * INFO message * " << std::endl;
+	std::cout << "[ INFO ]\n * INFO message * \n" << std::endl;
 }
 
 void	Harl::warning(void) {
-	std::cout << " * WARNING message * " << std::endl;
+	std::cout << "[ WARNING ]\n * WARNING message * \n" << std::endl;
 }
 
 void	Harl::error(void) {
-	std::cout << " * ERROR message * " << std::endl;
+	std::cout << "[ ERROR ]\n * ERROR message * \n" << std::endl;
 }
 
 void	Harl::complain(std::string level) {
@@ -51,7 +47,10 @@ void	Harl::complain(std::string level) {
 	};
 
 	for (int i = 0; i < 4; i++) {
-		if (level == arr[i])
+		if (level == arr[i]) {
 			(this->*fun[i])();
-	};
+			return ;
+		}
+	}
+	std::cout << " [No message] " << std::endl;
 }

@@ -12,21 +12,10 @@
 
 #include "Harl.hpp"
 
-static void	test_harl(Harl& harl, std::string level);	
-
-int	main(void) {
+int	main(int argc, char** argv) {
 	Harl		harl;
 
-	test_harl(harl, "INFO");
-	test_harl(harl, "WARNING");
-	test_harl(harl, "DEBUG");
-	test_harl(harl, "ERROR_");
-	test_harl(harl, "ERROR");
+	if (argc > 1)
+		harl.complain(argv[1]);
 	return (0);
-}
-
-static void	test_harl(Harl& harl, std::string level) {	
-	std::cout << "Level: " << level << std::endl;
-	harl.complain(level);
-	std::cout << std::endl;
 }
