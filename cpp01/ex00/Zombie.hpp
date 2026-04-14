@@ -29,6 +29,8 @@ public:
 
 private:
 
+	Zombie( std::string name );
+
 	std::string	name;
 
 };

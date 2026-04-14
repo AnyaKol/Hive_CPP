@@ -16,15 +16,10 @@ CPPFLAGS = -Wall -Werror -Wextra -std=c++11
 INKFLAGS = -I.
 
 SRC = \
-	main.cpp \
-	Replacer.cpp
+	main.cpp
 
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
-
-# ------------  HEADER  ------------------------------------------------------ #
-HEADER = \
-	Replacer.hpp
 
 # ------------  RULES  ------------------------------------------------------- #
 all: $(NAME)
@@ -32,7 +27,7 @@ all: $(NAME)
 $(OBJDIR):
 	mkdir -p $(OBJDIR)
 
-$(OBJDIR)/%.o: %.cpp $(HEADER)
+$(OBJDIR)/%.o: %.cpp
 	$(CPP) $(CPPFLAGS) $(INCFLAGS) -c $< -o $@
 
 $(NAME): $(OBJDIR) $(OBJ)

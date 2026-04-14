@@ -13,8 +13,7 @@
 #include "Zombie.hpp"
 
 // Constructor
-Zombie::Zombie( void ) {
-	this->name = "unnamed";
+Zombie::Zombie( void ) : name("unnamed") {
 	std::cout << "zombie created" << std::endl;
 }
 
