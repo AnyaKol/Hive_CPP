@@ -19,6 +19,7 @@
 class HumanB {
 
 public:
+
 	HumanB(std::string name);
 	~HumanB(void);
 
@@ -26,6 +27,7 @@ public:
 	void	setWeapon(Weapon& weapon);
 
 private:
+
 	std::string	name;
 	Weapon*		weapon;
 

@@ -20,6 +20,11 @@ void	Replacer::replace(std::string filename, std::string s1, std::string s2) {
 	std::string		line;
 	std::ifstream	input(filename);
 
+	if (!this->_checkArgs(filename, s1)) {
+		if (input)
+			input.close();
+		return ;
+	}
 	if (!input) {
 		std::cerr << "Failde to open file" << std::endl;
 		return ;
@@ -46,17 +51,12 @@ void	Replacer::replace(std::string filename, std::string s1, std::string s2) {
 	output.close();
 }
 
-bool	Replacer::checkArgs(int argc, char** argv) {
-	if (argc != 4) {
-		std::cerr << "Wrong number of arguments.\n"
-			<< "Use: <filename> <find> <replace with>." << std::endl;
-		return (false);
-	}
-	if (((std::string) argv[1]).empty()) {
+bool	Replacer::_checkArgs(std::string filename, std::string s1) {
+	if (filename.empty()) {
 		std::cerr << "Filename can't be empty." << std::endl;
 		return (false);
 	}
-	if (((std::string) argv[2]).empty()) {
+	if (s1.empty()) {
 		std::cerr << "String to find can't be empty." << std::endl;
 		return (false);
 	}

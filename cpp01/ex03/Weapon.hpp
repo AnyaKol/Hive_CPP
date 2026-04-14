@@ -20,6 +20,7 @@
 class Weapon {
 
 public:
+
 	Weapon(std::string type);
 	~Weapon(void);
 
@@ -27,6 +28,7 @@ public:
 	void				setType(std::string type);
 
 private:
+
 	std::string	type;
 
 };

@@ -5,22 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/04/14 11:19:48 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/14 13:27:28 by akolupae         ###   ########.fr       */
+/*   Created: 2026/04/14 17:21:16 by akolupae          #+#    #+#             */
+/*   Updated: 2026/04/14 18:18:02 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Replacer.hpp"
+#include "Harl.hpp"
 
-int	main(int argc, char** argv) {
-	Replacer replacer;
+static void	test_harl(Harl& harl, std::string level);	
 
-	if (argc != 4) {
-		std::cerr << "Wrong number of arguments.\n"
-			<< "Use: <filename> <find> <replace with>." << std::endl;
-		return (1);
-	}
-	replacer.replace((std::string)argv[1], (std::string) argv[2],
-		(std::string) argv[3]);
+int	main(void) {
+	Harl		harl;
+
+	test_harl(harl, "INFO");
+	test_harl(harl, "WARNING");
+	test_harl(harl, "DEBUG");
+	test_harl(harl, "ERROR_");
+	test_harl(harl, "ERROR");
 	return (0);
+}
+
+static void	test_harl(Harl& harl, std::string level) {	
+	std::cout << "Level: " << level << std::endl;
+	harl.complain(level);
+	std::cout << std::endl;
 }
