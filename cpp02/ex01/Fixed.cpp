@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/14 21:20:17 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/15 19:20:08 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/15 22:08:06 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,22 @@ Fixed::Fixed(void) : _rawBits(0) {
 	std::cout << "Default constructor called" << std::endl;
 }
 
+Fixed::Fixed(const int val) : _rawBits(val << this->_bits) {
+	std::cout << "Int constructor called" << std::endl;
+}
+
+Fixed::Fixed(const float val) : _rawBits(round(val * (float)pow(2, this->_bits))) {
+	std::cout << "Float constructor called" << std::endl;
+}
+
 // Copy constructor
-// Use '&' to avoid infinite recursion
-// Will accept const and non-const reference, but prevents from modifying
 Fixed::Fixed(const Fixed& other) {
 	std::cout << "Copy constructor called" << std::endl;
 	*this = other;
 }
 
 // Copy assignment operator overload
-// [ a = b ] --> [ a.operator=(b) ]
-Fixed &Fixed::operator= (const Fixed& other) {
+Fixed&	Fixed::operator= (const Fixed& other) {
 	std::cout << "Copy assignment operator called" << std::endl;
 
 	if (this != &other)
@@ -41,8 +46,6 @@ Fixed::~Fixed(void) {
 	std::cout << "Destructor called" << std::endl;
 }
 
-// 'const' after brackets means this function will not change anything inside
-// the class.
 int		Fixed::getRawBits(void) const {
 	std::cout << "getRawBits member function called" << std::endl;
 	return (this->_rawBits);
@@ -51,4 +54,18 @@ int		Fixed::getRawBits(void) const {
 void	Fixed::setRawBits(int const raw) {
 	std::cout << "setRawBits member function called" << std::endl;
 	this->_rawBits = raw;
+}
+
+float	Fixed::toFloat(void) const {
+	return ((float)(this->_rawBits / pow(2, this->_bits)));
+}
+
+int		Fixed::toInt(void) const {
+	return (round(this->toFloat()));
+}
+
+// Insertion operator overload
+std::ostream&	operator<<(std::ostream& output, const Fixed& other) {
+	output << other.toFloat();
+	return (output);
 }
