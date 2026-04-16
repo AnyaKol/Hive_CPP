@@ -13,15 +13,24 @@
 #include "Zombie.hpp"
 
 // Constructor
-Zombie::Zombie( void ) : name("unnamed") {
+Zombie::Zombie( void ) : _name("unnamed") {
 	std::cout << "zombie created" << std::endl;
+}
+
+// Constructor with parameter
+Zombie::Zombie( std::string name ) : _name(name) {
+	std::cout << name << " zombie created" << std::endl;
 }
 
 // Destructor
 Zombie::~Zombie( void ) {
-	std::cout << this->name << " destroyed" << std::endl;
+	std::cout << this->_name << " destroyed" << std::endl;
+}
+
+void	Zombie::setName( const std::string& name ) {
+	this->_name = name;
 }
 
 void	Zombie::announce( void ) {
-	std::cout << this->name << ": BraiiiiiiinnnzzzZ..." << std::endl;
+	std::cout << this->_name << ": BraiiiiiiinnnzzzZ..." << std::endl;
 }

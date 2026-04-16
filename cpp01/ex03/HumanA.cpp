@@ -14,16 +14,16 @@
 
 // Constructor
 HumanA::HumanA(std::string name, Weapon& weapon)
-: name(name), weapon(weapon) {
-	std::cout << "HumanA " << this->name << " created." << std::endl;
+: _name(name), _weapon(weapon) {
+	std::cout << "HumanA " << this->_name << " created." << std::endl;
 }
 
 // Destructor
 HumanA::~HumanA(void) {
-	std::cout << "HumanA " << this->name << " destroyed." << std::endl;
+	std::cout << "HumanA " << this->_name << " destroyed." << std::endl;
 }
 
 void	HumanA::attack(void) {
-	std::cout << this->name << " attacks with their " << this->weapon.getType()
+	std::cout << this->_name << " attacks with their " << this->_weapon.getType()
 	<< std::endl;
 }

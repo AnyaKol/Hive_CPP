@@ -13,11 +13,10 @@
 #include "Zombie.hpp"
 
 int	main(void) {
-	Zombie		stackZombie;
 	const int	N = 5;
 	Zombie		*horde;
 
-	horde = stackZombie.zombieHorde(N, "Horde zombie");
+	horde = zombieHorde(N, "Horde zombie");
 	std::cout << std::endl;
 	for (int i = 0; i < N; i++) {
 		horde->announce();

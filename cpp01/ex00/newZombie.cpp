@@ -12,11 +12,6 @@
 
 #include "Zombie.hpp"
 
-// Constructor with parameter
-Zombie::Zombie( std::string name ) : name(name) {
-	std::cout << "new zombie created" << std::endl;
-}
-
-Zombie*	Zombie::newZombie( std::string name ) {
+Zombie*	newZombie( std::string name ) {
 	return (new Zombie(name));
 }

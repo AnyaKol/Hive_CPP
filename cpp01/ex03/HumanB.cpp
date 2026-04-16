@@ -14,24 +14,24 @@
 
 // Constructor
 HumanB::HumanB(std::string name)
-: name(name), weapon(NULL) {
-	std::cout << "HumanB " << this->name << " created." << std::endl;
+: _name(name), _weapon(NULL) {
+	std::cout << "HumanB " << this->_name << " created." << std::endl;
 }
 
 // Destructor
 HumanB::~HumanB(void) {
-	std::cout << "HumanB " << this->name << " destroyed." << std::endl;
+	std::cout << "HumanB " << this->_name << " destroyed." << std::endl;
 }
 
 void	HumanB::attack(void) {
-	if (this->weapon == NULL) {
-		std::cout << this->name << " doesn't have a weapon." << std::endl;
+	if (this->_weapon == NULL) {
+		std::cout << this->_name << " doesn't have a weapon." << std::endl;
 		return ;
 	}
-	std::cout << this->name << " attacks with their " << this->weapon->getType()
+	std::cout << this->_name << " attacks with their " << this->_weapon->getType()
 	<< std::endl;
 }
 
 void	HumanB::setWeapon(Weapon& weapon) {
-	this->weapon = &weapon;
+	this->_weapon = &weapon;
 }

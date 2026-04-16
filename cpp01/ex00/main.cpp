@@ -13,21 +13,20 @@
 #include "Zombie.hpp"
 
 int	main(void) {
-	Zombie	stackZombie;
-	Zombie *newZombie;
-	Zombie *anotherZombie;
+	Zombie *new_zombie;
+	Zombie *another_zombie;
 
-	newZombie = stackZombie.newZombie("NewZombie");
-	anotherZombie = stackZombie.newZombie("AnotherZombie");
+	new_zombie = newZombie("NewZombie");
+	another_zombie = newZombie("AnotherZombie");
 	std::cout << std::endl;
-	newZombie->announce();
-	anotherZombie->announce();
+	new_zombie->announce();
+	another_zombie->announce();
 	std::cout << std::endl;
 	for (int i = 0; i < 5; i++) {
-		stackZombie.randomChump("Chump");
+		randomChump("Chump");
 	}
 	std::cout << std::endl;
-	delete newZombie;
-	delete anotherZombie;
+	delete new_zombie;
+	delete another_zombie;
 	return (0);
 }

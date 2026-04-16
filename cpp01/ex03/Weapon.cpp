@@ -13,7 +13,7 @@
 #include "Weapon.hpp"
 
 // Constructor
-Weapon::Weapon(std::string type) : type(type) {
+Weapon::Weapon(std::string type) : _type(type) {
 	std::cout <<  this->getType() << " created." <<std::endl;
 }
 
@@ -23,11 +23,11 @@ Weapon::~Weapon(void) {
 }
 
 const std::string&	Weapon::getType(void) {
-	return ((const std::string&) this->type);
+	return ((const std::string&) this->_type);
 }
 
 void	Weapon::setType(std::string type) {
 	std::cout <<  this->getType() << " -> ";
-	this->type = type;
+	this->_type = type;
 	std::cout <<  this->getType() << std::endl;
 }

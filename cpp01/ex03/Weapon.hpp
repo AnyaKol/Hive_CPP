@@ -11,11 +11,9 @@
 /* ************************************************************************** */
 
 #pragma once
-#ifndef WEAPON_HPP
-# define WEAPON_HPP
 
-# include <iostream>
-# include <string>
+#include <iostream>
+#include <string>
 
 class Weapon {
 
@@ -29,8 +27,6 @@ public:
 
 private:
 
-	std::string	type;
+	std::string	_type;
 
 };
-
-#endif

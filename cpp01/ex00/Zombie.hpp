@@ -11,28 +11,25 @@
 /* ************************************************************************** */
 
 #pragma once
-#ifndef ZOMBIE_HPP
-# define ZOMBIE_HPP
 
-# include <iostream>
+#include <iostream>
 
 class Zombie {
 
 public:
 
 	Zombie( void );
+	Zombie( std::string name );
 	~Zombie( void );
 
 	void	announce( void );
-	Zombie*	newZombie( std::string name );
-	void	randomChump( std::string name );
+	void	setName( const std::string& name );
 
 private:
 
-	Zombie( std::string name );
-
-	std::string	name;
+	std::string	_name;
 
 };
 
-#endif
+Zombie*	newZombie( std::string name );
+void	randomChump( std::string name );
