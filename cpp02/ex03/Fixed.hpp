@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #pragma once
-#ifndef FIXED_HPP
-# define FIXED_HPP
 
 # include <iostream>
 # include <cmath>
@@ -64,5 +62,3 @@ private:
 	static const int	_bits = 8;
 
 };
-
-#endif

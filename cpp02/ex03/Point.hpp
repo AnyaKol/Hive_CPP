@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #pragma once
-#ifndef POINT_HPP
-# define POINT_HPP
 
 # include "Fixed.hpp"
 
@@ -36,5 +34,3 @@ private:
 	Fixed const	_y;
 
 };
-
-#endif
