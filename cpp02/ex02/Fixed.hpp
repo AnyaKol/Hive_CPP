@@ -47,6 +47,17 @@ public:
 	float	operator* (const Fixed& other) const;
 	float	operator/ (const Fixed& other) const;
 
+	
+	Fixed			operator++ (int);
+	friend Fixed&	operator++ (Fixed& other);
+	Fixed			operator-- (int);
+	friend Fixed&	operator-- (Fixed& other);
+
+	static Fixed&	max (const Fixed& a, const Fixed& b);
+	static Fixed&	max (Fixed& a, Fixed& b);
+	static Fixed&	min (const Fixed& a, const Fixed& b);
+	static Fixed&	min (Fixed& a, Fixed& b);
+
 private:
 
 	int					_rawBits;
