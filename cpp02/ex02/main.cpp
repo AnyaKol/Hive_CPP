@@ -38,7 +38,8 @@ int	main(void) {
 		Fixed c(0);
 		std::cout << "c: " << c << std::endl;
 
-		Fixed d(-0.343f);
+		Fixed d;
+		d = b;
 		std::cout << "d: " << d << std::endl;
 
 		std::cout << "\na > b: " << (a > b) << std::endl;

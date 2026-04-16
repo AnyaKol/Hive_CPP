@@ -42,10 +42,10 @@ public:
 	bool	operator== (const Fixed& other) const;
 	bool	operator!= (const Fixed& other) const;
 
-	float	operator+ (const Fixed& other) const;
-	float	operator- (const Fixed& other) const;
-	float	operator* (const Fixed& other) const;
-	float	operator/ (const Fixed& other) const;
+	Fixed	operator+ (const Fixed& other) const;
+	Fixed	operator- (const Fixed& other) const;
+	Fixed	operator* (const Fixed& other) const;
+	Fixed	operator/ (const Fixed& other) const;
 
 	
 	Fixed			operator++ (int);
@@ -64,6 +64,5 @@ private:
 	static const int	_bits = 8;
 
 };
-
 
 #endif

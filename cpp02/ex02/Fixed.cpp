@@ -21,7 +21,10 @@ Fixed::Fixed(const int val) : _rawBits(val << this->_bits) {
 	std::cout << "Int constructor called" << std::endl;
 }
 
-Fixed::Fixed(const float val) : _rawBits(round(val * (float)pow(2, this->_bits))) {
+Fixed::Fixed(const float val)
+: _rawBits(
+	static_cast<int>(roundf(val * static_cast<float>(1 << this->_bits)))
+) {
 	std::cout << "Float constructor called" << std::endl;
 }
 
@@ -38,7 +41,7 @@ Fixed&	Fixed::operator= (const Fixed& other) {
 	if (this != &other)
 		this->_rawBits = other._rawBits;
 
-	return (*this);	
+	return (*this);
 }
 
 // Destructor
@@ -57,7 +60,8 @@ void	Fixed::setRawBits(int const raw) {
 }
 
 float	Fixed::toFloat(void) const {
-	return ( (float)(this->_rawBits / pow(2, this->_bits)) );
+	return (static_cast<float>(this->_rawBits)
+		/ static_cast<float>(1 << this->_bits));
 }
 
 int		Fixed::toInt(void) const {
@@ -65,8 +69,7 @@ int		Fixed::toInt(void) const {
 }
 
 // Insertion operator overload
-// omitting keyword 'friend': can't use outside of class
-std::ostream&	operator<< (std::ostream& output, const Fixed& other) {
+std::ostream&	operator<<(std::ostream& output, const Fixed& other) {
 	output << other.toFloat();
 	return (output);
 }
@@ -97,22 +100,22 @@ bool	Fixed::operator!= (const Fixed& other) const {
 }
 
 // Overloading arithmetic operators
-float	Fixed::operator+ (const Fixed& other) const {
-	return ( this->toFloat() + other.toFloat() );
+Fixed	Fixed::operator+ (const Fixed& other) const {
+	return ( Fixed(this->toFloat() + other.toFloat()) );
 }
 
-float	Fixed::operator- (const Fixed& other) const {
-	return ( this->toFloat() - other.toFloat() );
+Fixed	Fixed::operator- (const Fixed& other) const {
+	return ( Fixed(this->toFloat() - other.toFloat()) );
 }
 
-float	Fixed::operator* (const Fixed& other) const {
-	return ( this->toFloat() * other.toFloat() );
+Fixed	Fixed::operator* (const Fixed& other) const {
+	return ( Fixed(this->toFloat() * other.toFloat()) );
 }
 
-float	Fixed::operator/ (const Fixed& other) const {
+Fixed	Fixed::operator/ (const Fixed& other) const {
 	if (other.toFloat() == 0)
-		return (0);
-	return ( this->toFloat() / other.toFloat() );
+		return ( Fixed(0) );
+	return ( Fixed(this->toFloat() / other.toFloat()) );
 }
 
 // Overloading increment/decrement
@@ -147,8 +150,8 @@ Fixed&	operator-- (Fixed& other) {
 // (static - only for this file); compiler remembers it's static
 Fixed&	Fixed::max (const Fixed& a, const Fixed& b) {
 	if (a >= b)
-		return ( (Fixed&) a );
-	return ( (Fixed&) b );
+		return ( const_cast<Fixed&>(a) );
+	return ( const_cast<Fixed&>(b) );
 }
 
 Fixed&	Fixed::max (Fixed& a, Fixed& b) {
@@ -159,8 +162,8 @@ Fixed&	Fixed::max (Fixed& a, Fixed& b) {
 
 Fixed&	Fixed::min (const Fixed& a, const Fixed& b) {
 	if (a <= b)
-		return ( (Fixed&) a );
-	return ( (Fixed&) b );
+		return ( const_cast<Fixed&>(a) );
+	return ( const_cast<Fixed&>(b) );
 }
 
 Fixed&	Fixed::min (Fixed& a, Fixed& b) {

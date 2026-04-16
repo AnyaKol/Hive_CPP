@@ -21,7 +21,10 @@ Fixed::Fixed(const int val) : _rawBits(val << this->_bits) {
 	std::cout << "Int constructor called" << std::endl;
 }
 
-Fixed::Fixed(const float val) : _rawBits(round(val * (float)pow(2, this->_bits))) {
+Fixed::Fixed(const float val)
+: _rawBits(
+	static_cast<int>(roundf(val * static_cast<float>(1 << this->_bits)))
+) {
 	std::cout << "Float constructor called" << std::endl;
 }
 
@@ -38,7 +41,7 @@ Fixed&	Fixed::operator= (const Fixed& other) {
 	if (this != &other)
 		this->_rawBits = other._rawBits;
 
-	return (*this);	
+	return (*this);
 }
 
 // Destructor
@@ -57,11 +60,12 @@ void	Fixed::setRawBits(int const raw) {
 }
 
 float	Fixed::toFloat(void) const {
-	return ((float)(this->_rawBits / pow(2, this->_bits)));
+	return (static_cast<float>(this->_rawBits)
+		/ static_cast<float>(1 << this->_bits));
 }
 
 int		Fixed::toInt(void) const {
-	return (round(this->toFloat()));
+	return ( round(this->toFloat()) );
 }
 
 // Insertion operator overload
