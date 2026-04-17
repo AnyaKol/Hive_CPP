@@ -33,7 +33,12 @@ DiamondTrap::DiamondTrap(const std::string name) : _name(name) {
 }
 
 // Copy constructor
-DiamondTrap::DiamondTrap(const DiamondTrap& other) {
+/* Base classes should appear in the initializer list in the same order as they
+ * appear in the class
+ */
+DiamondTrap::DiamondTrap(const DiamondTrap& other)
+: ClapTrap(other), FragTrap(other), ScavTrap(other)
+{
 	std::cout << "DiamondTrap calls copy constructor." << std::endl;
 
 	*this = other;
@@ -56,4 +61,16 @@ DiamondTrap&	DiamondTrap::operator= (const DiamondTrap& other) {
 // Destructor
 DiamondTrap::~DiamondTrap(void) {
 	std::cout << "DiamondTrap " << this->_name << " destroyed." << std::endl;
+}
+
+// Overridden function
+void	DiamondTrap::attack(const std::string& target) {
+	this->ScavTrap::attack(target);
+}
+
+// DiamondTrap unique function
+void	DiamondTrap::whoAmI(void) {
+	std::cout << "DiamondTrap " << this->_name
+		<< " (" << this->_hitPoints << "|" << this->_energyPoints << "): ";
+	std::cout << "is actually " << this->ClapTrap::_name << "\n" << std::endl;
 }

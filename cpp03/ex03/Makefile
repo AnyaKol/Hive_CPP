@@ -19,7 +19,8 @@ SRC = \
 	main.cpp \
 	ClapTrap.cpp \
 	ScavTrap.cpp \
-	FragTrap.cpp
+	FragTrap.cpp \
+	DiamondTrap.cpp
 
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
@@ -28,7 +29,8 @@ OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 HEADER = \
 	ClapTrap.hpp \
 	ScavTrap.hpp \
-	FragTrap.hpp
+	FragTrap.hpp \
+	DiamondTrap.hpp
 
 # ------------  RULES  ------------------------------------------------------- #
 all: $(NAME)

@@ -10,22 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "FragTrap.hpp"
-#include "ScavTrap.hpp"
+#include "DiamondTrap.hpp"
 
 int	main(void) {
 
 	std::cout << "\n\t*** CONSTRUCTORS TESTS ***" << std::endl;
 	{
-		FragTrap	a("🦊");
+		DiamondTrap	a("٩꒰ʘʚʘ๑꒱۶");
 		std::cout << std::endl;
-		FragTrap	b(a);
+		DiamondTrap	b(a);
 		std::cout << std::endl;
-		FragTrap	c("🐻");
+		DiamondTrap	c("(๑´• .̫ •ू`๑)");
 		std::cout << std::endl;
-		ClapTrap	d = ScavTrap("ShellBot");
+		ScavTrap	d = DiamondTrap("Shell(ᗒᗣᗕ)՞");
 		std::cout << std::endl;
-		ClapTrap	e = ScavTrap("🐺Bot");
+		FragTrap	e = DiamondTrap("🐺（ΦωΦ）");
+		std::cout << std::endl;
+		ClapTrap	f = DiamondTrap("⊙▂⊙Bot");
 		std::cout << std::endl; 
 
 		c = a;
@@ -35,11 +36,14 @@ int	main(void) {
 	std::cout << "\n\t*** BASIC FUNCTIONS TESTS ***" << std::endl;
 	{
 		ClapTrap	bot("Bot");
+		std::cout << std::endl;
 		ScavTrap	shell("Shell");
-		FragTrap	a("🤖");
-		FragTrap	b("👽");
-		FragTrap	c("🎃");
-		ClapTrap	d = FragTrap("🐺Bot");
+		std::cout << std::endl;
+		FragTrap	smile("🤖");
+		std::cout << std::endl;
+		DiamondTrap	a("=＾● ⋏ ●＾=");
+		std::cout << std::endl;
+		ClapTrap	b = DiamondTrap("꜀( ˊ̠˂˃ˋ̠ )꜆Bot");
 
 		std::cout << std::endl;
 
@@ -64,59 +68,62 @@ int	main(void) {
 		std::cout << std::endl;
 
 		std::cout << "> attack" << std::endl;
+   		smile.attack("PracticeTarget");
+		std::cout << "> take damage" << std::endl;
+		smile.takeDamage(7);
+		std::cout << "> repair" << std::endl;
+		smile.beRepaired(5);
+		std::cout << "> special" << std::endl;
+		smile.highFivesGuys();
+
+		std::cout << std::endl;
+		std::cout << "> attack" << std::endl;
    		a.attack("PracticeTarget");
 		std::cout << "> take damage" << std::endl;
 		a.takeDamage(7);
 		std::cout << "> repair" << std::endl;
 		a.beRepaired(5);
-		std::cout << "> special" << std::endl;
+		std::cout << "> special 1" << std::endl;
+		a.guardGate();
+		std::cout << "> special 2" << std::endl;
 		a.highFivesGuys();
+		std::cout << "> special 3" << std::endl;
+		a.whoAmI();
 
 		std::cout << std::endl;
 
 		std::cout << "> attack" << std::endl;
-   		d.attack("PracticeTarget");
+   		b.attack("PracticeTarget");
 		std::cout << "> take damage" << std::endl;
-		d.takeDamage(7);
+		b.takeDamage(7);
 		std::cout << "> repair" << std::endl;
-		d.beRepaired(5);
-		std::cout << "> special" << std::endl;
-		//d.highFivesGuys();
+		b.beRepaired(5);
+		//b.guardGate();
+		//b.highFivesGuys();
+		//b.whoAmI();
 
 		std::cout << "\n\t*** ADDITIONAL TESTS ***" << std::endl;
 
 		std::cout << "> special" << std::endl;
-		b.highFivesGuys();
-		std::cout << "> special" << std::endl;
-		b.highFivesGuys();
+		a.highFivesGuys();
 		std::cout << "> attack" << std::endl;
-		b.attack("🦀");
+		a.attack("ಠ_ರೃ");
 		std::cout << "> take damage" << std::endl;
-		b.takeDamage(2);
+		a.takeDamage(2);
 		std::cout << "> repair" << std::endl;
-		b.beRepaired(0);
-		std::cout << "> repair(x100)" << std::endl;
-		for (int i = 0; i < 100; i++)
-			b.beRepaired(1);
+		a.beRepaired(0);
+		std::cout << "> repair(x50)" << std::endl;
+		for (int i = 0; i < 50; i++)
+			a.beRepaired(1);
 		std::cout << "> take damage" << std::endl;
-		b.takeDamage(3);
+		a.takeDamage(3);
 		std::cout << "> attack" << std::endl;
-		b.attack("🦖");
+		a.attack("（。ˇ ⊖ˇ）♡");
 		std::cout << "> take damage" << std::endl;
-		b.takeDamage(100);
+		a.takeDamage(100);
 		std::cout << "> special" << std::endl;
-		b.highFivesGuys();
-
-		std::cout << std::endl;
-
-		std::cout << "> special" << std::endl;
-		c.highFivesGuys();
-		std::cout << "> take damage" << std::endl;
-		c.takeDamage(150);
-		std::cout << "> attack" << std::endl;
-		c.attack("🦨");
-		std::cout << "> repair" << std::endl;
-		c.beRepaired(15);
+		a.highFivesGuys();
+		
 	}
 
 	return 0;

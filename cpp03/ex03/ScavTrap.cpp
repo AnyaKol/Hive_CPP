@@ -33,7 +33,7 @@ ScavTrap::ScavTrap(const std::string name) {
 }
 
 // Copy constructor
-ScavTrap::ScavTrap(const ScavTrap& other) {
+ScavTrap::ScavTrap(const ScavTrap& other) : ClapTrap(other) {
 	std::cout << "ScavTrap calls copy constructor." << std::endl;
 
 	*this = other;
