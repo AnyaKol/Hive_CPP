@@ -31,11 +31,11 @@ public:
 	float	toFloat(void) const;
 	int		toInt(void) const;
 
-	friend std::ostream& operator<< (std::ostream& output, const Fixed& other);
-
 private:
 
 	int					_rawBits;
 	static const int	_bits = 8;
 
 };
+
+std::ostream& operator<< (std::ostream& output, const Fixed& other);

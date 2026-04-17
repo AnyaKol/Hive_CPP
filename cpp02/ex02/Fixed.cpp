@@ -124,24 +124,24 @@ Fixed	Fixed::operator++ (int) {
 	Fixed	temp(*this);
 
 	this->setRawBits(this->_rawBits + 1);
-	return ( temp );
+	return (temp);
 }
 
-Fixed&	operator++ (Fixed& other) {
-	other.setRawBits(other._rawBits + 1);
-	return ( other );
+Fixed&	Fixed::operator++ () {
+	this->setRawBits(this->_rawBits + 1);
+	return (*this);
 }
 
 Fixed	Fixed::operator-- (int) {
 	Fixed	temp(*this);
 
 	this->setRawBits(this->_rawBits - 1);
-	return ( temp );
+	return (temp);
 }
 
-Fixed&	operator-- (Fixed& other) {
-	other.setRawBits(other._rawBits - 1);
-	return ( other );
+Fixed&	Fixed::operator-- () {
+	this->setRawBits(this->_rawBits - 1);
+	return (*this);
 }
 
 // Overloading existing functions

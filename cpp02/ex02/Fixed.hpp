@@ -31,8 +31,6 @@ public:
 	float	toFloat(void) const;
 	int		toInt(void) const;
 
-	friend std::ostream& operator<< (std::ostream& output, const Fixed& other);
-
 	bool	operator> (const Fixed& other) const;
 	bool	operator< (const Fixed& other) const;
 	bool	operator>= (const Fixed& other) const;
@@ -46,10 +44,10 @@ public:
 	Fixed	operator/ (const Fixed& other) const;
 
 	
-	Fixed			operator++ (int);
-	friend Fixed&	operator++ (Fixed& other);
-	Fixed			operator-- (int);
-	friend Fixed&	operator-- (Fixed& other);
+	Fixed	operator++ (int);
+	Fixed&	operator++ ();
+	Fixed	operator-- (int);
+	Fixed&	operator-- ();
 
 	static Fixed&	max (const Fixed& a, const Fixed& b);
 	static Fixed&	max (Fixed& a, Fixed& b);
@@ -62,3 +60,5 @@ private:
 	static const int	_bits = 8;
 
 };
+
+std::ostream& operator<< (std::ostream& output, const Fixed& other);
