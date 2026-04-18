@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Polymorphism
+NAME = I_dont_want_to_set_the_world_on_fire
 CPP = c++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++11
 INKFLAGS = -I.
@@ -20,8 +20,7 @@ SRC = \
 	Animal.cpp \
 	Cat.cpp \
 	Dog.cpp \
-	WrongAnimal.cpp \
-	WrongCat.cpp
+	Brain.cpp
 
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
@@ -31,8 +30,7 @@ HEADER = \
 	Animal.hpp \
 	Cat.hpp \
 	Dog.hpp \
-	WrongAnimal.hpp \
-	WrongCat.hpp
+	Brain.hpp
 
 # ------------  RULES  ------------------------------------------------------- #
 all: $(NAME)
