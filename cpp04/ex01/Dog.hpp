@@ -26,5 +26,10 @@ public:
 	~Dog(void);
 
 	void	makeSound(void) const override;
+	Brain*	getBrain(void) const;
+
+private:
+
+	Brain*	_brain;
 
 };
