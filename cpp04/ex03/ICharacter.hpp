@@ -12,8 +12,14 @@
 
 #pragma once
 
-#include "AMateria.hpp"
+#include <iostream>
+#include <string>
 
+/* Forward declaration to avoid headers including eac other;
+ * can't have AMateria object here, compiler doesn't know it's size; but can
+ * have a pointer to this object.
+ */
+class	AMateria;
 // Pure interface, doesn't have any function implementations
 class	ICharacter
 {

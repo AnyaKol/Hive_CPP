@@ -21,13 +21,10 @@ AMateria::AMateria(std::string const& type) {
 }
 
 // Copy constructor
-AMateria::AMateria(const AMateria& other) {
-
-	*this = other;
-}
+AMateria::AMateria(const AMateria&) {}
 
 // Copy assignment operator overload
-AMateria&	AMateria::operator= (const AMateria& other) {
+AMateria&	AMateria::operator= (const AMateria&) {
 
 	return (*this);
 }
@@ -45,5 +42,5 @@ std::string const&	AMateria::getType() const {
 }
 
 void	AMateria::use(ICharacter& target) {
-	std::cout << "Using pure Materia..." << std::endl;
+	std::cout << "Using " << *this << " on " << target.getName() << std::endl;
 }

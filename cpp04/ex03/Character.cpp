@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/19 17:51:27 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/19 17:51:28 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/04/19 19:51:32 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ std::string const&	Character::getName() const{
 void	Character::equip(AMateria* m) {
 	int	idx;
 
-	for (idx; idx < 4; idx++) {
+	for (idx = 0; idx < 4; idx++) {
 		if (this->_inventory[idx] == nullptr)
 			break ;
 	}
@@ -76,7 +76,13 @@ void	Character::unequip(int idx) {
 	if (idx < 0 || idx > 3)
 		return ;
 
-	std::cout << *this << ": Materia " << *this->_inventory[idx]
+	if (this->_inventory[idx] == nullptr) {
+		std::cout << *this << ": slot " << idx << " is empty." << std::endl;
+		return ;
+	}
+
+	this->_discardMateria(this->_inventory[idx]);
+	std::cout << *this << ": Materia " << this->_inventory[idx]->getType()
 		<< " unequipped." << std::endl;
 	this->_inventory[idx] = nullptr;
 }
@@ -86,4 +92,21 @@ void	Character::use(int idx, ICharacter& target) {
 		return ;
 
 	this->_inventory[idx]->AMateria::use(target);
+}
+
+void	Character::_discardMateria(AMateria *m) {
+	t_AMateria* node = new t_AMateria;
+
+	node->next = nullptr;
+	node->data = m;
+
+	if (this->_discarded == nullptr) {
+		this->_discarded = node;
+		return ;
+	}
+
+	t_AMateria*	last = this->_discarded;
+
+	for (last; last->next != nullptr; last = last->next) {}
+	last->next = node;
 }

@@ -18,9 +18,9 @@ INKFLAGS = -I.
 SRC = \
 	main.cpp \
 	AMateria.cpp \
-	Ice.cpp \
-	Cure.cpp \
 	Character.cpp \
+	Cure.cpp \
+	Ice.cpp \
 	MateriaSource.cpp
 
 OBJDIR = obj
@@ -29,10 +29,10 @@ OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 # ------------  HEADER  ------------------------------------------------------ #
 HEADER = \
 	AMateria.hpp \
-	Ice.hpp \
-	Cure.hpp \
-	ICharacter.hpp \
 	Character.hpp \
+	Cure.hpp \
+	Ice.hpp \
+	ICharacter.hpp \
 	IMateriaSource.hpp \
 	MateriaSource.hpp
 
