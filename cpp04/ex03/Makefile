@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = Interface_&_recap
+NAME = Interface_and_recap
 CPP = c++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++11
 INKFLAGS = -I.

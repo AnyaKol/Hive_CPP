@@ -18,15 +18,26 @@ AMateria::AMateria(void) : AMateria("DefaultType") {}
 // Constructor with parameter
 AMateria::AMateria(std::string const& type) {
 	this->_type = type;
+
+	std::cout << "Materia " << *this << " created." << std::endl;
 }
 
 // Copy constructor
-AMateria::AMateria(const AMateria&) {}
+AMateria::AMateria(const AMateria& other) {
+	std::cout << "Materia " << *this << " created from " << other << "."
+		<< std::endl;
+}
 
 // Copy assignment operator overload
-AMateria&	AMateria::operator= (const AMateria&) {
+AMateria&	AMateria::operator= (const AMateria& other) {
+	std::cout << "Materia " << *this << " copies " << other << "." << std::endl;
 
 	return (*this);
+}
+
+// Destructor
+AMateria::~AMateria(void) {
+	std::cout << "Materia " << *this << " destroyed." << std::endl;
 }
 
 // Inserion operator overload

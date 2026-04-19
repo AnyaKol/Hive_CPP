@@ -13,25 +13,36 @@
 #include "Ice.hpp"
 
 // Default constructor
-Ice::Ice(void) {
-
+Ice::Ice(void) : AMateria() {
 	this->_type = "ice";
+
+	std::cout << "Ice " << *this << " created." << std::endl;
 }
 
 // Copy constructor
-Ice::Ice(const Ice& other) {
+Ice::Ice(const Ice& other) : AMateria() {
 
-	*this = other;
+	this->_type = other._type;
+	std::cout << "Ice " << *this << " created from " << other << "."
+		<< std::endl;
 }
 
 // Copy assignment operator overload
 Ice&	Ice::operator= (const Ice& other) {
 
+	//(void) other;
+	std::cout << "Ice " << *this << " copies " << other << "." << std::endl;
 	return (*this);
+}
+
+// Destructor
+Ice::~Ice(void) {
+	std::cout << "Ice " << *this << " destroyed." << std::endl;
 }
 
 // Ice function
 AMateria*	Ice::clone() const {
+	std::cout << "Ice " << *this << " is cloned." << std::endl;
 	return (new Ice(*this));
 }
 

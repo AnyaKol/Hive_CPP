@@ -26,6 +26,10 @@ class	MateriaSource : virtual public IMateriaSource
 		MateriaSource&	operator= (const MateriaSource& other);
 		~MateriaSource();
 
+		unsigned int const&	_getLastIndex() const;
+
 		void		learnMateria(AMateria*) override;
 		AMateria*	createMateria(std::string const & type) override;
 };
+
+std::ostream&	operator<< (std::ostream& output, const MateriaSource& other);

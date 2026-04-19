@@ -17,6 +17,8 @@
 
 # include "ICharacter.hpp"
 
+class	ICharacter;
+
 class	AMateria
 {
 	protected:
@@ -27,7 +29,7 @@ class	AMateria
 		AMateria(const AMateria& other);
 		AMateria(std::string const& type);
 		AMateria&	operator= (const AMateria& other);
-		virtual ~AMateria(void) {}
+		virtual ~AMateria(void);
 
 		std::string const& getType() const; //Returns the materia type
 

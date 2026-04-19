@@ -13,25 +13,36 @@
 #include "Cure.hpp"
 
 // Default constructor
-Cure::Cure(void) {
-
+Cure::Cure(void) : AMateria() {
 	this->_type = "cure";
+
+	std::cout << "Cure " << *this << " created." << std::endl;
 }
 
 // Copy constructor
-Cure::Cure(const Cure& other) {
+Cure::Cure(const Cure& other) : AMateria() {
 
-	*this = other;
+	this->_type = other._type;
+	std::cout << "Cure " << *this << " created from " << other << "."
+		<< std::endl;
 }
 
 // Copy assignment operator overload
 Cure&	Cure::operator= (const Cure& other) {
 
+	//(void) other;
+	std::cout << "Cure " << *this << " copies " << other << "." << std::endl;
 	return (*this);
+}
+
+// Destructor
+Cure::~Cure(void) {
+	std::cout << "Cure " << *this << " destroyed." << std::endl;
 }
 
 // Cure function
 AMateria*	Cure::clone() const {
+	std::cout << "Cure " << *this << " is cloned." << std::endl;
 	return (new Cure(*this));
 }
 

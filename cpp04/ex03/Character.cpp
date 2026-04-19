@@ -18,23 +18,32 @@ Character::Character(void) : Character("DefaultCharacter") {}
 // Constructor with parameter
 Character::Character(const std::string& name) : ICharacter() {
 	this->_name = name;
-	for (int i = 0; i < 4; i++)
-		this->_inventory[i] = nullptr;
+	this->_discarded = nullptr;
+
+	for (int i = 0; i < 4; i++) {
+	 	this->_inventory[i] = nullptr;
+	}
+
+	std::cout << "Character " << *this << " created." << std::endl;
 }
 
 // Copy constructor
 Character::Character(const Character& other) : ICharacter() {
-
+	std::cout << "Character " << *this << " created from " << other << "."
+		<< std::endl;
 	*this = other;
 }
 
 // Copy assignment operator overload
 Character&	Character::operator= (const Character& other){
+	std::cout << "Character " << *this << " copies " << other << "."
+		<< std::endl;
 
 	if (this != &other) {
 		this->_name = other._name;
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 4; i++) {
 			this->_inventory[i] = other._inventory[i];
+		}
 	}
 
 	return (*this);
@@ -42,7 +51,34 @@ Character&	Character::operator= (const Character& other){
 
 // Destructor
 Character::~Character(void) {
+	int			i;
 
+	std::cout << "Character " << *this << " cleaning inventory..." << std::endl;
+	for (i = 0; i < 4; i++) {
+		if (this->_inventory[i] != nullptr) {
+			std::cout << " [" << i << "] deleting " << *this->_inventory[i]
+				<< "..." << std::endl;
+			delete this->_inventory[i];
+		}
+	}
+	std::cout << "Character " << *this << " cleaning discarded..." << std::endl;
+
+	t_AMateria*	node = this->_discarded;
+	t_AMateria*	temp;
+
+	i = 0;
+	while (node != nullptr) {
+		if (node->data != nullptr) {
+			std::cout << " [" << i << "] deleting " << *node->data << "..."
+				<< std::endl;
+			delete node->data;
+			temp = node->next;
+			delete node;
+			node = temp;
+			i++;
+		}
+	}
+	std::cout << "Character " << *this << " destroyed." << std::endl;
 }
 
 // Inserion operator overload
@@ -56,42 +92,57 @@ std::ostream&	operator<< (std::ostream& output, const Character& other) {
 std::string const&	Character::getName() const{
 	return (this->_name);
 }
-void	Character::equip(AMateria* m) {
-	int	idx;
 
-	for (idx = 0; idx < 4; idx++) {
-		if (this->_inventory[idx] == nullptr)
-			break ;
-	}
-	if (idx == 4) {
-		std::cout << *this << ": Inventory is full." << std::endl;
+void	Character::equip(AMateria* m) {
+
+	if (m == nullptr) {
 		return ;
 	}
 
-	this->_inventory[idx] = m;
-	std::cout << *this << ": Materia " << m << " equipped." << std::endl;
+	int	i;
+
+	for (i = 0; i < 4; i++) {
+		if (this->_inventory[i] == nullptr) {
+			break ;
+		}
+	}
+	if (i == 4) {
+		std::cout << *this << ": Inventory is full." << std::endl;
+		this->_discardMateria(m);
+		return ;
+	}
+
+	this->_inventory[i] = m;
+	std::cout << *this << ": " << *m << " equipped in slot " << i << "."
+		<< std::endl;
 }
 
 void	Character::unequip(int idx) {
-	if (idx < 0 || idx > 3)
+	if (idx < 0 || idx > 3) {
 		return ;
+	}
 
 	if (this->_inventory[idx] == nullptr) {
-		std::cout << *this << ": slot " << idx << " is empty." << std::endl;
+		std::cout << *this << " can't unequip: slot " << idx << " is empty." << std::endl;
 		return ;
 	}
 
 	this->_discardMateria(this->_inventory[idx]);
-	std::cout << *this << ": Materia " << this->_inventory[idx]->getType()
-		<< " unequipped." << std::endl;
+	std::cout << *this << ": " << *this->_inventory[idx]
+		<< " unequipped from slot " << idx << "." << std::endl;
 	this->_inventory[idx] = nullptr;
 }
 
 void	Character::use(int idx, ICharacter& target) {
-	if (idx < 0 || idx > 3)
+	if (idx < 0 || idx > 3) {
 		return ;
+	}
 
-	this->_inventory[idx]->AMateria::use(target);
+	if (this->_inventory[idx] == nullptr) {
+		std::cout << *this << " can't use: slot " << idx << " is empty." << std::endl;
+		return ;
+	}
+	this->_inventory[idx]->use(target);
 }
 
 void	Character::_discardMateria(AMateria *m) {
@@ -105,8 +156,8 @@ void	Character::_discardMateria(AMateria *m) {
 		return ;
 	}
 
-	t_AMateria*	last = this->_discarded;
+	t_AMateria*	last;
 
-	for (last; last->next != nullptr; last = last->next) {}
+	for (last = this->_discarded; last->next != nullptr; last = last->next) {}
 	last->next = node;
 }

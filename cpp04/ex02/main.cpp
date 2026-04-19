@@ -29,5 +29,25 @@ int	main(void) {
 		std::cout << std::endl;
 	}
 
+	std::cout << "\n\t*** ARRAY TESTS ***" << std::endl;
+	{
+		AAnimal* arr[4];
+		int		n = 4;
+
+		for (int i = 0; i < n; i++) {
+			if (i % 2 == 0) {
+				arr[i] = new Dog("Pup");
+			} else {
+				arr[i] = new Cat("Kit");
+			}
+		}
+		std::cout << std::endl;
+
+		for (int i = 0; i < n; i++) {
+			delete arr[i];
+		}
+		std::cout << std::endl;
+	}
+
 	return 0;
 }
