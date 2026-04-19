@@ -25,8 +25,8 @@ public:
 	Cat&	operator= (const Cat& other);
 	~Cat(void);
 
-	void			makeSound(void) const override;
-	const Brain*	getBrain(void) const;
+	void	makeSound(void) const override;
+	Brain*	getBrain(void) const;
 
 private:
 

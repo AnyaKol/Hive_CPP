@@ -24,7 +24,7 @@ Cat::Cat(std::string name) : Animal(name, "Cat") {
 Cat::Cat(const Cat& other) : Animal(other) {
 	this->_brain = new Brain;
 
-	this->_brain = other._brain;
+	*this->_brain = *other._brain;
 }
 
 // Copy assignment operator overload
@@ -33,7 +33,7 @@ Cat&	Cat::operator= (const Cat& other){
 	this->Animal::operator=(other);
 
 	if (this != &other) {
-		this->_brain = other._brain;
+		*this->_brain = *other._brain;
 	}
 
 	return (*this);
@@ -51,6 +51,6 @@ void	Cat::makeSound(void) const {
 }
 
 // Cat functions
-const Brain*	getBrain(void) const {
+Brain*	Cat::getBrain(void) const {
 	return (this->_brain);
 }

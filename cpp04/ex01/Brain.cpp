@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Brain.cpp                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/04/19 14:26:57 by akolupae          #+#    #+#             */
+/*   Updated: 2026/04/19 14:27:00 by akolupae         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "Brain.hpp"
 
@@ -32,15 +43,21 @@ Brain::~Brain(void) {
 
 // Brain function
 const std::string&	Brain::getIdea(unsigned int i) const {
-	if (i >= 100)
-		return ("No idea.");
+
+	if (i >= 100) {
+		std::cout << "No idea " + std::to_string(i) + "." << std::endl;
+		return (this->_ideas[0]);
+	}
 
 	return (this->_ideas[i]);
 }
 
 void	Brain::setIdea(unsigned int i, const std::string& idea) {
-	if (i >= 100)
+
+	if (i >= 100) {
+		std::cout << "No room for idea " << i << "." << std::endl;
 		return ;
+	}
 
 	this->_ideas[i] = idea;
 }

@@ -12,104 +12,50 @@
 
 #include "Cat.hpp"
 #include "Dog.hpp"
-#include "WrongCat.hpp"
 
 int	main(void) {
 
-	std::cout << "\n\t*** SUBJECT TESTS ***" << std::endl;
+	std::cout << "\n\t*** BRAIN CONSTRUCTOR TESTS ***" << std::endl;
 	{
-		const Animal* meta = new Animal();
-		const Animal* j = new Dog();
-		const Animal* i = new Cat();
+		Brain	a;
+		std::cout << "Brain A: " << a.getIdea(0) << std::endl;
+		a.setIdea(0, "Idea 0");
+		std::cout << "Brain A: " << a.getIdea(0) << std::endl;
+		std::cout << std::endl;
+		Brain	b(a);
+		std::cout << "Brain B: " << b.getIdea(0) << std::endl;
+		std::cout << std::endl;
+		Brain	c = a;
+		std::cout << "Brain C: " << c.getIdea(0) << std::endl;
+		std::cout << std::endl;
+		Brain*	d = new Brain;
 		std::cout << std::endl;
 
-		std::cout << j->getType() << " " << std::endl;
-		std::cout << i->getType() << " " << std::endl;
+		delete d;
 		std::cout << std::endl;
-		i->makeSound(); //will output the cat sound!
-		j->makeSound();
-		meta->makeSound();
-		std::cout << std::endl;
-
-		delete meta;
-		delete j;
-		delete i;
 	}
 
-	std::cout << "\n\t*** WRONG ANIMAL TESTS ***" << std::endl;
+	std::cout << "\n\t*** BRAIN TESTS ***" << std::endl;
 	{
-		const WrongAnimal* meta = new WrongAnimal();
-		const WrongAnimal* i = new WrongCat();
-		std::cout << std::endl;
-
-		std::cout << i->getType() << " " << std::endl;
-		std::cout << std::endl;
-		i->makeSound(); //will output the WrongAnimal sound!
-		meta->makeSound();
-		std::cout << std::endl;
-
-		delete meta;
-		delete i;
-	}
-
-	std::cout << "\n\t*** ANIMAL TESTS ***" << std::endl;
-	{
-		Animal	a("Alpha");
-		std::cout << std::endl;
-	
-		Animal	b(a);
-		b.makeSound();
-		std::cout << std::endl;
-
-		b = Animal("Beta");
-		b.makeSound();
-		std::cout << std::endl;
-	
-		Animal	c;
-		c = a;
-		c.makeSound();
-		c.setName("Gamma");
-		c.makeSound();
-		std::cout << std::endl;
-	}
-	std::cout << "\n\t*** CAT TESTS ***" << std::endl;
-	{
-		Cat	a("Kisonyka");
+		Cat	a("Kissa");
+		a.makeSound();
+		std::cout << a.getBrain() << std::endl;
+		a.getBrain()->setIdea(0, "Milk");
+		std::cout << "Cat Kissa Brain: " << a.getBrain() << std::endl;
+		std::cout << "Cat Kissa idea 0: " << a.getBrain()->getIdea(0) << std::endl;
 		std::cout << std::endl;
 	
 		Cat	b(a);
+		b.setName("King");
 		b.makeSound();
+		std::cout << "Cat King Brain: " << b.getBrain() << std::endl;
+		std::cout << "Cat King idea 0: " << b.getBrain()->getIdea(0) << std::endl;
 		std::cout << std::endl;
 
-		b = Cat("Kitty-Kitty");
+		b = Cat("Queen");
 		b.makeSound();
-		std::cout << std::endl;
-	
-		Cat	c;
-		c = a;
-		c.makeSound();
-		c.setName("Koska");
-		c.makeSound();
-		std::cout << std::endl;
-	}
-	std::cout << "\n\t*** DOG TESTS ***" << std::endl;
-	{
-		Dog	a("Goodboi");
-		std::cout << std::endl;
-	
-		Dog	b(a);
-		b.makeSound();
-		std::cout << std::endl;
-
-		b = Dog("Buddy");
-		b.makeSound();
-		std::cout << std::endl;
-	
-		Dog	c;
-		c = a;
-		c.makeSound();
-		c.setName("Lady");
-		c.makeSound();
+		std::cout << "Cat Queen Brain: " << b.getBrain() << std::endl;
+		std::cout << "Cat Queen idea 0: " << b.getBrain()->getIdea(0) << std::endl;
 		std::cout << std::endl;
 	}
 
