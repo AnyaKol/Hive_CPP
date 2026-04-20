@@ -35,5 +35,5 @@ WrongCat::~WrongCat(void) {}
 // Not overridden function
 void	WrongCat::makeSound(void) const {
 	this->_announce();
-	std::cout << "This Cat sounds Wrong." << std::endl;
+	std::cout << " This Cat sounds Wrong." << std::endl;
 }

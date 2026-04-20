@@ -76,7 +76,7 @@ int	main(void) {
 		a.getBrain()->setIdea(0, "Milk");
 		std::cout << std::endl;
 	
-		Cat	b(a);
+		Cat	b = a;
 		b.setName("King");
 		b.makeSound();
 		std::cout << std::endl;

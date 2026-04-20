@@ -38,18 +38,22 @@ int	main(void) {
 
 	std::cout << "\n\t*** WRONG ANIMAL TESTS ***" << std::endl;
 	{
-		const WrongAnimal* meta = new WrongAnimal();
-		const WrongAnimal* i = new WrongCat();
+		const WrongAnimal* a = new WrongAnimal("WAnimal");
+		const WrongAnimal* b = new WrongCat("WAnimalCat");
+		const WrongCat* c = new WrongCat("WCat");
 		std::cout << std::endl;
 
-		std::cout << i->getType() << " " << std::endl;
+		std::cout << b->getType() << " " << std::endl;
+		std::cout << c->getType() << " " << std::endl;
 		std::cout << std::endl;
-		i->makeSound(); //will output the WrongAnimal sound!
-		meta->makeSound();
+		b->makeSound(); //will output the WrongAnimal sound!
+		c->makeSound(); //will output the WrongCat sound
+		a->makeSound();
 		std::cout << std::endl;
 
-		delete meta;
-		delete i;
+		delete a;
+		delete b;
+		delete c;
 	}
 
 	std::cout << "\n\t*** ANIMAL TESTS ***" << std::endl;

@@ -42,7 +42,12 @@ Character&	Character::operator= (const Character& other){
 	if (this != &other) {
 		this->_name = other._name;
 		for (int i = 0; i < 4; i++) {
-			this->_inventory[i] = other._inventory[i];
+			if (other._inventory[i] != nullptr) {
+				this->unequip(i);
+				this->_inventory[i] = other._inventory[i]->clone();
+			} else {
+				this->unequip(i);
+			}
 		}
 	}
 
@@ -94,7 +99,6 @@ std::string const&	Character::getName() const{
 }
 
 void	Character::equip(AMateria* m) {
-
 	if (m == nullptr) {
 		return ;
 	}
@@ -146,6 +150,10 @@ void	Character::use(int idx, ICharacter& target) {
 }
 
 void	Character::_discardMateria(AMateria *m) {
+
+	if (m == nullptr)
+		return ;
+
 	t_AMateria* node = new t_AMateria;
 
 	node->next = nullptr;
