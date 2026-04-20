@@ -33,9 +33,9 @@ int	main(void) {
 
 		for (int i = 0; i < n; i++) {
 			if (i % 2 == 0) {
-				arr[i] = new Dog("Pup");
+				arr[i] = new Dog();
 			} else {
-				arr[i] = new Cat("Kit");
+				arr[i] = new Cat();
 			}
 		}
 		std::cout << std::endl;
@@ -71,62 +71,64 @@ int	main(void) {
 
 	std::cout << "\n\t*** CAT BRAIN TESTS ***" << std::endl;
 	{
-		Cat	a("Kissa");
+		std::cout << "A:" << std::endl;
+		Cat	a;
 		a.makeSound();
-		a.getBrain()->setIdea(0, "Milk");
+		a.getBrain()->setIdea(0, "Meat");
 		std::cout << std::endl;
 	
-		Cat	b = a;
-		b.setName("King");
+		std::cout << "B:" << std::endl;
+		Cat	b(a);
 		b.makeSound();
 		std::cout << std::endl;
 
-		std::cout << "Kissa Brain: " << a.getBrain()
-			<< " Kissa idea 0: " << a.getBrain()->getIdea(0) << std::endl;
-		std::cout << "King Brain: " << b.getBrain()
-			<< " King idea 0: " << b.getBrain()->getIdea(0) << std::endl;
+		std::cout << "A Brain: " << a.getBrain()
+			<< " A idea 0: " << a.getBrain()->getIdea(0) << std::endl;
+		std::cout << "B Brain: " << b.getBrain()
+			<< " B idea 0: " << b.getBrain()->getIdea(0) << std::endl;
 
 		std::cout << std::endl;
-		b = Cat("Queen");
+		b = Cat();
 		b.makeSound();
 		std::cout << std::endl;
 
-		std::cout << "Queen Brain: " << b.getBrain()
-			<< " Queen idea 0: " << b.getBrain()->getIdea(0) << std::endl;
+		std::cout << "B Brain: " << b.getBrain()
+			<< " B idea 0: " << b.getBrain()->getIdea(0) << std::endl;
 		std::cout << std::endl;
 	}
 
 	std::cout << "\n\t*** DOG BRAIN TESTS ***" << std::endl;
 	{
-		Dog	a("Lassie");
+		std::cout << "A:" << std::endl;
+		Dog	a;
 		a.makeSound();
 		a.getBrain()->setIdea(0, "Meat");
 		std::cout << std::endl;
 	
+		std::cout << "B:" << std::endl;
 		Dog	b(a);
-		b.setName("Snowball");
 		b.makeSound();
 		std::cout << std::endl;
 
-		std::cout << "Lassie Brain: " << a.getBrain()
-			<< " Lassie idea 0: " << a.getBrain()->getIdea(0) << std::endl;
-		std::cout << "Snowball Brain: " << b.getBrain()
-			<< " Snowball idea 0: " << b.getBrain()->getIdea(0) << std::endl;
+		std::cout << "A Brain: " << a.getBrain()
+			<< " A idea 0: " << a.getBrain()->getIdea(0) << std::endl;
+		std::cout << "B Brain: " << b.getBrain()
+			<< " B idea 0: " << b.getBrain()->getIdea(0) << std::endl;
 
 		std::cout << std::endl;
-		b = Dog("Duke");
+		b = Dog();
 		b.makeSound();
 		std::cout << std::endl;
 
-		std::cout << "Duke Brain: " << b.getBrain()
-			<< " Duke idea 0: " << b.getBrain()->getIdea(0) << std::endl;
+		std::cout << "B Brain: " << b.getBrain()
+			<< " B idea 0: " << b.getBrain()->getIdea(0) << std::endl;
 		std::cout << std::endl;
 	}
 
 	std::cout << "\n\t*** BRAIN POINTER TESTS ***" << std::endl;
 	{
-		Animal *cat = new Cat("Kot");
-		Animal *dog = new Dog("Sobaka");
+		Animal *cat = new Cat();
+		Animal *dog = new Dog();
 		std::cout << std::endl;
 
 		cat->makeSound();

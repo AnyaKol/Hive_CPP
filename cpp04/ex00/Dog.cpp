@@ -13,27 +13,32 @@
 #include "Dog.hpp"
 
 // Default constructor
-Dog::Dog(void) : Dog("DefaultDog") {}
-
-// Constructor with parameter
-Dog::Dog(std::string name) : Animal(name, "Dog") {}
+Dog::Dog(void) : Animal() {
+	this->_type = "Dog";
+	std::cout << "Dog calls default constructor." << std::endl;
+}
 
 // Copy constructor
-Dog::Dog(const Dog& other) : Animal(other) {}
+Dog::Dog(const Dog& other) : Animal() {
+	std::cout << "Dog calls copy constructor." << std::endl;
+
+	*this = other;
+}
 
 // Copy assignment operator overload
-Dog&	Dog::operator= (const Dog& other){
+Dog&	Dog::operator= (const Dog& other) {
+	std::cout << "Dog calls copy assignment." << std::endl;
 
-	this->Animal::operator=(other);
-
+	(void) other;
 	return (*this);
 }
 
 // Destructor
-Dog::~Dog(void) {}
+Dog::~Dog(void) {
+	std::cout << "Dog ran away~" << std::endl;
+}
 
 // Overridden function
 void	Dog::makeSound(void) const {
-	this->_announce();
-	std::cout << " says: Woof-Woof." << std::endl;
+	std::cout << "Dog says: Woof-Woof." << std::endl;
 }

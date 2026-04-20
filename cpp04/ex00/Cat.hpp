@@ -19,7 +19,6 @@ class Cat : virtual public Animal {
 public:
 
 	Cat(void);
-	Cat(std::string name);
 	Cat(const Cat& other);
 	Cat&	operator= (const Cat& other);
 	~Cat(void);

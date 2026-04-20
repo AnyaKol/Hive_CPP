@@ -38,16 +38,20 @@ int	main(void) {
 
 	std::cout << "\n\t*** WRONG ANIMAL TESTS ***" << std::endl;
 	{
-		const WrongAnimal* a = new WrongAnimal("WAnimal");
-		const WrongAnimal* b = new WrongCat("WAnimalCat");
-		const WrongCat* c = new WrongCat("WCat");
+		const WrongAnimal* a = new WrongAnimal();
+		const WrongAnimal* b = new WrongCat();
+		const WrongCat* c = new WrongCat();
 		std::cout << std::endl;
 
-		std::cout << b->getType() << " " << std::endl;
-		std::cout << c->getType() << " " << std::endl;
+		std::cout << "B: " << b->getType() << " " << std::endl;
+		std::cout << "C: " << c->getType() << " " << std::endl;
 		std::cout << std::endl;
+
+		std::cout << "B: ";
 		b->makeSound(); //will output the WrongAnimal sound!
+		std::cout << "C: ";
 		c->makeSound(); //will output the WrongCat sound
+		std::cout << "A: ";
 		a->makeSound();
 		std::cout << std::endl;
 
@@ -58,61 +62,64 @@ int	main(void) {
 
 	std::cout << "\n\t*** ANIMAL TESTS ***" << std::endl;
 	{
-		Animal	a("Alpha");
+		std::cout << "A: " << std::endl;
+		Animal	a;
 		std::cout << std::endl;
-	
+
+		std::cout << "B: " << std::endl;
 		Animal	b(a);
 		b.makeSound();
 		std::cout << std::endl;
 
-		b = Animal("Beta");
+		b = Animal();
 		b.makeSound();
 		std::cout << std::endl;
-	
+
+		std::cout << "C: " << std::endl;
 		Animal	c;
 		c = a;
-		c.makeSound();
-		c.setName("Gamma");
 		c.makeSound();
 		std::cout << std::endl;
 	}
 	std::cout << "\n\t*** CAT TESTS ***" << std::endl;
 	{
-		Cat	a("Kisonyka");
+		std::cout << "A: " << std::endl;
+		Cat	a;
 		std::cout << std::endl;
-	
+
+		std::cout << "B: " << std::endl;
 		Cat	b(a);
 		b.makeSound();
 		std::cout << std::endl;
 
-		b = Cat("Kitty-Kitty");
+		b = Cat();
 		b.makeSound();
 		std::cout << std::endl;
-	
+
+		std::cout << "C: " << std::endl;
 		Cat	c;
 		c = a;
-		c.makeSound();
-		c.setName("Koska");
 		c.makeSound();
 		std::cout << std::endl;
 	}
 	std::cout << "\n\t*** DOG TESTS ***" << std::endl;
 	{
-		Dog	a("Goodboi");
+		std::cout << "A: " << std::endl;
+		Dog	a;
 		std::cout << std::endl;
-	
+
+		std::cout << "B: " << std::endl;
 		Dog	b(a);
 		b.makeSound();
 		std::cout << std::endl;
 
-		b = Dog("Buddy");
+		b = Dog();
 		b.makeSound();
 		std::cout << std::endl;
-	
+
+		std::cout << "C: " << std::endl;
 		Dog	c;
 		c = a;
-		c.makeSound();
-		c.setName("Lady");
 		c.makeSound();
 		std::cout << std::endl;
 	}

@@ -20,23 +20,15 @@ class Animal {
 public:
 
 	Animal(void);
-	Animal(std::string name);
 	Animal(const Animal& other);
 	Animal&	operator= (const Animal& other);
 	virtual ~Animal(void);
 
 	virtual void		makeSound(void) const;
 	const std::string&	getType(void) const;
-	const std::string&	getName(void) const;
-	void				setName(const std::string& name);
 
 protected:
 
-	Animal(std::string type, std::string name);
-
-	void	_announce(void) const;
-
 	std::string	_type;
-	std::string	_name;
 
 };

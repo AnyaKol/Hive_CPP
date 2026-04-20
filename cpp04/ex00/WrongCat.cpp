@@ -13,27 +13,32 @@
 #include "WrongCat.hpp"
 
 // Default constructor
-WrongCat::WrongCat(void) : WrongCat("DefaultWrongCat") {}
-
-// Constructor with parameter
-WrongCat::WrongCat(std::string name) : WrongAnimal(name, "WrongCat") {}
+WrongCat::WrongCat(void) : WrongAnimal() {
+	this->_type = "WrongCat";
+	std::cout << "WrongCat calls default constructor." << std::endl;
+}
 
 // Copy constructor
-WrongCat::WrongCat(const WrongCat& other) : WrongAnimal(other) {}
+WrongCat::WrongCat(const WrongCat& other) : WrongAnimal() {
+	std::cout << "WrongCat calls copy constructor." << std::endl;
+
+	*this = other;
+}
 
 // Copy assignment operator overload
-WrongCat&	WrongCat::operator= (const WrongCat& other){
+WrongCat&	WrongCat::operator= (const WrongCat& other) {
+	std::cout << "WrongCat calls copy assignment." << std::endl;
 
-	this->WrongAnimal::operator=(other);
-
+	(void) other;
 	return (*this);
 }
 
 // Destructor
-WrongCat::~WrongCat(void) {}
+WrongCat::~WrongCat(void) {
+	std::cout << "WrongCat ran away~" << std::endl;
+}
 
-// Not overridden function
+// Overridden function
 void	WrongCat::makeSound(void) const {
-	this->_announce();
-	std::cout << " This Cat sounds Wrong." << std::endl;
+	std::cout << "WrongCat says: WrongMeow-Meow, Mrrr." << std::endl;
 }

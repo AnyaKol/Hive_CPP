@@ -13,27 +13,32 @@
 #include "Cat.hpp"
 
 // Default constructor
-Cat::Cat(void) : Cat("DefaultCat") {}
-
-// Constructor with parameter
-Cat::Cat(std::string name) : Animal(name, "Cat") {}
+Cat::Cat(void) : Animal() {
+	this->_type = "Cat";
+	std::cout << "Cat calls default constructor." << std::endl;
+}
 
 // Copy constructor
-Cat::Cat(const Cat& other) : Animal(other) {}
+Cat::Cat(const Cat& other) : Animal() {
+	std::cout << "Cat calls copy constructor." << std::endl;
+
+	*this = other;
+}
 
 // Copy assignment operator overload
-Cat&	Cat::operator= (const Cat& other){
+Cat&	Cat::operator= (const Cat& other) {
+	std::cout << "Cat calls copy assignment." << std::endl;
 
-	this->Animal::operator=(other);
-
+	(void) other;
 	return (*this);
 }
 
 // Destructor
-Cat::~Cat(void) {}
+Cat::~Cat(void) {
+	std::cout << "Cat ran away~" << std::endl;
+}
 
 // Overridden function
 void	Cat::makeSound(void) const {
-	this->_announce();
-	std::cout << " says: Meow-Meow, Mrrr." << std::endl;
+	std::cout << "Cat says: Meow-Meow, Mrrr." << std::endl;
 }

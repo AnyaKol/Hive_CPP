@@ -36,9 +36,9 @@ int	main(void) {
 
 		for (int i = 0; i < n; i++) {
 			if (i % 2 == 0) {
-				arr[i] = new Dog("Pup");
+				arr[i] = new Dog();
 			} else {
-				arr[i] = new Cat("Kit");
+				arr[i] = new Cat();
 			}
 		}
 		std::cout << std::endl;

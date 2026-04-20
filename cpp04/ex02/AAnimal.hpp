@@ -15,30 +15,20 @@
 #include <iostream>
 #include <string>
 
-// Abstract classes are called 'interfaces', but interfaces don't exist in c++
-// 'makeSound' is now a pure virtual function
 class AAnimal {
 
 public:
 
 	AAnimal(void);
-	AAnimal(std::string name);
 	AAnimal(const AAnimal& other);
 	AAnimal&	operator= (const AAnimal& other);
 	virtual ~AAnimal(void);
 
 	virtual void		makeSound(void) const = 0;
 	const std::string&	getType(void) const;
-	const std::string&	getName(void) const;
-	void				setName(const std::string& name);
 
 protected:
 
-	AAnimal(std::string type, std::string name);
-
-	void	_announce(void) const;
-
 	std::string	_type;
-	std::string	_name;
 
 };
