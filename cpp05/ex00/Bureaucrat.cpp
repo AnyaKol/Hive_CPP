@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:10:45 by akolupae          #+#    #+#             */
-/*   Updated: 2026/05/05 19:53:06 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/05/06 20:49:44 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ Bureaucrat::Bureaucrat(void) : Bureaucrat("DefaultName", 150) {
 
 // Constructor with parameters
 Bureaucrat::Bureaucrat(std::string name, int grade) {
+
+	if (grade < _maxGrade)
+		throw (GradeTooHighException);
+	if (grade > _minGrade)
+		throw (GradeTooLowException);
 
 	this->_name	= name;
 	this->_grade = grade;
@@ -46,6 +51,14 @@ Bureaucrat&	Bureaucrat::operator= (const Bureaucrat& other) {
 	return (*this);
 }
 
+// Insertion operator overload
+std::ostream&	operator<< (std::ostream& output, const Bureaucrat& other) {
+	output << other->getName() << ", bureaucrat grade  " << other->getGrade()
+		<< ".";
+
+	return (output);
+}
+
 // Destructor
 Bureaucrat::~Bureaucrat(void) {
 	std::cout << this->_name << ", " << this->_grade << " fired~" << std::endl;
@@ -61,10 +74,18 @@ const int&	Bureaucrat::getGrade(void) const {
 }
 
 // Grade modification
-void	incrementGrade(int num) {
+void	Bureaucrat::incrementGrade(int num) {
 	this->_grade--;
 }
 
-void	decrementGrade(int num) {
+void	Bureaucrat::decrementGrade(int num) {
 	this->grade++;
 }
+
+// Exceptions
+virtual const char*	Bureaucrat::GradeTooHighException::what(void) noexcept(true) const
+	override {
+	return (this->_msg);
+}
+
+Bureaucrat::GradeTooLowException
