@@ -15,6 +15,8 @@
 #include <iostream>
 #include <string>
 
+#include "Form.hpp"
+
 class Bureaucrat {
 
 public:
@@ -29,6 +31,7 @@ public:
 
 	void	incrementGrade(int num);
 	void	decrementGrade(int num);
+	void	signForm(Form& form) const;
 
 	class	GradeTooHighException;
 	class	GradeTooLowException;
@@ -47,30 +50,20 @@ private:
  * C++11: Specifies whether a function might throw exceptions.
  */
 class	Bureaucrat::GradeTooHighException : public std::exception {
-
 public:
-
 	GradeTooHighException() {};
 	~GradeTooHighException() {};
-
 	const char*	what(void) const noexcept override;
-
 private:
-
 	static const std::string	_msg;
 };
 
 class	Bureaucrat::GradeTooLowException : public std::exception {
-
 public:
-
 	GradeTooLowException() {};
 	~GradeTooLowException() {};
-
 	const char*	what(void) const noexcept override;
-
 private:
-
 	static const std::string	_msg;
 };
 
