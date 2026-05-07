@@ -6,52 +6,97 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 18:18:55 by akolupae          #+#    #+#             */
-/*   Updated: 2026/04/18 20:46:39 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/05/07 21:34:40 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Name.hpp"
+#include "Bureaucrat.hpp"
+#include <climits>
 
 int	main(void) {
 
-	std::cout << "\n\t*** SUBJECT TESTS ***" << std::endl;
+	std::cout << "\n\t*** CONSTRUCTOR TESTS ***" << std::endl;
 	{
-		const Animal* meta = new Animal();
-		const Animal* j = new Dog();
-		const Animal* i = new Cat();
-		std::cout << std::endl;
+		//Bureaucrat* const d = new Bureaucrat();
+		Bureaucrat* const d = new Bureaucrat("Denis", 1);
 
-		std::cout << j->getType() << " " << std::endl;
-		std::cout << i->getType() << " " << std::endl;
-		std::cout << std::endl;
-		i->makeSound(); //will output the cat sound!
-		j->makeSound();
-		meta->makeSound();
-		std::cout << std::endl;
+		try {
+			std::cout << "\ntry:" << std::endl;
+			Bureaucrat a("Adam", 120);
+			Bureaucrat b(a);
+			//Bureaucrat c;
+			Bureaucrat c("Bob", 150);
+			c = b;
+    
+			*d = c;
+			std::cout << std::endl;
+    
+			std::cout << "A: " << a << std::endl;
+			a.incrementGrade(15);
+			std::cout << "A +15: " << a << std::endl;
+			a.incrementGrade(0);
+			std::cout << "A +0: " << a << std::endl;
+			std::cout << "B: " << b << std::endl;
+			std::cout << "C: " << c << std::endl;
+			c.decrementGrade(30);
+			std::cout << "C -30: " << c << std::endl;
+			//c.decrementGrade(1);
+			//std::cout << "C -1: " << c << std::endl;
+			//c.incrementGrade(150);
+			//std::cout << "C +150: " << c << std::endl;
+			std::cout << "D: " << *d << std::endl;
+			d->decrementGrade(1);
+			std::cout << "D -1: " << *d << std::endl;
+			std::cout << std::endl;
+		}
+		catch (std::exception &e) {
+			std::cout << "\ncatch:" << std::endl;
+			std::cout << e.what() << std::endl;
+		}
 
-		delete meta;
-		delete j;
-		delete i;
+		delete d;
 	}
 
-	std::cout << "\n\t*** WRONG ANIMAL TESTS ***" << std::endl;
-	{
-		const WrongAnimal* a = new WrongAnimal("WAnimal");
-		const WrongAnimal* b = new WrongCat("WAnimalCat");
-		const WrongCat* c = new WrongCat("WCat");
+	std::cout << "\n\t*** GRADE OUT OF LIMITS TESTS ***" << std::endl;
+	try {
+		std::cout << "\ntry A:" << std::endl;
+		Bureaucrat a("Adam", INT_MAX);
 		std::cout << std::endl;
 
-		std::cout << b->getType() << " " << std::endl;
-		std::cout << c->getType() << " " << std::endl;
-		std::cout << std::endl;
-		b->makeSound(); //will output the WrongAnimal sound!
-		c->makeSound(); //will output the WrongCat sound
-		a->makeSound();
+		std::cout << "A: " << a << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "\ncatch A:" << std::endl;
+		std::cout << e.what() << std::endl;
+	}
+	try {
+		std::cout << "\ntry B:" << std::endl;
+		Bureaucrat b("Bob", 149);
 		std::cout << std::endl;
 
-		delete a;
-		delete b;
+		std::cout << "B: " << b << std::endl;
+		b.decrementGrade(1);
+		std::cout << "B -1: " << b << std::endl;
+		b.decrementGrade(1);
+		std::cout << "B -1: " << b << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "\ncatch B:" << std::endl;
+		std::cout << e.what() << std::endl;
+	}
+	try {
+		std::cout << "\ntry C:" << std::endl;
+		Bureaucrat* const c = new Bureaucrat("Cris", 0);
+		std::cout << std::endl;
+
+		std::cout << "C: " << *c << std::endl;
+		std::cout << std::endl;
+
 		delete c;
+	}
+	catch (std::exception &e) {
+		std::cout << "\ncatch C:" << std::endl;
+		std::cout << e.what() << std::endl;
 	}
 
 	return 0;

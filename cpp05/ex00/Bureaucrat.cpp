@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:10:45 by akolupae          #+#    #+#             */
-/*   Updated: 2026/05/06 20:49:44 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/05/07 20:56:44 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,42 +18,38 @@ Bureaucrat::Bureaucrat(void) : Bureaucrat("DefaultName", 150) {
 }
 
 // Constructor with parameters
-Bureaucrat::Bureaucrat(std::string name, int grade) {
+Bureaucrat::Bureaucrat(std::string name, int grade)
+: _name(name), _grade(grade) {
 
 	if (grade < _maxGrade)
-		throw (GradeTooHighException);
+		throw (Bureaucrat::GradeTooHighException());
 	if (grade > _minGrade)
-		throw (GradeTooLowException);
+		throw (Bureaucrat::GradeTooLowException());
 
-	this->_name	= name;
-	this->_grade = grade;
-
-	std::cout << this->_name << ", " << this->_grade << " hired." << std::endl;
+	std::cout << *this << " hired." << std::endl;
 }
 
 // Copy constructor
-Bureaucrat::Bureaucrat(const Bureaucrat& other) {
-	std::cout << "Copying " << other._name << ", " << other._grade << "..."
-		<< std::endl;
+Bureaucrat::Bureaucrat(const Bureaucrat& other)
+: _name(other._name), _grade(other._grade) {
 
-	*this = other;
+	std::cout << "Copying " << other << "." << std::endl;
 }
 
 // Copy assignment operator overload
 Bureaucrat&	Bureaucrat::operator= (const Bureaucrat& other) {
 
 	if (this != &other) {
-		this->_name	= other.name;
-		this->_grade = other.grade;
+		this->_grade = other._grade;
 	}
 
-	std::cout << this->_name << ", " << this->_grade << " copied." << std::endl;
+	std::cout << *this << " copied." << std::endl;
 	return (*this);
 }
 
 // Insertion operator overload
 std::ostream&	operator<< (std::ostream& output, const Bureaucrat& other) {
-	output << other->getName() << ", bureaucrat grade  " << other->getGrade()
+	output << other.getName() << ", bureaucrat grade  " << other.getGrade()
 		<< ".";
 
 	return (output);
@@ -61,7 +57,7 @@ std::ostream&	operator<< (std::ostream& output, const Bureaucrat& other) {
 
 // Destructor
 Bureaucrat::~Bureaucrat(void) {
-	std::cout << this->_name << ", " << this->_grade << " fired~" << std::endl;
+	std::cout << *this << " fired~" << std::endl;
 }
 
 // Getters
@@ -75,17 +71,32 @@ const int&	Bureaucrat::getGrade(void) const {
 
 // Grade modification
 void	Bureaucrat::incrementGrade(int num) {
-	this->_grade--;
+
+	if (this->_grade < this->_maxGrade + num)
+		throw (Bureaucrat::GradeTooHighException());
+
+	this->_grade -= num;
 }
 
 void	Bureaucrat::decrementGrade(int num) {
-	this->grade++;
+
+	if (this->_grade > this->_minGrade - num)
+		throw (Bureaucrat::GradeTooLowException());
+
+	this->_grade += num;
 }
 
 // Exceptions
-virtual const char*	Bureaucrat::GradeTooHighException::what(void) noexcept(true) const
-	override {
-	return (this->_msg);
+const std::string Bureaucrat::GradeTooHighException::_msg
+	= "Grade is too high.";
+
+const char*	Bureaucrat::GradeTooHighException::what(void) const noexcept {
+	return (this->_msg.c_str());
 }
 
-Bureaucrat::GradeTooLowException
+const std::string Bureaucrat::GradeTooLowException::_msg
+	= "Grade is too low.";
+
+const char*	Bureaucrat::GradeTooLowException::what(void) const noexcept {
+	return (this->_msg.c_str());
+}

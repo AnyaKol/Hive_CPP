@@ -6,13 +6,13 @@
 #    By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/08 17:45:11 by akolupae          #+#    #+#              #
-#    Updated: 2026/04/17 16:53:15 by akolupae         ###   ########.fr        #
+#    Updated: 2026/05/07 20:09:55 by akolupae         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = Mommy_when_I_grow_up_I_want_to_be_a_bureaucrat
 CPP = c++
-CPPFLAGS = -Wall -Werror -Wextra -std=c++98
+CPPFLAGS = -Wall -Werror -Wextra -std=c++11
 INKFLAGS = -I.
 
 SRC = \
