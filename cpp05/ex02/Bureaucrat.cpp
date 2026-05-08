@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "Bureaucrat.hpp"
-#include "Form.hpp"
+#include "AForm.hpp"
 
 // Default constructor - should not be used
 Bureaucrat::Bureaucrat(void) : Bureaucrat("DefaultName", 150) {
@@ -50,8 +50,7 @@ Bureaucrat&	Bureaucrat::operator= (const Bureaucrat& other) {
 
 // Insertion operator overload
 std::ostream&	operator<< (std::ostream& output, const Bureaucrat& other) {
-	output << other.getName() << ", bureaucrat grade  " << other.getGrade()
-		<< ".";
+	output << other.getName() << ", bureaucrat grade  " << other.getGrade();
 
 	return (output);
 }
@@ -87,7 +86,7 @@ void	Bureaucrat::decrementGrade(int num) {
 	this->_grade += num;
 }
 
-void	Bureaucrat::signForm(Form& form) const {
+void	Bureaucrat::signForm(AForm& form) const {
 
 	if (form.getIsSigned())
 		return ;
@@ -95,8 +94,20 @@ void	Bureaucrat::signForm(Form& form) const {
 		form.beSigned(*this);
 		std::cout << *this << " signed " << form << "." << std::endl;
 	}
-	catch (Form::GradeTooLowException &e) {
+	catch (AForm::GradeTooLowException &e) {
 		std::cout << *this << " couldn’t sign " << form
+			<< " because " << e.what() << std::endl;
+	}
+}
+
+void	Bureaucrat::executeForm(AForm const & form) const {
+
+	try {
+		form.execute(*this);
+		std::cout << *this << " executed " << form << "." << std::endl;
+	}
+	catch (AForm::GradeTooLowException &e) {
+		std::cout << *this << " couldn’t execute " << form
 			<< " because " << e.what() << std::endl;
 	}
 }
