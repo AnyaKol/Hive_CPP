@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/13 18:18:55 by akolupae          #+#    #+#             */
-/*   Updated: 2026/05/07 21:34:40 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/05/08 18:29:40 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,36 +17,26 @@ int	main(void) {
 
 	std::cout << "\n\t*** CONSTRUCTOR TESTS ***" << std::endl;
 	{
-		//Bureaucrat* const d = new Bureaucrat();
-		Bureaucrat* const d = new Bureaucrat("Denis", 1);
+
+		Bureaucrat* const b = new Bureaucrat("Bob", 1);
+		Form* const formA = new Form("Application", 120, 1);
 
 		try {
 			std::cout << "\ntry:" << std::endl;
-			Bureaucrat a("Adam", 120);
-			Bureaucrat b(a);
-			//Bureaucrat c;
-			Bureaucrat c("Bob", 150);
-			c = b;
-    
-			*d = c;
+			Bureaucrat a("Adam", 121);
+			Form formB("Business", 1, 1);
 			std::cout << std::endl;
     
 			std::cout << "A: " << a << std::endl;
-			a.incrementGrade(15);
-			std::cout << "A +15: " << a << std::endl;
-			a.incrementGrade(0);
-			std::cout << "A +0: " << a << std::endl;
-			std::cout << "B: " << b << std::endl;
-			std::cout << "C: " << c << std::endl;
-			c.decrementGrade(30);
-			std::cout << "C -30: " << c << std::endl;
-			//c.decrementGrade(1);
-			//std::cout << "C -1: " << c << std::endl;
-			//c.incrementGrade(150);
-			//std::cout << "C +150: " << c << std::endl;
-			std::cout << "D: " << *d << std::endl;
-			d->decrementGrade(1);
-			std::cout << "D -1: " << *d << std::endl;
+			std::cout << "B: " << *b << std::endl;
+			std::cout << "FormA: " << *formA << std::endl;
+			std::cout << "FormB: " << formB << std::endl;
+			a.signForm(*formA);
+			a.incrementGrade(1);
+			a.signForm(*formA);
+			a.decrementGrade(1);
+			a.signForm(*formA);
+			b->signForm(formB);
 			std::cout << std::endl;
 		}
 		catch (std::exception &e) {
@@ -54,13 +44,14 @@ int	main(void) {
 			std::cout << e.what() << std::endl;
 		}
 
-		delete d;
+		delete b;
+		delete formA;
 	}
 
 	std::cout << "\n\t*** GRADE OUT OF LIMITS TESTS ***" << std::endl;
 	try {
 		std::cout << "\ntry A:" << std::endl;
-		Bureaucrat a("Adam", INT_MAX);
+		Form a("Application", 1, -1);
 		std::cout << std::endl;
 
 		std::cout << "A: " << a << std::endl;
@@ -71,14 +62,10 @@ int	main(void) {
 	}
 	try {
 		std::cout << "\ntry B:" << std::endl;
-		Bureaucrat b("Bob", 149);
+		Form b("Business", INT_MIN, 100);
 		std::cout << std::endl;
 
 		std::cout << "B: " << b << std::endl;
-		b.decrementGrade(1);
-		std::cout << "B -1: " << b << std::endl;
-		b.decrementGrade(1);
-		std::cout << "B -1: " << b << std::endl;
 	}
 	catch (std::exception &e) {
 		std::cout << "\ncatch B:" << std::endl;
@@ -86,7 +73,7 @@ int	main(void) {
 	}
 	try {
 		std::cout << "\ntry C:" << std::endl;
-		Bureaucrat* const c = new Bureaucrat("Cris", 0);
+		Form* const c = new Form("Coffee", 151, 1);
 		std::cout << std::endl;
 
 		std::cout << "C: " << *c << std::endl;

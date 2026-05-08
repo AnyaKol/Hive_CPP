@@ -6,7 +6,7 @@
 /*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/17 14:04:47 by akolupae          #+#    #+#             */
-/*   Updated: 2026/05/07 20:29:44 by akolupae         ###   ########.fr       */
+/*   Updated: 2026/05/08 18:27:40 by akolupae         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@
 
 #include "Form.hpp"
 
-class Bureaucrat {
+class	Form;
+
+class	Bureaucrat {
 
 public:
 
