@@ -53,7 +53,6 @@ int	main(void) {
 		catch (std::exception &e) {
 			delete formA;
 			delete formB;
-			delete formC;
 			throw ;
 		}
 		std::cout << std::endl;
