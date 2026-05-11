@@ -31,6 +31,12 @@ public:
 	AForm*	makeForm(std::string name, std::string target);
 
 	class	FormNotExistException;
+
+private:
+
+	static AForm*	makePresidentialPardonForm(std::string target);
+	static AForm*	makeRobotomyRequestForm(std::string target);
+	static AForm*	makeShrubberyCreationForm(std::string target);
 };
 
 class	Intern::FormNotExistException : public std::exception {

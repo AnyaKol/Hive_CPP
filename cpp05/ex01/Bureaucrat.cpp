@@ -73,7 +73,7 @@ const int&	Bureaucrat::getGrade(void) const {
 // Bureaucrat functions
 void	Bureaucrat::incrementGrade(int num) {
 
-	if (this->_grade < this->_maxGrade + num)
+	if (this->_grade - num < this->_maxGrade)
 		throw (Bureaucrat::GradeTooHighException());
 
 	this->_grade -= num;
@@ -81,7 +81,7 @@ void	Bureaucrat::incrementGrade(int num) {
 
 void	Bureaucrat::decrementGrade(int num) {
 
-	if (this->_grade > this->_minGrade - num)
+	if (this->_grade + num > this->_minGrade)
 		throw (Bureaucrat::GradeTooLowException());
 
 	this->_grade += num;

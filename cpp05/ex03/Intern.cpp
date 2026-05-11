@@ -40,6 +40,11 @@ Intern::~Intern(void) {
 }
 
 // Intern function
+// arr    //arr 
+// arr [] //is an array (so index it)
+// * arr [] //of pointers (so dereference them)
+// (* arr [])() //to functions taking nothing (so call them with ())
+// void (* arr [])() //returning void
 AForm*	Intern::makeForm(std::string name, std::string target) {
 
 	AForm*		form;
@@ -48,29 +53,32 @@ AForm*	Intern::makeForm(std::string name, std::string target) {
 		"robotomy request",
 		"shrubbery creation"
 	};
+	AForm* (* funs[3]) (std::string) = {
+		makePresidentialPardonForm,
+		makeRobotomyRequestForm,
+		makeShrubberyCreationForm
+	};
 	int			i;
 
 	for (i = 0; i < 3; i++) {
-		if (forms[i] == name)
-			break ;
+		if (forms[i] == name) {
+			form = funs[i](target);
+			std::cout << "Intern creates" << *form << "." << std::endl;
+			return (form);
+		}
 	}
 
-	switch (i) {
-		case 0:
-			form = new PresidentialPardonForm(target);
-			break;
-		case 1:
-			form = new RobotomyRequestForm(target);
-			break;
-		case 2:
-			form = new ShrubberyCreationForm(target);
-			break;
-		default:
-			throw(Intern::FormNotExistException(name));
-	}
+	throw(Intern::FormNotExistException(name));
+}
 
-	std::cout << "Intern creates" << *form << "." << std::endl;
-	return (form);
+AForm*	Intern::makePresidentialPardonForm(std::string target) {
+	return (new PresidentialPardonForm(target));
+}
+AForm*	Intern::makeRobotomyRequestForm(std::string target) {
+	return (new RobotomyRequestForm(target));
+}
+AForm*	Intern::makeShrubberyCreationForm(std::string target) {
+	return (new ShrubberyCreationForm(target));
 }
 
 // Exception

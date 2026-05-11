@@ -71,9 +71,9 @@ std::ostream&	operator<< (std::ostream& output, const Form& other) {
 	output << other.getName() << " [ " << other.getGradeToSign() << " | "
 		<< other.getGradeToExecute() << " ], signed [ ";
 	if (other.getIsSigned())
-		output << "true";
+		output << "YES";
 	else
-		output << "false";
+		output << "NO";
 	output << " ]";
 
 	return (output);
