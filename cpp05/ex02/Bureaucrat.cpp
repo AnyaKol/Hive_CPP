@@ -50,7 +50,7 @@ Bureaucrat&	Bureaucrat::operator= (const Bureaucrat& other) {
 
 // Insertion operator overload
 std::ostream&	operator<< (std::ostream& output, const Bureaucrat& other) {
-	output << other.getName() << ", bureaucrat grade  " << other.getGrade();
+	output << other.getName() << ", bureaucrat grade " << other.getGrade();
 
 	return (output);
 }
@@ -106,7 +106,7 @@ void	Bureaucrat::executeForm(AForm const & form) const {
 		form.execute(*this);
 		std::cout << *this << " executed " << form << "." << std::endl;
 	}
-	catch (AForm::GradeTooLowException &e) {
+	catch (std::exception &e) {
 		std::cout << *this << " couldn’t execute " << form
 			<< " because " << e.what() << std::endl;
 	}

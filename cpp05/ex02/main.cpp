@@ -67,12 +67,18 @@ int	main(void) {
 		a.signForm(formA);
 		a.signForm(formB);
 		a.signForm(formC);
+		std::cout << std::endl;
+
 		b.signForm(formA);
 		b.signForm(formB);
 		b.signForm(formC);
+		std::cout << std::endl;
+
 		a.executeForm(formA);
 		a.executeForm(formB);
 		a.executeForm(formC);
+		std::cout << std::endl;
+
 		b.executeForm(formA);
 		for (int i = 0; i < 10; i++)
 			b.executeForm(formB);
@@ -81,6 +87,22 @@ int	main(void) {
 	}
 	catch (std::exception &e) {
 		std::cout << "\ncatch A:" << std::endl;
+		std::cout << e.what() << std::endl;
+	}
+	try {
+		std::cout << "\ntry B:" << std::endl;
+		Bureaucrat a("Alan", 5);
+		PresidentialPardonForm formA("PardonTarget");
+		std::cout << std::endl;
+
+		a.signForm(formA);
+		std::cout << std::endl;
+
+		a.executeForm(formA);
+		std::cout << std::endl;
+	}
+	catch (std::exception &e) {
+		std::cout << "\ncatch B:" << std::endl;
 		std::cout << e.what() << std::endl;
 	}
 

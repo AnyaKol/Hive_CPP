@@ -30,9 +30,21 @@ public:
 
 	void	execute(Bureaucrat const & executor) const override;
 
+	class	OpenFailException;
+
 private:
 
 	ShrubberyCreationForm(void);
 
 	std::string			_target;
+};
+
+class	ShrubberyCreationForm::OpenFailException : public std::exception {
+public:
+	OpenFailException(std::string filename);
+	~OpenFailException() {};
+	const char*	what(void) const noexcept override;
+private:
+	OpenFailException();
+	const std::string	_msg;
 };

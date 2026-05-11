@@ -50,7 +50,11 @@ const std::string&	ShrubberyCreationForm::getTarget(void) const {
 }
 
 // ShrubberyCreationForm function
-// C++17: std::filesystem::exists - checks file existence
+/* C++17: std::filesystem::exists - checks file existence
+ * Can use this:
+ * if ( std::filesystem::exists(filename) == false ) ...
+ * Not used here.
+ */
 void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const {
 
 	try {
@@ -67,8 +71,15 @@ void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const {
 	std::ofstream	outfile;
 	std::string		filename = this->_target + "_shrubbery";
 
-	//if ( std::filesystem::exists(filename) == false )
 	outfile.open(filename, std::fstream::out | std::fstream::app);
+	/* The function open() clears the stream's state flags on success (setting
+	 * them to goodbit).
+	 * In case of failure, failbit is set, which is detected by fail().
+	 */
+	if (outfile.fail() == true) {
+		throw (ShrubberyCreationForm::OpenFailException(filename));
+	}
+
 	outfile
 		<< "            # #### ####\n"
 		<< "        ### \\/#|### |/####\n"
@@ -84,4 +95,15 @@ void	ShrubberyCreationForm::execute(Bureaucrat const & executor) const {
 		<< "        , -=-~{ .-^- _\n"
 		<< std::endl;
 	outfile.close();
+}
+
+// Exception
+// File open fail
+// Constructor with parameter
+ShrubberyCreationForm::OpenFailException::OpenFailException(
+	std::string filename) : _msg("Failed to open '" + filename + "'.") {}
+
+const char*	ShrubberyCreationForm::OpenFailException::what(void) const noexcept
+{
+	return (this->_msg.c_str());
 }
