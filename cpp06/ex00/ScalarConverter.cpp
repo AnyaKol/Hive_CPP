@@ -12,9 +12,6 @@
 
 #include "ScalarConverter.hpp"
 
-// Default constructor - should not be used
-ScalarConverter::ScalarConverter(void) {}
-
 // Copy constructor - should not be used
 ScalarConverter::ScalarConverter(const ScalarConverter& other) {
 	*this = other;
@@ -26,16 +23,15 @@ ScalarConverter&	ScalarConverter::operator= (const ScalarConverter&) {
 	return (*this);
 }
 
-// Destructor
-ScalarConverter::~ScalarConverter(void) {}
-
 // ScalarConverter function
+static bool	isSpecial(std::string val);
+
 void	ScalarConverter::convert(std::string val) {
 
-	std::string	charStr = "";
-	std::string	intStr = "";
-	std::string	floatStr = "";
-	std::string	doubleStr = "";
+	char	c;
+	int		i;
+	float	f;
+	double	d;
 
 	if (isSpecial(val)) {
 		return ;
@@ -95,10 +91,10 @@ void	ScalarConverter::convert(std::string val) {
 		std::cout << "Out of range";
 	}
 
-	std::cout << "char: " << charStr
-		<< "\nint: " << intStr
-		<< "\nfloat: " << floatStr
-		<< "\ndouble: " << doubleStr << std::endl;
+	std::cout << "char: " << c
+		<< "\nint: " << i
+		<< "\nfloat: " << f
+		<< "\ndouble: " << d << std::endl;
 }
 
 static bool	isSpecial(std::string val) {

@@ -20,13 +20,17 @@ class ScalarConverter {
 public:
 
 	ScalarConverter&	operator= (const ScalarConverter& other);
-	~ScalarConverter(void);
+	// Move assignment
+	ScalarConverter&	operator= (ScalarConverter&& other) noexcept = default;
+	~ScalarConverter(void) {};
 
 	static void	convert(std::string val);
 
 private:
 
-	ScalarConverter(void);
+	ScalarConverter(void) {};
 	ScalarConverter(const ScalarConverter& other);
+	// Move constructor
+	ScalarConverter(ScalarConverter&& other) noexcept = default;
 
 };
