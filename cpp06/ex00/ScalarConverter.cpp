@@ -13,12 +13,10 @@
 #include "ScalarConverter.hpp"
 
 #include <iostream>
+#include <cctype>
 #include <limits>
-
-// Copy constructor - should not be used
-ScalarConverter::ScalarConverter(const ScalarConverter& other) {
-	*this = other;
-}
+// Using C++17 for string_view
+#include <string_view>
 
 // Copy assignment operator overload
 ScalarConverter&	ScalarConverter::operator= (const ScalarConverter&) {
@@ -27,11 +25,21 @@ ScalarConverter&	ScalarConverter::operator= (const ScalarConverter&) {
 }
 
 // ScalarConverter function
+#pragma region Declarations
+
+enum typeNames{
+	SPECIAL,
+	CHAR,
+	INT,
+	FLOAT,
+	DOUBLE
+};
+
 struct types{
-	char	c;
-	int		i;
-	float	f;
-	double	d;
+	unsigned char	c;
+	int				i;
+	float			f;
+	double			d;
 };
 
 const std::string impos = "Impossible";
@@ -45,57 +53,62 @@ struct display{
 	std::string	doubleStr = impos;
 };
 
-static bool	isSpecial(const std::string& val, types& Types, display& Display);
-static bool	isChar(const std::string& val, types& Types, display& Display);
+static bool	isSpecial(const std::string_view val, types& Types, display& Display);
+static bool	isChar(const std::string_view val, types& Types, display& Display);
+static bool	isInt(const std::string_view val, types& Types, display& Display);
+static bool	isFloat(const std::string_view val, types& Types, display& Display);
+static bool	isDouble(const std::string_view val, types& Types, display& Display);
 static void	printResult(const display& Display);
 
-void	ScalarConverter::convert(const std::string& val) {
+#pragma endregion
 
-	types Types;
-	display Display;
-	bool (* funcs[])(const std::string& val, types& Types, display& Display) = {
+void	ScalarConverter::convert(const std::string_view val) {
+
+	types	Types;
+	display	Display;
+	bool (* funcs[])(const std::string_view val, types& Types, display& Display) = {
 		isSpecial,
 		isChar,
-
+		isInt,
+		isFloat,
+		isDouble
 	};
+	int		i;
 
+	for (i = 0; i < sizeof(funcs); i++) {
+		if (funcs[i](val, Types, Display))
+			break;
+	}
+	switch (i) {
+		case SPECIAL:
+			break;
 
-	if (isSpecial(val, Types, Display)) {
-		printResult( const_cast<const display&>(Display) );
-		return ;
+		case CHAR:
+			//convertFromVal(Types.c);
+			break;
+
+		case INT:
+			//convertFromVal(Types.i);
+			break;
+
+		case FLOAT:
+			//convertFromVal(Types.f);
+			break;
+
+		case DOUBLE:
+			//convertFromVal(Types.d);
+			break;
+
+		default:
+
 	}
-	if (isChar(val, Types, Display)) {
-		printResult( const_cast<const display&>(Display) );
-		return;
-	}
-	if (isInt(val, Types, Display)) {
-		printResult( const_cast<const display&>(Display) );
-		return;
-	}
+
 	printResult( const_cast<const display&>(Display) );
-
-	try {
-		std::cout << std::stof(val);
-	}
-	catch (std::invalid_argument &e) {
-		std::cout << impos;
-	}
-	catch (std::out_of_range &e) {
-		std::cout << outRange;
-	}
-
-	try {
-		std::cout << std::stod(val);
-	}
-	catch (std::invalid_argument &e) {
-		std::cout << impos;
-	}
-	catch (std::out_of_range &e) {
-		std::cout << outRange;
-	}
 }
 
-static bool	isSpecial(const std::string& val, types& Types, display& Display) {
+#pragma region DetectType
+
+static bool	isSpecial(const std::string_view val, types& Types, display& Display) {
 
 	int			i;
 	std::string	specials[6] = {
@@ -148,20 +161,21 @@ static bool	isSpecial(const std::string& val, types& Types, display& Display) {
 	return (true);
 }
 
-// From subject:
 // If input is a char - it is displayable.
-static bool	isChar(const std::string& val, types& Types, display& Display) {
+static bool	isChar(const std::string_view val, types& Types, display& Display) {
 
-	if ( val.length() == 1 && !isdigit( char(val[0]) ) ) {
-		Types.c = static_cast<char>(val[0]);
-		Display.charStr = static_cast<std::string>(&Types.c);
+	if ( val.length() == 1
+		&& !std::isdigit( static_cast<unsigned char>(val[0]) ) )
+	{
+		Types.c = static_cast<unsigned char>(val[0]);
+		Display.charStr = val;
 		return (true);
 	}
 	return (false);
 }
 
 // std::string::npos is returned if nothing was found.
-static bool	isInt(const std::string& val, types& Types, display& Display) {
+static bool	isInt(const std::string_view val, types& Types, display& Display) {
 
 	std::string::size_type pos = 0;
 
@@ -169,21 +183,76 @@ static bool	isInt(const std::string& val, types& Types, display& Display) {
 		pos = 1;
 	if (val.find_first_not_of("1234567890", pos) != std::string::npos)
 		return (false);
+
 	try {
-		int ascii = std::stoi(val);
-		if (ascii >= 32 && ascii <= 126) {
-			Types.c = static_cast<char>(ascii);
-			Display.charStr = static_cast<std::string>(&Types.c);
-		}
-		else if ((ascii >= 0 && ascii < 32) || ascii == 127) {
-			Display.charStr =  nonDispl;
-		}
+		Types.i = std::stoi(val);
+		Display.intStr = val;
 		return (true);
 	}
-	catch (std::exception &e) {
-		return (false);
+	catch (std::out_of_range &e) {
+		Display.intStr = outRange;
 	}
+	catch (std::invalid_argument &e) {}
+	return (false);
 }
+
+static bool	isFloat(const std::string_view val, types& Types, display& Display) {
+
+	try {
+		Types.f = std::stof(val);
+		Display.floatStr = val;
+		return (true);
+	}
+	catch (std::out_of_range &e) {
+		Display.floatStr = outRange;
+	}
+	catch (std::invalid_argument &e) {}
+	return (false);
+}
+
+static bool	isDouble(const std::string_view val, types& Types, display& Display) {
+
+	try {
+		Types.d = std::stod(val);
+		Display.doubleStr = val;
+		return (true);
+	}
+	catch (std::out_of_range &e) {
+		Display.doubleStr = outRange;
+	}
+	catch (std::invalid_argument &e) {}
+	return (false);
+}
+
+static void	stoNum(const std::string_view val, types& Types, display& Display) {
+	try {
+		Types.d = std::from_chars(
+			static_cast<const char*> (&val[0]),
+			static_cast<const char*> (&val.back()),
+			);
+		Display.doubleStr = val;
+		return (true);
+	}
+	catch (std::out_of_range &e) {
+		Display.doubleStr = outRange;
+	}
+	catch (std::invalid_argument &e) {}
+	return (false);
+}
+#pragma endregion
+
+#pragma region Convert
+
+convertFromVal() {}
+	//if (ascii >= 32 && ascii <= 126) {
+	//	Types.c = static_cast<char>(ascii);
+	//	Display.charStr = static_cast<std::string>(&Types.c);
+	//}
+	//else if ((ascii >= 0 && ascii < 32) || ascii == 127) {
+	//	Display.charStr =  nonDispl;
+	//}
+
+#pragma endregion
 
 static void	printResult(const display& Display) {
 

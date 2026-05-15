@@ -12,7 +12,7 @@
 
 NAME = convert
 CPP = c++
-CPPFLAGS = -Wall -Werror -Wextra -std=c++11
+CPPFLAGS = -Wall -Werror -Wextra -std=c++17
 INKFLAGS = -I.
 
 SRC = \

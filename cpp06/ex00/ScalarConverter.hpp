@@ -23,12 +23,12 @@ public:
 	ScalarConverter&	operator= (ScalarConverter&& other) noexcept = default;
 	~ScalarConverter(void) {};
 
-	static void	convert(const std::string& val);
+	static void	convert(const std::string_view val);
 
 private:
 
-	ScalarConverter(void) {};
-	ScalarConverter(const ScalarConverter& other);
+	ScalarConverter(void) = delete;
+	ScalarConverter(const ScalarConverter& other) = delete;
 	// Move constructor
 	ScalarConverter(ScalarConverter&& other) noexcept = default;
 

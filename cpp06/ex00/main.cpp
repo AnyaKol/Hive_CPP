@@ -17,7 +17,7 @@
 int	main(int argc, char **argv) {
 
 	for (int i = 1; i < argc; i++) {
-		ScalarConverter::convert(argv[i]);
+		ScalarConverter::convert( std::string_view { argv[i] } );
 		std::cout << std::endl;
 	}
 
