@@ -12,6 +12,11 @@
 
 #include "Bureaucrat.hpp"
 #include "Intern.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
+
+#include <memory>
 
 int	main(void) {
 
@@ -41,20 +46,13 @@ int	main(void) {
 		Intern i;
 		Bureaucrat a("Alan", 110);
 		Bureaucrat b("Berry", 1);
-		AForm*	formA;
-		AForm*	formB;
-		AForm*	formC;
 
-		try {
-			formA = i.makeForm("presidential pardon", "PardonTarget");
-			formB = i.makeForm("robotomy request", "RobotTarget");
-			formC = i.makeForm("shrubbery creation", "ShrubTarget");
-		}
-		catch (std::exception &e) {
-			delete formA;
-			delete formB;
-			throw ;
-		}
+		std::unique_ptr<AForm> formA( 
+			i.makeForm("presidential pardon", "PardonTarget") );
+		std::unique_ptr<AForm> formB(
+			i.makeForm("robotomy request", "RobotTarget") );
+		std::unique_ptr<AForm> formC(
+			i.makeForm("shrubbery creation", "ShrubTarget") );
 		std::cout << std::endl;
 
 		a.signForm(*formA);
@@ -76,10 +74,6 @@ int	main(void) {
 		b.executeForm(*formB);
 		b.executeForm(*formC);
 		std::cout << std::endl;
-
-		delete formA;
-		delete formB;
-		delete formC;
 	}
 	catch (std::exception &e) {
 		std::cout << "\ncatch A:" << std::endl;
@@ -89,17 +83,11 @@ int	main(void) {
 		std::cout << "\ntry B:" << std::endl;
 		Intern i;
 		Bureaucrat b("Berry", 1);
-		AForm*	formA;
-		AForm*	formB;
 
-		try {
-			formA = i.makeForm("presidential pardon", "PardonTarget");
-			formB = i.makeForm("shrubberycreation", "ShrubTarget2");
-		}
-		catch (std::exception &e) {
-			delete formA;
-			throw ;
-		}
+		std::unique_ptr<AForm> formA(
+			i.makeForm("presidential pardon", "PardonTarget") );
+		std::unique_ptr<AForm> formB(
+			i.makeForm("shrubberycreation", "ShrubTarget2") );
 		std::cout << std::endl;
 
 		b.signForm(*formA);
@@ -109,9 +97,6 @@ int	main(void) {
 		b.executeForm(*formA);
 		b.executeForm(*formB);
 		std::cout << std::endl;
-
-		delete formA;
-		delete formB;
 	}
 	catch (std::exception &e) {
 		std::cout << "\ncatch B:" << std::endl;

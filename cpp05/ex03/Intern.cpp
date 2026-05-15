@@ -11,6 +11,9 @@
 /* ************************************************************************** */
 
 #include "Intern.hpp"
+#include "PresidentialPardonForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "ShrubberyCreationForm.hpp"
 
 // Default constructor
 Intern::Intern(void) {

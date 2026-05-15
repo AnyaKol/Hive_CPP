@@ -15,9 +15,7 @@
 #include <iostream>
 #include <string>
 
-#include "PresidentialPardonForm.hpp"
-#include "RobotomyRequestForm.hpp"
-#include "ShrubberyCreationForm.hpp"
+class	AForm;
 
 class Intern {
 

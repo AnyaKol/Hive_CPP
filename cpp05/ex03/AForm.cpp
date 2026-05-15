@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "AForm.hpp"
+#include "Bureaucrat.hpp"
 
 // Default constructor - should not be used
 AForm::AForm(void) : AForm("DefaultName", 1, 1) {}
