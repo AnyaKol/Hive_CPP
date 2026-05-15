@@ -12,7 +12,6 @@
 
 #pragma once
 
-#include <iostream>
 #include <string>
 
 class ScalarConverter {
@@ -24,7 +23,7 @@ public:
 	ScalarConverter&	operator= (ScalarConverter&& other) noexcept = default;
 	~ScalarConverter(void) {};
 
-	static void	convert(std::string val);
+	static void	convert(const std::string& val);
 
 private:
 
