@@ -30,7 +30,6 @@ ScalarConverter&	ScalarConverter::operator= (const ScalarConverter&) {
 #pragma region Declarations
 
 enum typeName{
-	SPECIAL,
 	CHAR,
 	INT,
 	FLOAT,
@@ -46,7 +45,6 @@ struct types{
 
 const std::string impos = "Impossible";
 const std::string nonDispl = "Non displayable";
-const std::string outRange = "Out of range";
 
 struct display{
 	std::string	charStr = impos;
@@ -55,8 +53,6 @@ struct display{
 	std::string	doubleStr = impos;
 };
 
-static bool	isSpecial(const std::string_view str, types& Types,
-	display& Display);
 static bool	isChar(const std::string_view str, types& Types, display& Display);
 static bool	isInt(const std::string_view str, types& Types, display& Display);
 static bool	isFloat(const std::string_view str, types& Types, display& Display);
@@ -69,13 +65,13 @@ template <typename T> constexpr bool	strToNum(const std::string_view str,
 	T& val, std::string& displayStr) {
 
 	std::from_chars_result	res;
+	const char*				start = str.data();
 
-	res = std::from_chars(str.data(), str.data() + str.size(), val);
-	if (res.ec == std::errc::result_out_of_range) {
-		displayStr = outRange;
-		return (false);
-	}
-	if (res.ptr != str.data() + str.size())
+	if (*start == '+')
+		start++;
+	res = std::from_chars(start, str.data() + str.size(), val);
+	if (res.ec == std::errc::result_out_of_range
+		|| res.ptr != str.data() + str.size())
 		return (false);
 
 	displayStr = std::to_string(val);
@@ -93,7 +89,9 @@ template <typename T> constexpr void	convertFromVal(const T val, types& Types,
 
 		if ( bigVal >= 32 && bigVal <= 126 ) {
 			Types.c = static_cast<char>(val);
-			Display.charStr = Types.c;
+			Display.charStr = "'";
+			Display.charStr.push_back(Types.c);
+			Display.charStr += "'"; 
 		}
 		else if ( (bigVal >= 0 && bigVal < 32) || bigVal == 127 ) {
 			Display.charStr =  nonDispl;
@@ -110,14 +108,12 @@ template <typename T> constexpr void	convertFromVal(const T val, types& Types,
 	}
 
 	// Convert to float if val is not float
+	// Don't check limits here - out of range number converts to inff.
 	if ( !std::is_same<T, float>::value ) {
-		if ( bigVal >= static_cast<double>(std::numeric_limits<float>::lowest())
-			&& bigVal <= static_cast<double>(std::numeric_limits<float>::max()) ) {
-			Types.f = static_cast<float>(val);
-			Display.floatStr = std::to_string(Types.f);
-			addPrecision(Display.floatStr);
-			Display.floatStr += "f";
-		}
+		Types.f = static_cast<float>(val);
+		Display.floatStr = std::to_string(Types.f);
+		addPrecision(Display.floatStr);
+		Display.floatStr += "f";
 	}
 
 	// Convert to double if val is not double
@@ -138,7 +134,6 @@ void	ScalarConverter::convert(const std::string_view str) {
 	display	Display;
 	bool (* funcs[])(const std::string_view str, types& Types, display& Display)
 		= {
-		isSpecial,
 		isChar,
 		isInt,
 		isFloat,
@@ -153,25 +148,19 @@ void	ScalarConverter::convert(const std::string_view str) {
 			break;
 	}
 	switch (i) {
-		case SPECIAL: break;
-
 		case CHAR:
-			std::cout << "Type is char: " << Types.c << std::endl;
 			convertFromVal(Types.c, Types, Display);
 			break;
 
 		case INT:
-			std::cout << "Type is int: " << Types.i << std::endl;
 			convertFromVal(Types.i, Types, Display);
 			break;
 
 		case FLOAT:
-			std::cout << "Type is float: " << Types.f << std::endl;
 			convertFromVal(Types.f, Types, Display);
 			break;
 
 		case DOUBLE:
-			std::cout << "Type is double: " << Types.d << std::endl;
 			convertFromVal(Types.d, Types, Display);
 			break;
 	}
@@ -181,59 +170,6 @@ void	ScalarConverter::convert(const std::string_view str) {
 
 #pragma region DetectType
 
-static bool	isSpecial(const std::string_view str, types& Types, display& Display) {
-
-	int			i;
-	std::string	specials[6] = {
-		"-inff",
-		"-inf",
-		"+inff",
-		"+inf",
-		"nanf",
-		"nan"
-	};
-
-	for (i = 0; i < 6; i++) {
-		if (specials[i] == str)
-			break;
-	}
-
-	switch (i) {
-		case 0:
-			Types.f = std::numeric_limits<float>::infinity();
-			Types.f = -Types.f;
-			break;
-		case 1:
-			Types.d = std::numeric_limits<double>::infinity();
-			Types.d = -Types.d;
-			break;
-		case 2:
-			Types.f = std::numeric_limits<float>::infinity();
-			break;
-		case 3:
-			Types.d = std::numeric_limits<double>::infinity();
-			break;
-		case 4:
-			Types.f = std::numeric_limits<float>::quiet_NaN();
-			break;
-		case 5:
-			Types.d = std::numeric_limits<double>::quiet_NaN();
-			break;
-		case 6:
-			return (false);
-	}
-
-	if (i % 2 == 0) {
-		Types.d = static_cast<double>(Types.f);
-	} else {
-		Types.f = static_cast<float>(Types.d);
-	}
-	Display.floatStr = std::to_string(Types.f);
-	Display.doubleStr = std::to_string(Types.d);
-
-	return (true);
-}
-
 // If input is a char - it is displayable.
 static bool	isChar(const std::string_view str, types& Types, display& Display) {
 
@@ -241,7 +177,7 @@ static bool	isChar(const std::string_view str, types& Types, display& Display) {
 		&& !std::isdigit( static_cast<unsigned char>(*str.data()) ) )
 	{
 		Types.c = static_cast<char>(*str.data());
-		Display.charStr = str;
+		Display.charStr = "'" + static_cast<std::string>(str) + "'";
 		return (true);
 	}
 	return (false);
@@ -252,7 +188,7 @@ static bool	isInt(const std::string_view str, types& Types, display& Display) {
 
 	std::string::size_type pos = 0;
 
-	if (str[0] == '-')
+	if (str[0] == '-' || str[0] == '+')
 		pos = 1;
 	if (str.find_first_not_of("1234567890", pos) != std::string::npos)
 		return (false);
@@ -289,7 +225,7 @@ static bool	isDouble(const std::string_view str, types& Types, display& Display)
 static void	addPrecision(std::string& str) {
 
 	for (char c : str) {
-		if (c == '.')
+		if ( c == '.' || !std::isdigit(static_cast<unsigned char>(c)) )
 			return;
 	}
 	str += ".0";
