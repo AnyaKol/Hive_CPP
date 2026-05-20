@@ -85,3 +85,5 @@
 
 # cpp06
 *convert
+*serialization
+*identify_real_type
