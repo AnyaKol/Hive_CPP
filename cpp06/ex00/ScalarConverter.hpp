@@ -18,9 +18,6 @@ class ScalarConverter {
 
 public:
 
-	ScalarConverter&	operator= (const ScalarConverter& other);
-	// Move assignment
-	ScalarConverter&	operator= (ScalarConverter&& other) noexcept = default;
 	~ScalarConverter(void) {};
 
 	static void	convert(const std::string_view val);
@@ -30,6 +27,9 @@ private:
 	ScalarConverter(void) = delete;
 	ScalarConverter(const ScalarConverter& other) = delete;
 	// Move constructor
-	ScalarConverter(ScalarConverter&& other) noexcept = default;
+	ScalarConverter(ScalarConverter&& other) noexcept = delete;
+	ScalarConverter&	operator= (const ScalarConverter& other);
+	// Move assignment
+	ScalarConverter&	operator= (ScalarConverter&& other) noexcept = delete;
 
 };

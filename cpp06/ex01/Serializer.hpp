@@ -20,13 +20,16 @@ class Serializer {
 
 public:
 
+	~Serializer(void) {};
+
+	static uintptr_t	serialize(Data* ptr);
+	static Data*		deserialize(uintptr_t raw);
+
+private:
+
 	Serializer(void) = delete;
 	Serializer(const Serializer& other) = delete;
 	Serializer(Serializer&& other) noexcept = delete;
 	Serializer&	operator= (const Serializer& other) = delete;
 	Serializer&	operator= (Serializer&& other) noexcept = delete;
-	~Serializer(void) {};
-
-	static uintptr_t	serialize(Data* ptr);
-	static Data*		deserialize(uintptr_t raw);
 };

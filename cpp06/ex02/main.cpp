@@ -23,26 +23,40 @@ void	identify(Base& p);
 
 int	main(void) {
 
-	std::cout << "\n\t*** TESTS ***\n" << std::endl;
+	std::cout << "\n\t*** CLASSES TESTS ***\n" << std::endl;
+	{
+		Base* arr[10];
 
-	Base* arr[10];
+		for (int i = 0; i < 10; i++)
+			arr[i] = generate();
+		std::cout << std::endl;
 
-	for (int i = 0; i < 10; i++)
-		arr[i] = generate();
-	std::cout << std::endl;
+		for (Base* ptr : arr) {
+			identify(ptr);
+		}
+		std::cout << std::endl;
 
-	for (Base* ptr : arr) {
-		identify(ptr);
+		for (Base* ptr : arr) {
+			identify(*ptr);
+		}
+		std::cout << std::endl;
+
+		for (Base* ptr : arr) {
+			delete(ptr);
+		}
 	}
-	std::cout << std::endl;
 
-	for (Base* ptr : arr) {
-		identify(*ptr);
-	}
-	std::cout << std::endl;
+	std::cout << "\n\t*** BASE TESTS ***\n" << std::endl;
+	{
+		Base* base = new Base;
 
-	for (Base* ptr : arr) {
-		delete(ptr);
+		std::cout << "Checking base ptr type: ";
+		identify(base);
+		std::cout << "\nChecking base ref type: ";
+		identify(*base);
+		std::cout << std::endl;
+
+		delete base;
 	}
 
 	return 0;
