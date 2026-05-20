@@ -14,7 +14,6 @@
 #include "Data.hpp"
 
 #include <iostream>
-#include <memory>
 #include <typeinfo>
 
 int	main(void) {
