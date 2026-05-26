@@ -16,26 +16,41 @@
 #include <array>
 #include <vector>
 
-// printElement is lambda.
-// auto keyword guesses varible type.
+//template <typename T>
+//constexpr void	printElement(T elem) {
+//	std::cout << elem << " ";
+//}
+
+static void	printChar(char elem) {
+	std::cout << elem << " ";
+}
+
+static void	printInt(int elem) {
+	std::cout << elem << " ";
+}
+
+static void	printStr(std::string elem) {
+	std::cout << elem << " ";
+}
+
 int main( void ) {
 
-	auto printElement{ [](auto elem) {
-		std::cout << elem;
-	} };
+	//auto printElement = [](auto elem) {
+	//	std::cout << elem << " ";
+	//};
 
 	std::cout << "\n\t*** TESTS ***\n" << std::endl;
-	
+
 	std::array a {'a', 'b', 'c', 'd', 'e'};
 	std::vector<int> b = {1, 2, 3, 4, 5};
 	std::string c[] = {"s1", "s2", "s3", "s4", "s5"};
 
 	std::cout << "char array: ";
-	::iter(a, a.size(), printElement);
+	::iter(a, a.size(), printChar);
 	std::cout << "\nint vector: ";
-	::iter(b, b.size(), printElement);
+	::iter(b, b.size(), printInt);
 	std::cout << "\nstring[]: ";
-	::iter(c, 5, printElement);
+	::iter(c, 5, printStr);
 	std::cout << std::endl;
 
 	return (0); 

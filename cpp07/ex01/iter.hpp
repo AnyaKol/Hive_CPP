@@ -12,16 +12,13 @@
 
 #pragma once
 
-// concepts: since C++20
-// Allows to explicitly list template requirements.
-#include <concepts>
+#include <ranges>
 
-// Can use 'class' keyword instead of 'typename'
 template <typename T, typename U>
-//requires std::<T>
-void	iter(T& arr, const std::size_t len, U fun) {
+requires std::ranges::range<T>
+constexpr void	iter(T& arr, const int len, void fun(U)) {
 
-	for (std::size_t i = 0; i < len; i++) {
+	for (int i = 0; i < len; i++) {
 		fun(arr[i]);
 	}
 };
