@@ -16,15 +16,15 @@ CPPFLAGS = -Wall -Werror -Wextra -std=c++20
 INKFLAGS = -I.
 
 SRC = \
-	main.cpp \
-	Array.tpp
+	main.cpp
 
 OBJDIR = obj
 OBJ = $(SRC:%.cpp=$(OBJDIR)/%.o)
 
 # ------------  HEADER  ------------------------------------------------------ #
 HEADER = \
-	Array.hpp
+	Array.hpp \
+	Array.tpp
 
 # ------------  RULES  ------------------------------------------------------- #
 all: $(NAME)

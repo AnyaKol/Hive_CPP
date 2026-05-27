@@ -23,9 +23,10 @@ public:
 	Array&	operator= (const Array& other);
 	~Array(void);
 
-	void	size(void) const;
+	unsigned int	size(void) const;
 
 private:
 
-	T*	_memory;
+	T*				_pointer;
+	unsigned int	_size;
 };
