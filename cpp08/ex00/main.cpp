@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Array.hpp"
-#include "Array.tpp"
+#include "easyfind.hpp"
+#include "easyfind.tpp"
 
 #include <iostream>
 #include <array>
