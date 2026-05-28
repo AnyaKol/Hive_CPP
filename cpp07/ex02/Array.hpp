@@ -23,10 +23,13 @@ public:
 	Array&	operator= (const Array& other);
 	~Array(void);
 
+	T&			operator[](unsigned int pos);
+	const T&	operator[](unsigned int pos) const;
+
 	unsigned int	size(void) const;
 
 private:
 
-	T*				_pointer;
 	unsigned int	_size;
+	T*				_pointer;
 };

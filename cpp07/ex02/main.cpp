@@ -11,27 +11,84 @@
 /* ************************************************************************** */
 
 #include "Array.hpp"
+#include "Array.tpp"
 
 #include <iostream>
 #include <array>
 
+template <typename T>
+constexpr static void	printArray(T& arr) {
+
+	for (unsigned int i = 0; i < arr.size(); i++) {
+		std::cout << arr[i];
+		if (i < arr.size() - 1)
+			std::cout << " ";
+	}
+}
+
 int main( void ) {
 
-	std::cout << "\n\t*** TESTS ***\n" << std::endl;
+	std::cout << "\n\t*** CONSTRUCTOR TESTS ***\n" << std::endl;
+	{
+		Array<int> a(1);
+		Array<int> b(5);
 
-	//Array a(5);
-	//std::array b {'a', 'b', 'c', 'd', 'e'};
+		std::cout << "a size: " << a.size() << "\n";
+		std::cout << "b size: " << b.size() << "\n" << std::endl;
 
+		try {
+			b[0] = 9;
+			a = b;
+			b[1] = 1;
+			a[2] = 2;
+		} catch (std::exception &e) {
+			std::cout << e.what() << "\n" << std::endl;
+		}
 
-	//std::cout << "char array: ";
+		Array<int> c(b);
 
-	int * a = new int();
-	std::cout << "a: " << a << std::endl;
-	std::cout << "*a: " << *a << std::endl;
-	*a = 5;
-	std::cout << "a: " << a << std::endl;
-	std::cout << "*a: " << *a << std::endl;
-	delete a;
+		std::cout << "a size: " << a.size() << "\n";
+		std::cout << "b size: " << b.size() << "\n";
+		std::cout << "c size: " << c.size() << "\n" << std::endl;
+
+		try {
+			c[3] = 3;
+		} catch (std::exception &e) {
+			std::cout << e.what() << "\n" << std::endl;
+		}
+		std::cout << "int array a: ";
+		printArray(a);
+		std::cout << std::endl;
+		std::cout << "int array b: ";
+		printArray(b);
+		std::cout << std::endl;
+		std::cout << "int array c: ";
+		printArray(c);
+		std::cout << std::endl;
+	}
+
+	std::cout << "\n\t*** ARRAY TESTS ***\n" << std::endl;
+	{
+		Array<char> a(5);
+		std::array b {'a', 'b', 'c', 'd', 'e'};
+
+		try {
+			a[0] = 'a';
+			a[4] = 'e';
+			a[5] = 'f';
+			a[2] = 'c';
+		} catch (std::exception &e) {
+			std::cout << e.what() << "\n" << std::endl;
+		}
+
+		std::cout << "char array a: ";
+		printArray(a);
+		std::cout << std::endl;
+		std::cout << "char array b: ";
+		printArray(b);
+		std::cout << std::endl;
+	}
 
 	return (0); 
 }
+
