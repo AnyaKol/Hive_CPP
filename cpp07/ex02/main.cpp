@@ -22,7 +22,7 @@ constexpr static void	printArray(T& arr) {
 	for (unsigned int i = 0; i < arr.size(); i++) {
 		std::cout << arr[i];
 		if (i < arr.size() - 1)
-			std::cout << " ";
+			std::cout << ", ";
 	}
 }
 
@@ -77,7 +77,6 @@ int main( void ) {
 	std::cout << "\n\t*** ARRAY TESTS ***\n" << std::endl;
 	{
 		Array<char> a(5);
-		std::array b {'a', 'b', 'c', 'd', 'e'};
 
 		try {
 			a[0] = 'a';
@@ -90,9 +89,6 @@ int main( void ) {
 
 		std::cout << "char array a: ";
 		printArray(a);
-		std::cout << std::endl;
-		std::cout << "char array b: ";
-		printArray(b);
 		std::cout << std::endl;
 	}
 

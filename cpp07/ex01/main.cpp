@@ -16,28 +16,12 @@
 #include <array>
 #include <vector>
 
-//template <typename T>
-//constexpr void	printElement(T elem) {
-//	std::cout << elem << " ";
-//}
-
-static void	printChar(char elem) {
-	std::cout << elem << " ";
-}
-
-static void	printInt(int elem) {
-	std::cout << elem << " ";
-}
-
-static void	printStr(std::string elem) {
+template <typename T>
+constexpr void	printElement(T elem) {
 	std::cout << elem << " ";
 }
 
 int main( void ) {
-
-	//auto printElement = [](auto elem) {
-	//	std::cout << elem << " ";
-	//};
 
 	std::cout << "\n\t*** TESTS ***\n" << std::endl;
 
@@ -46,11 +30,11 @@ int main( void ) {
 	std::string c[] = {"s1", "s2", "s3", "s4", "s5"};
 
 	std::cout << "char array: ";
-	::iter(a, a.size(), printChar);
+	::iter(a, a.size(), printElement<char>);
 	std::cout << "\nint vector: ";
-	::iter(b, b.size(), printInt);
+	::iter(b, b.size(), printElement<int>);
 	std::cout << "\nstring[]: ";
-	::iter(c, 5, printStr);
+	::iter(c, 5, printElement<std::string>);
 	std::cout << std::endl;
 
 	return (0); 

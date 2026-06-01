@@ -15,26 +15,24 @@
 // concepts: since C++20
 // Allows to explicitly list template requirements.
 #include <concepts>
+#include <ranges>
 
 // Can use 'class' keyword instead of 'typename'
 template <typename T>
-requires std::swappable<T>
-constexpr void	swap(T& a, T& b) {
-	T temp;
-
-	temp = a;
+void	swap(T& a, T& b) {
+	T temp = a;
 	a = b;
 	b = temp;
 };
 
 template <typename T>
 requires std::totally_ordered<T>
-constexpr T	min(T a, T b) {
+T	min(T a, T b) {
 	return ( (a < b) ? a : b );
 };
 
 template <typename T>
 requires std::totally_ordered<T>
-constexpr T	max(T a, T b) {
+T	max(T a, T b) {
 	return ( (a <= b) ? b : a );
 };
