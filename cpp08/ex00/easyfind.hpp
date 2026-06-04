@@ -12,5 +12,7 @@
 
 #pragma once
 
-template <typename T>
-int&	easyfind(T arr, int val);
+// All standard containers have a member type named value_type; we check that
+// argument is a container.
+template <typename T, typename U = typename T::iterator>
+constexpr U	easyfind(T& arr, int val);

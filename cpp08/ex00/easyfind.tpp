@@ -1,15 +1,27 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   easyfind.tpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akolupae <akolupae@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/21 09:54:17 by akolupae          #+#    #+#             */
+/*   Updated: 2026/05/21 12:28:35 by akolupae         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "easyfind.hpp"
 
-// For std::out_of_range, inherites from std::exception.
-#include <stdexcept>
+template <typename T, typename U>
+constexpr U	easyfind(T& arr, int val) {
 
-template <typename T>
-int&	easyfind(T arr, int val) {
+	U	first = arr.begin();
+	U	last = arr.end();
 
-	for (unsigned int i = 0; i < arr.size(); i++) {
-		if ( arr[i] == val )
-			return (arr[i]);
+	for (; first != last; ++first) {
+		if ( *first == val )
+			return (first);
 	}
 
-	throw (val);
+	return (last);
 }
