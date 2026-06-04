@@ -46,8 +46,8 @@ int main( void ) {
 		std::cout << "min( a, b ) = " << ::min( a, b ) << std::endl;
 		std::cout << "max( a, b ) = " << ::max( a, b ) << std::endl;
 
-		char c = '*';
-		char d = '+';
+		char c = '1';
+		char d = '2';
 
 		std::cout << "\nchar" << std::endl;
 		std::cout << "c = " << c << ", d = " << d << std::endl;

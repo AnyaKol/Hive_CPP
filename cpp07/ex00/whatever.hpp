@@ -25,14 +25,25 @@ void	swap(T& a, T& b) {
 	b = temp;
 };
 
+// Creating concept using 'requires' expression.
 template <typename T>
-requires std::totally_ordered<T>
+concept Comparable = requires (T a, T b) {
+	a < b;
+	a <= b;
+};
+
+/* Using concept by calling 'requires' clause.
+ * Could do expression + clause:
+ * requires requires (T a, T b) {...};
+ */
+template <typename T>
+requires Comparable<T>
 T	min(T a, T b) {
 	return ( (a < b) ? a : b );
 };
 
 template <typename T>
-requires std::totally_ordered<T>
+requires Comparable<T>
 T	max(T a, T b) {
 	return ( (a <= b) ? b : a );
 };
