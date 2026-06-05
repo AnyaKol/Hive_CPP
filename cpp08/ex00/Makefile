@@ -12,7 +12,7 @@
 
 NAME = easy_find
 CPP = c++
-CPPFLAGS = -Wall -Werror -Wextra -std=c++11
+CPPFLAGS = -Wall -Wextra -Werror -std=c++11
 INKFLAGS = -I.
 
 SRC = \
@@ -36,7 +36,7 @@ $(OBJDIR)/%.o: %.cpp $(HEADER)
 	$(CPP) $(CPPFLAGS) $(INCFLAGS) -c $< -o $@
 
 $(NAME): $(OBJDIR) $(OBJ)
-	$(CPP) $(OBJ) -o $(NAME)
+	$(CPP) $(CPPFLAGS) $(OBJ) -o $(NAME)
 
 clean:
 	rm -rf $(OBJDIR)
