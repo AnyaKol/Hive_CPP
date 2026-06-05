@@ -20,6 +20,10 @@
 #include <deque>
 #include <list>
 
+// begin()	points to the first element of array;
+// end()	points to position after last element.
+// std::next(iter, n) returns a copy of iter incremented by n.
+// In 'for' loop ++i and i++ produce the same result.
 template <typename T, typename U = typename T::iterator>
 constexpr static void	printArray(T& arr) {
 
@@ -28,56 +32,51 @@ constexpr static void	printArray(T& arr) {
 
 	for (; first != last; first++) {
 		std::cout << *first;
-		std::cout << ", ";
+		if (std::next(first, 1) != last)
+			std::cout << ", ";
 	}
 }
+
+template <typename T, typename U = typename T::iterator>
+constexpr static void	findInArray(T& arr, int n) {
+
+	U it = easyfind(arr, n);
+
+	printArray(arr);
+	std::cout << std::endl;
+	if (it == arr.end())
+		std::cout << "Not found: " << n << std::endl;
+	else
+		std::cout << "Found: " << *it << std::endl;
+}
+
 
 int main( void ) {
 
 	std::cout << "\n\t*** TESTS ***\n" << std::endl;
 	{
 		std::array<int, 5> a = {1, 2, 3, 4, 5};
-		std::vector<int> b = {6, 7, 8, 9, 10};
-		std::deque<int> c = {11, 12, 13, 14, 15};
-		std::list<int> d = {16, 17, 18, 19, 20};
-		int	found;
+		std::vector<int> b = {1, 2, 3, 4, 5};
+		std::deque<int> c = {1, 2, 3, 4, 5};
+		std::list<int> d = {1, 2, 3, 4, 5};
+		int	n = 1;
 
 
 		std::cout << "std::array a: ";
-		printArray(a);
+		findInArray(a, n);
 		std::cout << std::endl;
-		try {
-			std::cout << "Found: " << *easyfind(a, 5) << "\n" << std::endl;
-		} catch (std::exception &e) {
-			std::cout << "Not found: " << e.what() << "\n" << std::endl;
-		}
 
 		std::cout << "std::vector b: ";
-		printArray(b);
+		findInArray(b, n);
 		std::cout << std::endl;
-		try {
-			std::cout << "Found: " << *easyfind(b, 12) << "\n" << std::endl;
-		} catch (std::exception &e) {
-			std::cout << "Not found: " << e.what() << "\n" << std::endl;
-		}
 
 		std::cout << "std::deque c: ";
-		printArray(c);
+		findInArray(c, n);
 		std::cout << std::endl;
-		try {
-			std::cout << "Found: " << *easyfind(c, 12) << "\n" << std::endl;
-		} catch (std::exception &e) {
-			std::cout << "Not found: " << e.what() << "\n" << std::endl;
-		}
 
 		std::cout << "std::list d: ";
-		printArray(d);
+		findInArray(d, n);
 		std::cout << std::endl;
-		try {
-			std::cout << "Found: " << *easyfind(d, 12) << "\n" << std::endl;
-		} catch (std::exception &e) {
-			std::cout << "Not found: " << e.what() << "\n" << std::endl;
-		}
 	}
 
 	return (0); 

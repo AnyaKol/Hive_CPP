@@ -18,7 +18,7 @@ constexpr U	easyfind(T& arr, int val) {
 	U	first = arr.begin();
 	U	last = arr.end();
 
-	for (; first != last; ++first) {
+	for (; first != last; first++) {
 		if ( *first == val )
 			return (first);
 	}
