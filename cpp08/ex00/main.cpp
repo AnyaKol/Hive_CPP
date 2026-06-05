@@ -25,7 +25,7 @@
 // std::next(iter, n) returns a copy of iter incremented by n.
 // In 'for' loop ++i and i++ produce the same result.
 template <typename T, typename U = typename T::iterator>
-constexpr static void	printArray(T& arr) {
+static void	printArray(T& arr) {
 
 	U	first = arr.begin();
 	U	last = arr.end();
@@ -38,7 +38,7 @@ constexpr static void	printArray(T& arr) {
 }
 
 template <typename T, typename U = typename T::iterator>
-constexpr static void	findInArray(T& arr, int n) {
+static void	findInArray(T& arr, int n) {
 
 	U it = easyfind(arr, n);
 

@@ -13,7 +13,7 @@
 #include "easyfind.hpp"
 
 template <typename T, typename U>
-constexpr U	easyfind(T& arr, int val) {
+U	easyfind(T& arr, int val) {
 
 	U	first = arr.begin();
 	U	last = arr.end();

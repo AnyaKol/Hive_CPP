@@ -12,7 +12,7 @@
 
 NAME = easy_find
 CPP = c++
-CPPFLAGS = -Wall -Werror -Wextra -std=c++20
+CPPFLAGS = -Wall -Werror -Wextra -std=c++11
 INKFLAGS = -I.
 
 SRC = \
