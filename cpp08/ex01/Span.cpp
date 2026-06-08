@@ -12,6 +12,8 @@
 
 #include "Span.hpp"
 
+#include <cassert>
+
 Span::Span(void) : Span(0) {}
 
 Span::Span(unsigned int N) : _max_size(N), _size(0), _ptr(nullptr) {
@@ -55,6 +57,18 @@ const unsigned int&	Span::getSize(void) const {
 
 const int*	Span::getPtr(void) const {
 	return (this->_ptr);
+}
+
+int&	Span::operator[](unsigned int pos) {
+
+	assert (pos < this->_max_size);
+	return (this->_ptr[pos]);
+}
+
+const int&	Span::operator[](unsigned int pos) const {
+
+	assert (pos < this->_max_size);
+	return ( const_cast<const int&>(this->_ptr[pos]) );
 }
 
 // Span functions

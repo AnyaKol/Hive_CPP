@@ -28,6 +28,8 @@ public:
 	const unsigned int&	getMaxSize(void) const;
 	const unsigned int&	getSize(void) const;
 	const int*			getPtr(void) const;
+	int&				operator[](unsigned int pos);
+	const int&			operator[](unsigned int pos) const;
 
 	void			addNumber(int num);
 	unsigned int	shortestSpan(void) const;
@@ -35,6 +37,26 @@ public:
 
 	class	MaxSizeReached;
 	class	SpanTooShort;
+
+	template <typename T, typename U = typename T::iterator>
+	void	addNumber(T arr, int count) {
+
+		U	first = arr.begin();
+		U	last = first + count;
+	
+		for (; first != last; first++)
+			addNumber(*first);
+	}
+
+	template <typename T, typename U = typename T::iterator>
+	void	addNumber(T arr) {
+
+		U	first = arr.begin();
+		U	last = arr.end();
+	
+		for (; first != last; first++)
+			addNumber(*first);
+	}
 
 private:
 
