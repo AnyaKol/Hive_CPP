@@ -56,7 +56,7 @@ int main( void ) {
 		l.push_back(5);
 		l.push_back(17);
 
-		std::cout << l.top() << std::endl;
+		std::cout << l.front() << std::endl;
 
 		l.pop_back();
 
@@ -68,8 +68,8 @@ int main( void ) {
 		//[...]
 		l.push_back(0);
 
-		MutantStack<int>::iterator it = l.begin();
-		MutantStack<int>::iterator ite = l.end();
+		std::list<int>::iterator it = l.begin();
+		std::list<int>::iterator ite = l.end();
 
 		++it;
 		--it;
@@ -78,7 +78,6 @@ int main( void ) {
 			std::cout << *it << std::endl;
 			++it;
 		}
-		std::stack<int> s(l);
 	}
 
 	return (0); 
