@@ -12,63 +12,78 @@
 
 #include "MutantStack.hpp"
 
-template <typename T>
-typename MutantStack<T>::iterator	MutantStack<T>::begin(void) {
-	return (this->std::stack<T>::std::deque<T>::begin());
+// Use "c" to address Container inside stack.
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::iterator	MutantStack<T, Container>::begin(void) {
+	return (this->c.begin());
 }
 
-//template <typename T>
-//std::deque<T>::const_iterator	MutantStack::begin(void) const {
-//	return (this->std::deque.begin());
-//}
-
-//template <typename T>
-//std::deque<T>::const_iterator	MutantStack::cbegin(void) const noexcept {
-//	return (this->std::deque.cbegin());
-//}
-
-template <typename T>
-typename MutantStack<T>::iterator	MutantStack<T>::end(void) {
-	return (this->std::stack<T>::std::deque<T>::end());
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_iterator	MutantStack<T, Container>::begin(void) const {
+	return (this->c.begin());
 }
 
-//template <typename T>
-//std::deque<T>::const_iterator	MutantStack::end(void) const {
-//	return (this->std::deque.end());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_iterator	MutantStack<T, Container>::cbegin(void) const noexcept {
+	return (this->c.cbegin());
+}
 
-//template <typename T>
-//std::deque<T>::const_iterator	MutantStack::cend(void) const noexcept {
-//	return (this->std::deque.cend());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::iterator	MutantStack<T, Container>::end(void) {
+	return (this->c.end());
+}
 
-//template <typename T>
-//std::deque<T>::reverse_iterator	MutantStack::rbegin(void) {
-//	return (this->std::deque.rbegin());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_iterator	MutantStack<T, Container>::end(void) const {
+	return (this->c.end());
+}
 
-//template <typename T>
-//std::deque<T>::const_reverse_iterator	MutantStack::rbegin(void) const {
-//	return (this->std::deque.rbegin());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_iterator	MutantStack<T, Container>::cend(void) const noexcept {
+	return (this->c.cend());
+}
 
-//template <typename T>
-//std::deque<T>::const_reverse_iterator	MutantStack::crbegin(void) const noexcept {
-//	return (this->std::deque.crbegin());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::reverse_iterator	MutantStack<T, Container>::rbegin(void) {
+	return (this->c.rbegin());
+}
 
-//template <typename T>
-//std::deque<T>::reverse_iterator	MutantStack::rend(void) {
-//	return (this->std::deque.rend());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_reverse_iterator	MutantStack<T, Container>::rbegin(void) const {
+	return (this->c.rbegin());
+}
 
-//template <typename T>
-//std::deque<T>::const_reverse_iterator	MutantStack::rend(void) const {
-//	return (this->std::deque.rend());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_reverse_iterator	MutantStack<T, Container>::crbegin(void) const
+noexcept {
+	return (this->c.crbegin());
+}
 
-//template <typename T>
-//std::deque<T>::const_reverse_iterator	MutantStack::crend(void) const noexcept {
-//	return (this->std::deque.crend());
-//}
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::reverse_iterator	MutantStack<T, Container>::rend(void) {
+	return (this->c.rend());
+}
+
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_reverse_iterator	MutantStack<T, Container>::rend(void) const {
+	return (this->c.rend());
+}
+
+template <typename T, typename Container>
+typename MutantStack<T, Container>
+::const_reverse_iterator	MutantStack<T, Container>::crend(void) const
+noexcept {
+	return (this->c.crend());
+}
 

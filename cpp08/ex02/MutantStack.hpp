@@ -14,31 +14,29 @@
 
 #include <stack>
 
-// Using C++11 to use U as default template argument.
-template <typename T>
+template <typename T, typename Container = std::deque<T>>
 class	MutantStack : public std::stack<T> {
 
 public:
 
-	typedef typename std::deque<T>::iterator	iterator;
-	//std::deque<T>::const_iterator	const_iterator;
-	//std::deque<T>::reverse_iterator	reverse_iterator;
-	//std::deque<T>::const_reverse_iterator	const_reverse_iterator;
+	typedef typename Container::iterator				iterator;
+	typedef typename Container::const_iterator			const_iterator;
+	typedef typename Container::reverse_iterator		reverse_iterator;
+	typedef typename Container::const_reverse_iterator	const_reverse_iterator;
 
-	iterator	begin(void);
-	//std::deque<T>::const_iterator	begin(void) const;
-	//std::deque<T>::const_iterator	cbegin(void) const noexcept;
+	iterator		begin(void);
+	const_iterator	begin(void) const;
+	const_iterator	cbegin(void) const noexcept;
 
-	iterator	end(void);
-	//std::deque<T>::const_iterator	end(void) const;
-	//std::deque<T>::const_iterator	cend(void) const noexcept;
+	iterator		end(void);
+	const_iterator	end(void) const;
+	const_iterator	cend(void) const noexcept;
 
-	//std::deque<T>::reverse_iterator		rbegin(void);
-	//std::deque<T>::const_reverse_iterator	rbegin(void) const;
-	//std::deque<T>::const_reverse_iterator	crbegin(void) const noexcept;
+	reverse_iterator		rbegin(void);
+	const_reverse_iterator	rbegin(void) const;
+	const_reverse_iterator	crbegin(void) const noexcept;
 
-	//std::deque<T>::reverse_iterator		rend(void);
-	//std::deque<T>::const_reverse_iterator	rend(void) const;
-	//std::deque<T>::const_reverse_iterator	crend(void) const noexcept;
-
+	reverse_iterator		rend(void);
+	const_reverse_iterator	rend(void) const;
+	const_reverse_iterator	crend(void) const noexcept;
 };

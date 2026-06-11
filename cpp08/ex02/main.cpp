@@ -56,7 +56,7 @@ int main( void ) {
 		l.push_back(5);
 		l.push_back(17);
 
-		std::cout << l.front() << std::endl;
+		std::cout << l.back() << std::endl;
 
 		l.pop_back();
 
