@@ -10,75 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "easyfind.hpp"
-#include "easyfind.tpp"
+#include "BitcoinExchange.hpp"
 
 #include <iostream>
 
-#include <array>
-#include <vector>
-#include <deque>
-#include <list>
+int main( int argc, char** argv ) {
 
-// begin()	points to the first element of array;
-// end()	points to position after last element.
-// std::next(iter, n) returns a copy of iter incremented by n.
-// In 'for' loop ++i and i++ produce the same result.
-template <typename T, typename U = typename T::iterator>
-static void	printArray(T& arr) {
-
-	U	first = arr.begin();
-	U	last = arr.end();
-
-	for (; first != last; first++) {
-		std::cout << *first;
-		if (std::next(first, 1) != last)
-			std::cout << ", ";
+	if (argc != 2) {
+		BitcoinExchange::printError(BitcoinExchange::ERR_NOFILE);
+		return (1);
 	}
-}
+	try {
+		BitcoinExchange base("data.csv");
 
-template <typename T, typename U = typename T::iterator>
-static void	findInArray(T& arr, int n) {
-
-	U it = easyfind(arr, n);
-
-	printArray(arr);
-	std::cout << std::endl;
-	if (it == arr.end())
-		std::cout << "Not found: " << n << std::endl;
-	else
-		std::cout << "Found: " << *it << std::endl;
-}
-
-
-int main( void ) {
-
-	std::cout << "\n\t*** TESTS ***\n" << std::endl;
-	{
-		std::array<int, 5> a = {1, 2, 3, 4, 5};
-		std::vector<int> b = {1, 2, 3, 4, 5};
-		std::deque<int> c = {1, 2, 3, 4, 5};
-		std::list<int> d = {1, 2, 3, 4, 5};
-		int	n = 1;
-
-
-		std::cout << "std::array a: ";
-		findInArray(a, n);
-		std::cout << std::endl;
-
-		std::cout << "std::vector b: ";
-		findInArray(b, n);
-		std::cout << std::endl;
-
-		std::cout << "std::deque c: ";
-		findInArray(c, n);
-		std::cout << std::endl;
-
-		std::cout << "std::list d: ";
-		findInArray(d, n);
-		std::cout << std::endl;
+		base.convert(argv[1]);
+	}
+	catch (std::exception &e) {
+		BitcoinExchange::printError(e.what());
+		return (1);
 	}
 
 	return (0); 
 }
+
 
