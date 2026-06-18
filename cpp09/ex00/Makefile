@@ -12,7 +12,7 @@
 
 NAME = btc
 CPP = c++
-CPPFLAGS = -Wall -Wextra -Werror -std=c++11
+CPPFLAGS = -Wall -Wextra -Werror -std=c++17
 INKFLAGS = -I.
 
 SRC = \
