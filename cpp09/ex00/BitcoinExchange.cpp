@@ -13,14 +13,14 @@
 #include "BitcoinExchange.hpp"
 
 #include <iostream>
-// Using C++17 for string_view
-#include <string_view>
+// Using C++17 for string_view.
+//#include <string_view>
 #include <fstream>
+// For return type std::pair.
+//#include <utility>
 
 // Constructors
 BitcoinExchange::BitcoinExchange(const std::string& filename) {
-	std::map<struct tm, float>	_data;
-
 	this->_getData(filename);
 }
 
@@ -60,21 +60,20 @@ void	BitcoinExchange::_getData(std::string filename) {
 }
 
 void	BitcoinExchange::_getMapValue(std::string line) {
-	struct tm	date;
-	float		num;
+	value_type	result{};
 	std::size_t	pos{};
 
-	_getDate(date, line, pos);
+	_getDate(const_cast<std::tm&>(result.first), line, pos);
 	_checkSymbol(line, pos, '|');
-	_getValue(num, line, pos);
+	_getValue(result.second, line, pos);
 
-	const auto [it, success] { this->_data.insert(std::pair{ date, num }) };
-	if (!success)
+	const std::pair<const_iterator, bool> pair = this->_data.insert(result);
+	if (!pair.second)
 		throw (NameException(ERR_MAPADD, line));
 }
 
 // Extracts date from string in format 'YYYY-MM-DD' and checks if it is valid date.
-void	BitcoinExchange::_getDate(struct tm& date, std::string line,
+void	BitcoinExchange::_getDate(std::tm& date, std::string line,
 std::size_t& pos) {
 	date.tm_year = std::stoi(line, &pos) - 1900;
 	_checkSymbol(line, pos, '-');
@@ -111,9 +110,9 @@ char c) {
 		pos++;
 }
 
-// mktime(&struct tm date) - converts 'date' to valid date.
-void	BitcoinExchange::_checkDate(const struct tm& date) {
-	struct tm	copy;
+// mktime(std::tm date) - converts 'date' to valid date.
+void	BitcoinExchange::_checkDate(const std::tm& date) {
+	std::tm	copy;
 
 	copy = date;
 	mktime(&copy);
@@ -149,23 +148,23 @@ void	BitcoinExchange::convert(const std::string& filename) {
 }
 
 void	BitcoinExchange::_convertLine(const std::string& line) const {
-	struct tm	date{};
-	float		num{};
+	value_type	value{};
 	float		result{};
 	std::size_t	pos{};
 
-	_getDate(date, line, pos);
-	_getValue(num, line, pos);
+	_getDate(const_cast<std::tm&>(value.first), line, pos);
+	_getValue(value.second, line, pos);
 
-	std::map<struct tm, float>::const_iterator	search = this->_data.find(date);
+	const_iterator	search = this->_data.find(value.first);
 	if (search != this->_data.end()) {
-		result = num * search->second;
+		result = value.second * search->second;
 	} else {
 		result = 0;
 	}
 
-	std::cout << date.tm_year << "-" << date.tm_mon << "-" << date.tm_mday
-		<< "=>" << num << " = " << result << std::endl;
+	std::cout << value.first.tm_year << "-" << value.first.tm_mon << "-"
+		<< value.first.tm_mday << "=>" << value.second << " = " << result
+		<< std::endl;
 }
 
 #pragma endregion

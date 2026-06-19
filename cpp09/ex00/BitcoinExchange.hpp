@@ -25,6 +25,10 @@ public:
 	BitcoinExchange&	operator=(const BitcoinExchange &other);
 	~BitcoinExchange() {};
 
+	typedef std::map<std::tm, float>::iterator			iterator;
+	typedef std::map<std::tm, float>::const_iterator	const_iterator;
+	typedef std::map<std::tm, float>::value_type		value_type;
+
 	void	convert(const std::string& date);
 
 	static void	printError(const std::string& msg) noexcept;
@@ -47,12 +51,12 @@ private:
 	void	_getMapValue(std::string line);
 	void	_convertLine(const std::string& line) const;
 
-	static void	_getDate(struct tm& date, std::string line, std::size_t& pos);
+	static void	_getDate(std::tm& date, std::string line, std::size_t& pos);
 	static void	_getValue(float& num, std::string line, std::size_t& pos);
 	static void	_checkSymbol(std::string line, std::size_t& pos, char c);
-	static void	_checkDate(const struct tm& date);
+	static void	_checkDate(const std::tm& date);
 
-	std::map<struct tm, float>	_data;
+	std::map<std::tm, float>	_data;
 };
 
 class	BitcoinExchange::Exception : public std::exception {
