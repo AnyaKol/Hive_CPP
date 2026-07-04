@@ -13,6 +13,7 @@
 #include "BitcoinExchange.hpp"
 
 #include <iostream>
+#include <limits>
 // Using C++17 for string_view.
 //#include <string_view>
 #include <fstream>
@@ -33,6 +34,12 @@ BitcoinExchange&	BitcoinExchange::operator=(const BitcoinExchange &other) {
 		this->_data = other._data;
 	}
 	return (*this);
+}
+
+bool	BitcoinExchange::dateLess::operator()(const std::tm& a, const std::tm& b) const {
+	return (a.tm_year < b.tm_year
+		|| (a.tm_year == b.tm_year && a.tm_mon < b.tm_mon )
+		|| (a.tm_year == b.tm_year && a.tm_mon == b.tm_mon && a.tm_mday < b.tm_mday));
 }
 
 // Function to create data map.
@@ -64,7 +71,7 @@ void	BitcoinExchange::_getMapValue(std::string line) {
 	std::size_t	pos{};
 
 	_getDate(const_cast<std::tm&>(result.first), line, pos);
-	_checkSymbol(line, pos, '|');
+	_checkSymbol(line, pos, ',');
 	_getValue(result.second, line, pos);
 
 	const std::pair<const_iterator, bool> pair = this->_data.insert(result);
@@ -75,11 +82,16 @@ void	BitcoinExchange::_getMapValue(std::string line) {
 // Extracts date from string in format 'YYYY-MM-DD' and checks if it is valid date.
 void	BitcoinExchange::_getDate(std::tm& date, std::string line,
 std::size_t& pos) {
-	date.tm_year = std::stoi(line, &pos) - 1900;
+	std::size_t	processed{};
+
+	date.tm_year = std::stoi(&line[pos], &processed) - 1900;
+	pos += processed;
 	_checkSymbol(line, pos, '-');
-	date.tm_mon = std::stoi(line, &pos) - 1;
+	date.tm_mon = std::stoi(&line[pos], &processed) - 1;
+	pos += processed;
 	_checkSymbol(line, pos, '-');
-	date.tm_mday = std::stoi(line, &pos);
+	date.tm_mday = std::stoi(&line[pos], &processed);
+	pos += processed;
 	try {
 		_checkDate(date);
 	} catch (Exception &e) {
@@ -89,14 +101,22 @@ std::size_t& pos) {
 
 void	BitcoinExchange::_getValue(float& num, std::string line,
 std::size_t& pos) {
+	std::size_t	processed{};
+
 	try {
-		num = std::stof(line, &pos);
+		num = std::stof(&line[pos], &processed);
+		pos += processed;
 	} catch (std::invalid_argument &e) {
 		throw (NameException(ERR_NOVALUE, line));
 	} catch (std::out_of_range &e) {
 		throw (Exception(e.what()));
 	}
-	_checkSymbol(line, pos, '\0');
+	if (num < 0)
+		throw ( NameException(ERR_NEGVALUE, line) );
+	if (num >= static_cast<float>(std::numeric_limits<int>::max()))
+		throw ( NameException(ERR_OUTRANGE, line) );
+	if (pos != line.length())
+		throw ( NameException(ERR_DATE_FORMAT, line) );
 }
 
 void	BitcoinExchange::_checkSymbol(std::string line, std::size_t& pos,
@@ -136,6 +156,7 @@ void	BitcoinExchange::convert(const std::string& filename) {
 		throw (NameException(ERR_NODATA, filename));
 	}
 	std::getline(input, line);
+	std::cout << line << std::endl;
 	while (std::getline(input, line)) {
 		try {
 			this->_convertLine(line);
@@ -153,18 +174,28 @@ void	BitcoinExchange::_convertLine(const std::string& line) const {
 	std::size_t	pos{};
 
 	_getDate(const_cast<std::tm&>(value.first), line, pos);
+	_checkSymbol(line, pos, '|');
 	_getValue(value.second, line, pos);
 
-	const_iterator	search = this->_data.find(value.first);
-	if (search != this->_data.end()) {
-		result = value.second * search->second;
-	} else {
-		result = 0;
-	}
+	const_iterator	search = this->_data.upper_bound(value.first);
+	search--;
+	result = value.second * search->second;
 
-	std::cout << value.first.tm_year << "-" << value.first.tm_mon << "-"
-		<< value.first.tm_mday << "=>" << value.second << " = " << result
+	_printDate(value.first);
+	std::cout << " => " << value.second << " = " << result
 		<< std::endl;
+}
+
+void	BitcoinExchange::_printDate(const std::tm& date) {
+	std::cout << date.tm_year + 1900 << "-";
+
+	if (date.tm_mon < 9)
+		std::cout << "0";
+	std::cout << date.tm_mon + 1 << "-";
+
+	if (date.tm_mday < 10)
+		std::cout << "0";
+	std::cout << date.tm_mday;
 }
 
 #pragma endregion
@@ -203,6 +234,8 @@ const std::string	BitcoinExchange::ERR_NODATA = "Could not find";
 const std::string	BitcoinExchange::ERR_DATE_FORMAT = "Wrong date format in line";
 const std::string	BitcoinExchange::ERR_WRONG_DATE = "Wrong date in line";
 const std::string	BitcoinExchange::ERR_NOVALUE = "No value for date";
+const std::string	BitcoinExchange::ERR_NEGVALUE = "Value is negative number";
+const std::string	BitcoinExchange::ERR_OUTRANGE = "Value number is too large";
 const std::string	BitcoinExchange::ERR_MAPADD = "Failed to add date/value pair";
 
 #pragma endregion
