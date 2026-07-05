@@ -35,9 +35,10 @@ public:
 
 	void	convert(const std::string& date);
 
-	static void	printError(const std::string& msg) noexcept;
+	static void	printError(std::string_view msg) noexcept;
 
 	static const std::string	ERR_NOFILE;
+
 	static const std::string	ERR_NODATA;
 	static const std::string	ERR_DATE_FORMAT;
 	static const std::string	ERR_WRONG_DATE;
@@ -53,13 +54,13 @@ private:
 
 	BitcoinExchange(void) = delete;
 
-	void	_getData(std::string filename);
-	void	_getMapValue(std::string line);
-	void	_convertLine(const std::string& line) const;
+	void	_getData(const std::string& filename);
+	void	_getMapValue(std::string_view line);
+	void	_convertLine(std::string_view line) const;
 
-	static void	_getDate(std::tm& date, std::string line, std::size_t& pos);
-	static void	_getValue(float& num, std::string line, std::size_t& pos);
-	static void	_checkSymbol(std::string line, std::size_t& pos, char c);
+	static void	_getDate(std::tm& date, std::string_view line, std::size_t& pos);
+	static void	_getValue(float& num, std::string_view line, std::size_t& pos);
+	static void	_checkSymbol(std::string_view line, std::size_t& pos, char c);
 	static void	_checkDate(const std::tm& date);
 	static void	_printDate(const std::tm& date);
 
@@ -77,7 +78,7 @@ private:
 
 class	BitcoinExchange::NameException : public std::exception {
 public:
-	NameException(const std::string& message, const std::string& name);
+	NameException(const std::string& message, std::string_view name);
 	const char*	what(void) const noexcept override;
 private:
 	NameException(void) = delete;

@@ -15,10 +15,8 @@
 #include <iostream>
 #include <limits>
 // Using C++17 for string_view.
-//#include <string_view>
+#include <string_view>
 #include <fstream>
-// For return type std::pair.
-//#include <utility>
 
 // Constructors
 BitcoinExchange::BitcoinExchange(const std::string& filename) {
@@ -44,29 +42,32 @@ bool	BitcoinExchange::dateLess::operator()(const std::tm& a, const std::tm& b) c
 
 // Function to create data map.
 #pragma region GetData
-/* getline - from <string>*/
-void	BitcoinExchange::_getData(std::string filename) {
+// getline - from <string>
+/* Using const string& here, because string_view is not guaranteed to be
+ * null-terminated, which is needed for ifstream.
+ */
+void	BitcoinExchange::_getData(const std::string& filename) {
 	std::ifstream	input(filename);
 	std::string		line;
 
 	if (!input) {
 		input.close();
-		throw (NameException(ERR_NODATA, filename));
+		throw (NameException(ERR_NODATA, std::string_view{filename}));
 	}
 	std::getline(input, line);
 	while (std::getline(input, line)) {
 		try {
-			this->_getMapValue(line);
+			this->_getMapValue(std::string_view{line});
 		} catch (NameException &e) {
-			printError(e.what());
+			printError(std::string_view{e.what()});
 		} catch (Exception &e) {
-			printError(e.what());
+			printError(std::string_view{e.what()});
 		}
 	}
 	input.close();
 }
 
-void	BitcoinExchange::_getMapValue(std::string line) {
+void	BitcoinExchange::_getMapValue(std::string_view line) {
 	value_type	result{};
 	std::size_t	pos{};
 
@@ -80,7 +81,7 @@ void	BitcoinExchange::_getMapValue(std::string line) {
 }
 
 // Extracts date from string in format 'YYYY-MM-DD' and checks if it is valid date.
-void	BitcoinExchange::_getDate(std::tm& date, std::string line,
+void	BitcoinExchange::_getDate(std::tm& date, std::string_view line,
 std::size_t& pos) {
 	std::size_t	processed{};
 
@@ -99,7 +100,15 @@ std::size_t& pos) {
 	}
 }
 
-void	BitcoinExchange::_getValue(float& num, std::string line,
+/* Function checks that:
+ * - value is a number,
+ * - it is in range,
+ * - there is nothing after number in the string.
+ *
+ * 	Here acceptable value range is [0, INT_MAX]; upper bound could be increased
+ * to FLOAT_MAX / 1000.
+ */
+void	BitcoinExchange::_getValue(float& num, std::string_view line,
 std::size_t& pos) {
 	std::size_t	processed{};
 
@@ -111,15 +120,17 @@ std::size_t& pos) {
 	} catch (std::out_of_range &e) {
 		throw (Exception(e.what()));
 	}
+
 	if (num < 0)
 		throw ( NameException(ERR_NEGVALUE, line) );
 	if (num >= static_cast<float>(std::numeric_limits<int>::max()))
 		throw ( NameException(ERR_OUTRANGE, line) );
+
 	if (pos != line.length())
 		throw ( NameException(ERR_DATE_FORMAT, line) );
 }
 
-void	BitcoinExchange::_checkSymbol(std::string line, std::size_t& pos,
+void	BitcoinExchange::_checkSymbol(std::string_view line, std::size_t& pos,
 char c) {
 	while (line[pos] == ' ')
 		pos++;
@@ -153,22 +164,23 @@ void	BitcoinExchange::convert(const std::string& filename) {
 
 	if (!input) {
 		input.close();
-		throw (NameException(ERR_NODATA, filename));
+		throw (NameException(ERR_NODATA, std::string_view{filename}));
 	}
 	std::getline(input, line);
 	std::cout << line << std::endl;
 	while (std::getline(input, line)) {
 		try {
-			this->_convertLine(line);
+			this->_convertLine(std::string_view{line});
 		} catch (NameException &e) {
-			printError(e.what());
+			printError(std::string_view{e.what()});
 		}
 	}
 	std::cout << std::endl;
 	input.close();
 }
 
-void	BitcoinExchange::_convertLine(const std::string& line) const {
+// Here acceptable value range is [0, 1000]
+void	BitcoinExchange::_convertLine(std::string_view line) const {
 	value_type	value{};
 	float		result{};
 	std::size_t	pos{};
@@ -176,6 +188,8 @@ void	BitcoinExchange::_convertLine(const std::string& line) const {
 	_getDate(const_cast<std::tm&>(value.first), line, pos);
 	_checkSymbol(line, pos, '|');
 	_getValue(value.second, line, pos);
+	if (value.second > 1000)
+		throw ( NameException(ERR_OUTRANGE, line) );
 
 	const_iterator	search = this->_data.upper_bound(value.first);
 	search--;
@@ -202,11 +216,14 @@ void	BitcoinExchange::_printDate(const std::tm& date) {
 
 #pragma region Exception
 
-void	BitcoinExchange::printError(const std::string& msg) noexcept {
+void	BitcoinExchange::printError(std::string_view msg) noexcept {
 	std::cerr << "Error: " << msg << std::endl;
 }
 
 // Exception
+/* Not using string_view in exceptions because they need to construct a c-string
+ * from msg.
+ */
 BitcoinExchange::Exception::Exception(const std::string& message)
 : _msg(message) {}
 
@@ -215,7 +232,7 @@ const char*	BitcoinExchange::Exception::what(void) const noexcept {
 }
 
 BitcoinExchange::NameException::NameException(const std::string& message,
-const std::string& name) {
+std::string_view name) {
 	this->_msg = message;
 	this->_msg.append(" '");
 	this->_msg.append(name);
@@ -229,10 +246,13 @@ const char*	BitcoinExchange::NameException::what(void) const noexcept {
 /* Assigning value to string in .cpp file, otherwise every file to include .hpp
  * file would havea copy of string.
  */
+// Exception
 const std::string	BitcoinExchange::ERR_NOFILE = "No input file provided.";
+
+// NameException, no '.' at the end
 const std::string	BitcoinExchange::ERR_NODATA = "Could not find";
-const std::string	BitcoinExchange::ERR_DATE_FORMAT = "Wrong date format in line";
-const std::string	BitcoinExchange::ERR_WRONG_DATE = "Wrong date in line";
+const std::string	BitcoinExchange::ERR_DATE_FORMAT = "Wrong date format";
+const std::string	BitcoinExchange::ERR_WRONG_DATE = "Wrong date";
 const std::string	BitcoinExchange::ERR_NOVALUE = "No value for date";
 const std::string	BitcoinExchange::ERR_NEGVALUE = "Value is negative number";
 const std::string	BitcoinExchange::ERR_OUTRANGE = "Value number is too large";
