@@ -26,7 +26,7 @@ int main( int argc, char** argv ) {
 		base.convert(argv[1]);
 	}
 	catch (std::exception &e) {
-		BitcoinExchange::printError(e.what());
+		BitcoinExchange::printError(std::string_view{e.what()});
 		return (1);
 	}
 
