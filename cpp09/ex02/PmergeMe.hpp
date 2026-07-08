@@ -16,6 +16,7 @@
 #include <string_view>
 #include <vector>
 #include <deque>
+#include <chrono>
 
 class PmergeMe {
 
@@ -26,9 +27,9 @@ public:
 	PmergeMe&	operator=(const PmergeMe& other);
 	~PmergeMe() {};
 
-	int				getSize(void) const;
-	const float&	getTimeVector(void) const;
-	const float&	getTimeDeque(void) const;
+	int										getSize(void) const;
+	const std::chrono::duration<double>&	getTimeVector(void) const;
+	const std::chrono::duration<double>&	getTimeDeque(void) const;
 
 	void	add(std::string_view str);
 	void	printSequence(void) const;
@@ -43,10 +44,15 @@ public:
 
 private:
 
+	static void	_timeFunc(void (*func)(void), std::chrono::duration<double>& time);
+
+	void	_sortVector(void);
+	void	_sortDeque(void);
+
 	std::vector<int>	_vector;
 	std::deque<int>		_deque;
-	float				_timeVector;
-	float				_timeDeque;
+	std::chrono::duration<double>	_timeVector;
+	std::chrono::duration<double>	_timeDeque;
 };
 
 class	PmergeMe::Exception : public std::exception {

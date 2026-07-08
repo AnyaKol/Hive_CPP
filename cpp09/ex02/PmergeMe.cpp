@@ -13,12 +13,14 @@
 #include "PmergeMe.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <thread>
 
+// Initialise everithing to default values.
 PmergeMe::PmergeMe(void) {
 	this->_vector = {};
 	this->_deque = {};
-	this->_timeVector = 0;
-	this->_timeDeque = 0;
+	this->_timeVector = {};
+	this->_timeDeque = {};
 }
 
 PmergeMe::PmergeMe(const PmergeMe& other) {
@@ -40,11 +42,11 @@ int	PmergeMe::getSize(void) const {
 	return (this->_vector.size());
 }
 
-const float&	PmergeMe::getTimeVector(void) const {
+const std::chrono::duration<double>&	PmergeMe::getTimeVector(void) const {
 	return (this->_timeVector);
 }
 
-const float&	PmergeMe::getTimeDeque(void) const {
+const std::chrono::duration<double>&	PmergeMe::getTimeDeque(void) const {
 	return (this->_timeDeque);
 }
 
@@ -79,8 +81,35 @@ void	PmergeMe::printSequence(void) const {
 }
 
 void	PmergeMe::sort(void) {
+	if (this->getSize() < 2)
+		return ;
+
+	std::thread	vec(_timeFunc, _sortVector, this->_timeVector);
+	std::thread	deq(_timeFunc, _sortDeque, this->_timeDeque);
+
+	vec.join();
+	deq.join();
+}
+
+void	PmergeMe::_timeFunc(void (*func)(void),
+	std::chrono::duration<double>& time) {
+	const std::chrono::time_point<std::chrono::high_resolution_clock>	start
+		{std::chrono::high_resolution_clock::now()};
+	func();
+	const std::chrono::time_point<std::chrono::high_resolution_clock>	end
+		{std::chrono::high_resolution_clock::now()};
+	time = end - start;
+}
+
+void	PmergeMe::_sortVector(void) {
 
 }
+
+void	PmergeMe::_sortDeque(void) {
+
+}
+
+
 
 #pragma region Exception
 
@@ -114,9 +143,6 @@ const char*	PmergeMe::NameException::what(void) const noexcept {
 /* Assigning value to string in .cpp file, otherwise every file to include .hpp
  * file would havea copy of string.
  */
-// Exception
-
-
 // NameException, no '.' at the end
 const std::string	PmergeMe::ERR_WINPUT = "Wrong input";
 
