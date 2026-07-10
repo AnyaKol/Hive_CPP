@@ -23,7 +23,12 @@ int main( int argc, char** argv ) {
 	std::cout << "Before:\t";
 	base.printSequence();
 
-	base.sort();
+	try {
+		base.sort();
+	} catch (PmergeMe::NameException &e) {
+		std::cerr << e.what() << std::endl;
+	}
+	
 
 	std::cout << "\nAfter:\t";
 	base.printSequence();

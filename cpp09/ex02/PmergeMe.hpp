@@ -27,9 +27,15 @@ public:
 	PmergeMe&	operator=(const PmergeMe& other);
 	~PmergeMe() {};
 
-	int										getSize(void) const;
-	const std::chrono::duration<double>&	getTimeVector(void) const;
-	const std::chrono::duration<double>&	getTimeDeque(void) const;
+	typedef std::vector<int>::iterator			vec_iterator;
+	typedef std::vector<int>::const_iterator	vec_const_iterator;
+	typedef std::deque<int>::iterator			deq_iterator;
+
+	typedef std::chrono::time_point<std::chrono::high_resolution_clock>	time_point;
+
+	const int		getSize(void) const;
+	const double	getTimeVector(void) const;
+	const double	getTimeDeque(void) const;
 
 	void	add(std::string_view str);
 	void	printSequence(void) const;
@@ -38,6 +44,7 @@ public:
 	static void	printError(std::string_view msg) noexcept;
 
 	static const std::string	ERR_WINPUT;
+	static const std::string	ERR_NOPAIR;
 
 	class	Exception;
 	class	NameException;
@@ -45,6 +52,21 @@ public:
 private:
 
 	static void	_timeFunc(void (*func)(void), std::chrono::duration<double>& time);
+	static void	_sort(std::vector<int>& container);
+	static void	_sort(std::deque<int>& container);
+	static int	_getJacobsthalNumber(int& i);
+
+	template <typename T, typename U = typename T::const_iterator>
+	static bool	_isSorted(T& container) {
+		U	second = container.begin() + 1;
+		U	end = container.end();
+
+		for (; second != end; second++) {
+			if (second < second - 1)
+				return (false);
+		}
+		return (true);
+	};
 
 	void	_sortVector(void);
 	void	_sortDeque(void);
