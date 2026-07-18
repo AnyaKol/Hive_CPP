@@ -15,6 +15,7 @@
 #include <stdexcept>
 #include <thread>
 #include <cmath>
+#include <algorithm>
 
 #pragma region Class init and getters
 // Initialise everithing to default values.
@@ -111,8 +112,8 @@ void	PmergeMe::_timeFunc(void (*func)(void),
 
 // Start of reccursion
 void	PmergeMe::_sortVector(void) {
-	_sort(this->_vector);
-	if (_isSorted(this->_vector))
+	_sort(this->_vector, 1);
+	if ( std::is_sorted( this->_vector.begin(), this->_vector.end() ) )
 		std::cout << "Vector: Success!" << std::endl;
 	else
 		std::cout << "Vector: Fail!" << std::endl;
@@ -120,14 +121,22 @@ void	PmergeMe::_sortVector(void) {
 
 // Start of reccursion
 void	PmergeMe::_sortDeque(void) {
-	_sort(this->_deque);
-	if (_isSorted(this->_deque))
+	_sort(this->_deque, 1);
+	if ( std::is_sorted( this->_deque.begin(), this->_deque.end() ) )
 		std::cout << "Deque: Success!" << std::endl;
 	else
 		std::cout << "Deque: Fail!" << std::endl;
 }
 
 /* Sorting:
+ * 	1.	Perform comparisons and swap (if necessary) members of pairs; size of 1
+ * 		member of pair is 2^ 'level of reccursion' (1, 2, 4...);
+ * 	2.	Pass sequence to next level of reccursion and pass double of element size;
+ * 	3.	Create empty tail container and push there smaller element of each pair
+ * 		except the first;
+ * 	4.	
+
+
  * 	1.	Create new container - for tail sequence; given container serves as main;
  * 	2.	Divide given sequence into pairs - bigger number to main;
  * 	3.	Create copy of main to later find pair by index;
@@ -142,60 +151,96 @@ void	PmergeMe::_sortDeque(void) {
  * 3. Start inserting into main numbers from tail from end to start of group;
  * 4. If tail isn't empty repeat with next Jacobsthal number.
 */
-void	PmergeMe::_sort(std::vector<int>& main) {
-	if (main.size() < 2)
+void	PmergeMe::_sort(std::vector<int>& container, const int elem_size) {
+	if (container.size() < 2 * elem_size)
 		return ;
 
-// 1. Create empty container tail
-	std::vector<int>	tail{};
-	vec_iterator		it = main.begin();
-	vec_iterator		end = main.end();
+	vec_iterator	it = container.begin() + elem_size - 1;
+	vec_iterator	end = container.end();
 
-// 2. Divide into pairs
-	for (; it < end; it++) {
-		if (it + 1 == end || *it < *(it + 1)) {
-			tail.push_back(*it);
-			it = main.erase(it);
-			if (it == end)
+// 1. Compare last element of pairs; elem_size - size of 1 element in pair
+	for (; it < end; it += elem_size) {
+		if (end - it <= elem_size)
 				break ;
-		} else {
-			tail.push_back(*(it + 1));
-			main.erase(it + 1);
+
+		vec_iterator	next = it + elem_size;
+
+		if (*it > *next) {
+			_swap_pairs(it - (elem_size - 1), elem_size);
 		}
 	}
 
-// 3. Copy main sequence
-	std::vector<int>	copy{main};
+// 2. Reccursion
+	_sort(container, elem_size * 2);
 
-// 4. Sort main sequence
-	_sort(main);// Recursion
+// 3. Create empty container and split pairs
+	std::vector<int>	tail{};
 
-// 5. Insert pair of smallest number in main
-	it = copy.begin();
-	end = copy.end();
-
-	for (int i = 0; it + i < end; i++) {
-		if (*(it + i) == *main.begin()) {
-			main.insert(main.begin(), *(tail.begin() + i));
-			tail.erase(tail.begin() + i);
+	it = container.begin() + (2 * elem_size);
+	for (; it < end; it += 2 * elem_size) {
+		if (end - it <= elem_size) {
+			_push_elem();
 			break ;
 		}
-		if (it + i == end - 1)
-			throw (NameException(ERR_NOPAIR, std::string_view{
-				std::to_string(*main.begin())
-			}));
+		_push_elem(elem_size);
 	}
 
-	int	i = 1;
-	int	jacob = 1;
-	int	groupSize;
 
-	while (tail.size() != 0) {
-		groupSize = -jacob;
-		jacob = _getJacobsthalNumber(i);
-		groupSize += jacob;
+
+//// 1. Create empty container tail
+//	std::vector<int>	tail{};
+
+
+//// 2. Divide into pairs
+//	for (; it < end; it++) {
+//		if (it + 1 == end || *it < *(it + 1)) {
+//			tail.push_back(*it);
+//			it = main.erase(it);
+//			if (it == end)
+//				break ;
+//		} else {
+//			tail.push_back(*(it + 1));
+//			main.erase(it + 1);
+//		}
+//	}
+
+//// 3. Copy main sequence
+//	std::vector<int>	copy{main};
+
+//// 4. Sort main sequence
+//	_sort(main);// Recursion
+
+//// 5. Insert pair of smallest number in main
+//	it = copy.begin();
+//	end = copy.end();
+
+//	for (int i = 0; it + i < end; i++) {
+//		if (*(it + i) == *main.begin()) {
+//			main.insert(main.begin(), *(tail.begin() + i));
+//			tail.erase(tail.begin() + i);
+//			break ;
+//		}
+//		if (it + i == end - 1)
+//			throw (NameException(ERR_NOPAIR, std::string_view{
+//				std::to_string(*main.begin())
+//			}));
+//	}
+
+//	int	i = 1;
+//	int	jacob = 1;
+//	int	groupSize;
+
+//	while (tail.size() != 0) {
+//		groupSize = -jacob;
+//		jacob = _getJacobsthalNumber(i);
+//		groupSize += jacob;
 		
-	}
+//	}
+}
+
+void	PmergeMe::_sort(std::deque<int>& container, const int elem_size) {
+	if (container.size() < 2)
+		return ;
 }
 
 // Find Jacobsthal number at index 'i'.
@@ -203,10 +248,6 @@ int	PmergeMe::_getJacobsthalNumber(int& i) {
 	int	res = (std::pow(2, i + 2) - std::pow(-1, i)) / 3;
 	i++;
 	return (res);
-}
-
-void	PmergeMe::_sort(std::deque<int>& container) {
-
 }
 #pragma endregion
 

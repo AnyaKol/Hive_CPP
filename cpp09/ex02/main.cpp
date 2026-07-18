@@ -28,7 +28,6 @@ int main( int argc, char** argv ) {
 	} catch (PmergeMe::NameException &e) {
 		std::cerr << e.what() << std::endl;
 	}
-	
 
 	std::cout << "\nAfter:\t";
 	base.printSequence();

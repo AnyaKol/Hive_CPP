@@ -52,24 +52,24 @@ public:
 private:
 
 	static void	_timeFunc(void (*func)(void), std::chrono::duration<double>& time);
-	static void	_sort(std::vector<int>& container);
-	static void	_sort(std::deque<int>& container);
 	static int	_getJacobsthalNumber(int& i);
-
-	template <typename T, typename U = typename T::const_iterator>
-	static bool	_isSorted(T& container) {
-		U	second = container.begin() + 1;
-		U	end = container.end();
-
-		for (; second != end; second++) {
-			if (second < second - 1)
-				return (false);
-		}
-		return (true);
-	};
 
 	void	_sortVector(void);
 	void	_sortDeque(void);
+	void	_sort(std::vector<int>& container, const int elem_size);
+	void	_sort(std::deque<int>& container, const int elem_size);
+
+	template <typename T, typename U = typename T::iterator>
+	void	_swap_pairs(U it, const int elem_size) {
+		U	end = it + elem_size;
+		int	temp;
+
+		for (; it < end; it++) {
+			temp = *it;
+			*it = *(it + elem_size);
+			*(it + elem_size) = temp;
+		}
+	}
 
 	std::vector<int>	_vector;
 	std::deque<int>		_deque;
