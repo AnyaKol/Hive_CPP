@@ -56,20 +56,26 @@ private:
 
 	void	_sortVector(void);
 	void	_sortDeque(void);
-	void	_sort(std::vector<int>& container, const int elem_size);
-	void	_sort(std::deque<int>& container, const int elem_size);
+	void	_sort(std::vector<int>& container, const int elemSize);
+	void	_sort(std::deque<int>& container, const int elemSize);
 
 	template <typename T, typename U = typename T::iterator>
-	void	_swap_pairs(U it, const int elem_size) {
-		U	end = it + elem_size;
+	void	_swapPairs(U it, const int elemSize) {
+		U	end = it + elemSize;
 		int	temp;
 
 		for (; it < end; it++) {
 			temp = *it;
-			*it = *(it + elem_size);
-			*(it + elem_size) = temp;
+			*it = *(it + elemSize);
+			*(it + elemSize) = temp;
 		}
 	}
+
+	// moves it after elemSize elements
+	template <typename T, typename U = typename T::iterator>
+	void	_pushElem(U& it, T& tail, const int elemSize) {
+
+	} 
 
 	std::vector<int>	_vector;
 	std::deque<int>		_deque;

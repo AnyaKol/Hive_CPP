@@ -151,38 +151,53 @@ void	PmergeMe::_sortDeque(void) {
  * 3. Start inserting into main numbers from tail from end to start of group;
  * 4. If tail isn't empty repeat with next Jacobsthal number.
 */
-void	PmergeMe::_sort(std::vector<int>& container, const int elem_size) {
-	if (container.size() < 2 * elem_size)
+void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {                                                            
+	if (container.size() < 2 * elemSize)
 		return ;
 
-	vec_iterator	it = container.begin() + elem_size - 1;
+	vec_iterator	it = container.begin() + elemSize - 1;
 	vec_iterator	end = container.end();
 
-// 1. Compare last element of pairs; elem_size - size of 1 element in pair
-	for (; it < end; it += elem_size) {
-		if (end - it <= elem_size)
-				break ;
-
-		vec_iterator	next = it + elem_size;
+// 1. Compare last element of pairs; elemSize - size of 1 element in pair
+	for (; end - it > elemSize; it += 2 * elemSize) {
+		vec_iterator	next = it + elemSize;
 
 		if (*it > *next) {
-			_swap_pairs(it - (elem_size - 1), elem_size);
+			_swapPairs(it - (elemSize - 1), elemSize);
 		}
+		if (end - it < 2 * elemSize)
+			break ;
 	}
 
+
 // 2. Reccursion
-	_sort(container, elem_size * 2);
+	_sort(container, elemSize * 2);
 
 // 3. Create empty container and split pairs
 	std::vector<int>	tail{};
 
-	it = container.begin() + (2 * elem_size);
-	for (; it < end; it += 2 * elem_size) {
-		if (end - it <= elem_size) {
-			_push_elem();
+	it = container.begin() + (2 * elemSize);
+	for (; end - it > elemSize; it += elemSize) {
+		_pushElem(it, tail, elemSize);
+		if (end - it < elemSize)
 			break ;
+	}
+
+// 4. 
+	int	jacobIndex = 0;
+	int	jacob = 1;
+	int	groupSize;
+
+	while ( !tail.empty() ) {
+		jacobIndex++;
+		groupSize = -jacob;
+		jacob = _getJacobsthalNumber(jacobIndex);
+		groupSize += jacob;
+		it = tail.begin() + groupSize * elemSize  - 1;
+
+		for (int i = 0; i < groupSize; i++) {
+			_binarySearchInsert(container, it, elemSize, jacob);
 		}
-		_push_elem(elem_size);
 	}
 
 
@@ -238,7 +253,7 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elem_size) {
 //	}
 }
 
-void	PmergeMe::_sort(std::deque<int>& container, const int elem_size) {
+void	PmergeMe::_sort(std::deque<int>& container, const int elemSize) {
 	if (container.size() < 2)
 		return ;
 }
