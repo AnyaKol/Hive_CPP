@@ -59,23 +59,38 @@ private:
 	void	_sort(std::vector<int>& container, const int elemSize);
 	void	_sort(std::deque<int>& container, const int elemSize);
 
+	/* Swaps 'elemSize' elements starting from 'it' and moves 'it' to the last
+	 * element of swapped sequence.
+	 */
 	template <typename T, typename U = typename T::iterator>
-	void	_swapPairs(U it, const int elemSize) {
+	void	_swapPairs(U& it, const int elemSize) {
 		U	end = it + elemSize;
 		int	temp;
 
 		for (; it < end; it++) {
-			temp = *it;
-			*it = *(it + elemSize);
-			*(it + elemSize) = temp;
-		}
-	}
+			U	next = it + elemSize;
 
-	// moves it after elemSize elements
+			temp = *it;
+			*it = *next;
+			*next = temp;
+		}
+		it += elemSize;
+	};
+
+	/* moves it after elemSize elements.
+	 */
 	template <typename T, typename U = typename T::iterator>
 	void	_pushElem(U& it, T& tail, const int elemSize) {
 
-	} 
+	};
+
+	/* moves it after elemSize elements.
+	 */
+	template <typename T, typename U = typename T::iterator>
+	void	_binarySearchInsert(T& main, U& tail_it, const int elemSize,
+		const int jacobNum) {
+
+	};
 
 	std::vector<int>	_vector;
 	std::deque<int>		_deque;

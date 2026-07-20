@@ -134,22 +134,14 @@ void	PmergeMe::_sortDeque(void) {
  * 	2.	Pass sequence to next level of reccursion and pass double of element size;
  * 	3.	Create empty tail container and push there smaller element of each pair
  * 		except the first;
- * 	4.	
-
-
- * 	1.	Create new container - for tail sequence; given container serves as main;
- * 	2.	Divide given sequence into pairs - bigger number to main;
- * 	3.	Create copy of main to later find pair by index;
- * 	4.	Pass new main (sequence of bigger numbers) to sort;
- * 	5.	Find in copy previous index of smallest number in sorted main and insert
- * 		it into main;
- * 	6.	Insert numbers from tail while tail isn't empty.
+ * 	4.	Push elements from tail back to main using Jacobsthal numbers and
+ * 		binary search.
  * 
  * Insertion order:
- * 1. Get Jacobsthal number;
- * 2. Find size of the group;
- * 3. Start inserting into main numbers from tail from end to start of group;
- * 4. If tail isn't empty repeat with next Jacobsthal number.
+ * 	1.	Get Jacobsthal number;
+ * 	2.	Find size of the group;
+ * 	3.	Start inserting into main numbers from tail from end to start of group;
+ * 	4.	If tail isn't empty repeat with next Jacobsthal number.
 */
 void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {                                                            
 	if (container.size() < 2 * elemSize)
@@ -159,16 +151,14 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 	vec_iterator	end = container.end();
 
 // 1. Compare last element of pairs; elemSize - size of 1 element in pair
-	for (; end - it > elemSize; it += 2 * elemSize) {
+// _swapPairs moves iterator 'it' to the last element of 'next'.
+	for (; end - it >= 2 * elemSize; it++) {
 		vec_iterator	next = it + elemSize;
 
 		if (*it > *next) {
 			_swapPairs(it - (elemSize - 1), elemSize);
 		}
-		if (end - it < 2 * elemSize)
-			break ;
 	}
-
 
 // 2. Reccursion
 	_sort(container, elemSize * 2);
@@ -177,80 +167,26 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 	std::vector<int>	tail{};
 
 	it = container.begin() + (2 * elemSize);
-	for (; end - it > elemSize; it += elemSize) {
+	for (; end - it > elemSize; it++) {
 		_pushElem(it, tail, elemSize);
-		if (end - it < elemSize)
-			break ;
 	}
 
 // 4. 
 	int	jacobIndex = 0;
-	int	jacob = 1;
+	int	jacobNum = 1;
 	int	groupSize;
 
 	while ( !tail.empty() ) {
 		jacobIndex++;
-		groupSize = -jacob;
-		jacob = _getJacobsthalNumber(jacobIndex);
-		groupSize += jacob;
-		it = tail.begin() + groupSize * elemSize  - 1;
+		groupSize = -jacobNum;
+		jacobNum = _getJacobsthalNumber(jacobIndex);
+		groupSize += jacobNum;
+		it = tail.begin() + groupSize * elemSize - 1;
 
 		for (int i = 0; i < groupSize; i++) {
-			_binarySearchInsert(container, it, elemSize, jacob);
+			_binarySearchInsert(container, it, elemSize, jacobNum);
 		}
 	}
-
-
-
-//// 1. Create empty container tail
-//	std::vector<int>	tail{};
-
-
-//// 2. Divide into pairs
-//	for (; it < end; it++) {
-//		if (it + 1 == end || *it < *(it + 1)) {
-//			tail.push_back(*it);
-//			it = main.erase(it);
-//			if (it == end)
-//				break ;
-//		} else {
-//			tail.push_back(*(it + 1));
-//			main.erase(it + 1);
-//		}
-//	}
-
-//// 3. Copy main sequence
-//	std::vector<int>	copy{main};
-
-//// 4. Sort main sequence
-//	_sort(main);// Recursion
-
-//// 5. Insert pair of smallest number in main
-//	it = copy.begin();
-//	end = copy.end();
-
-//	for (int i = 0; it + i < end; i++) {
-//		if (*(it + i) == *main.begin()) {
-//			main.insert(main.begin(), *(tail.begin() + i));
-//			tail.erase(tail.begin() + i);
-//			break ;
-//		}
-//		if (it + i == end - 1)
-//			throw (NameException(ERR_NOPAIR, std::string_view{
-//				std::to_string(*main.begin())
-//			}));
-//	}
-
-//	int	i = 1;
-//	int	jacob = 1;
-//	int	groupSize;
-
-//	while (tail.size() != 0) {
-//		groupSize = -jacob;
-//		jacob = _getJacobsthalNumber(i);
-//		groupSize += jacob;
-		
-//	}
 }
 
 void	PmergeMe::_sort(std::deque<int>& container, const int elemSize) {
