@@ -151,7 +151,7 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 	vec_iterator	end = container.end();
 
 // 1. Compare last element of pairs; elemSize - size of 1 element in pair
-// _swapPairs moves iterator 'it' to the last element of 'next'.
+// _swapPairs moves iterator 'it' to the last number of 'next'.
 	for (; end - it >= 2 * elemSize; it++) {
 		vec_iterator	next = it + elemSize;
 
@@ -164,11 +164,14 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 	_sort(container, elemSize * 2);
 
 // 3. Create empty container and split pairs
+// _pushElem moves iterator 'it' to the first number after pushed element.
 	std::vector<int>	tail{};
 
 	it = container.begin() + (2 * elemSize);
-	for (; end - it > elemSize; it++) {
-		_pushElem(it, tail, elemSize);
+	for (; end - it > elemSize; it += elemSize) {
+		_pushElem(container, it, tail, elemSize);
+		if (end - it < elemSize)
+			break;
 	}
 
 // 4. 

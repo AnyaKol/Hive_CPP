@@ -77,11 +77,12 @@ private:
 		it += elemSize;
 	};
 
-	/* moves it after elemSize elements.
+	/* _pushElem moves iterator 'it' to the first number after pushed element.
 	 */
 	template <typename T, typename U = typename T::iterator>
-	void	_pushElem(U& it, T& tail, const int elemSize) {
-
+	void	_pushElem(T& container, U& it, T& tail, const int elemSize) {
+		tail.insert(tail.end(), it, it + elemSize);
+		it = container.erase(it, it + elemSize);
 	};
 
 	/* moves it after elemSize elements.
