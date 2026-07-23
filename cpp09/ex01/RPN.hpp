@@ -31,6 +31,9 @@ public:
 	static void	printError(std::string_view msg) noexcept;
 
 	static const std::string	ERR_WNUM;
+	static const std::string	ERR_ZERO;
+	static const std::string	ERR_OVERFLOW;
+
 	static const std::string	ERR_WINPUT;
 
 	class Exception;
@@ -40,6 +43,7 @@ private:
 
 	void	_addOne(unsigned char value);
 	void	_applySign(unsigned char value);
+	void	_checkOverflow(float a, float b, unsigned char value);
 
 	std::stack<int>	_stack;
 };

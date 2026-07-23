@@ -13,6 +13,7 @@
 #include "RPN.hpp"
 #include <iostream>
 #include <cctype>
+#include <limits>
 
 RPN::RPN(const RPN& other) {
 	*this = other;
@@ -53,6 +54,7 @@ void	RPN::_applySign(unsigned char value) {
 	int	b {this->_stack.top()};
 	this->_stack.pop();
 
+	_checkOverflow(static_cast<float>(a), static_cast<float>(b), value);
 	if (value == '+')
 		this->_stack.push(a + b);
 	else if (value == '-')
@@ -61,6 +63,26 @@ void	RPN::_applySign(unsigned char value) {
 		this->_stack.push(a * b);
 	else
 		this->_stack.push(b / a);
+}
+
+void	RPN::_checkOverflow(float a, float b, unsigned char value) {
+	float	res;
+
+	if (value == '+')
+		res = a + b;
+	else if (value == '-')
+		res = b - a;
+	else if (value == '*')
+		res = a * b;
+	else {
+		if (a == 0)
+			throw (Exception(ERR_ZERO));
+		res = b / a;
+	}
+
+	if (res > static_cast<float>( std::numeric_limits<int>::max() )
+		|| res < static_cast<float>( std::numeric_limits<int>::min() ))
+		throw (Exception(ERR_OVERFLOW));
 }
 
 int	RPN::getResult(void) const {
@@ -97,6 +119,8 @@ const char*	RPN::NameException::what(void) const noexcept {
 
 // Exception
 const std::string	RPN::ERR_WNUM = "Wrong number of values or operators.";
+const std::string	RPN::ERR_ZERO = "Division by 0.";
+const std::string	RPN::ERR_OVERFLOW = "Int overflow.";
 
 // NameException
 const std::string	RPN::ERR_WINPUT = "Wrong input";

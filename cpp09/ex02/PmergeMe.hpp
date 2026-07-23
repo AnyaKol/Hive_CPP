@@ -63,7 +63,7 @@ private:
 	 * element of swapped sequence.
 	 */
 	template <typename T, typename U = typename T::iterator>
-	void	_swapPairs(U& it, const int elemSize) {
+	U	_swapPairs(U it, const int elemSize) {
 		U	end = it + elemSize;
 		int	temp;
 
@@ -74,23 +74,40 @@ private:
 			*it = *next;
 			*next = temp;
 		}
-		it += elemSize;
+		return (it + elemSize);
 	};
 
 	/* _pushElem moves iterator 'it' to the first number after pushed element.
 	 */
 	template <typename T, typename U = typename T::iterator>
-	void	_pushElem(T& container, U& it, T& tail, const int elemSize) {
+	U	_pushElem(T& container, U it, T& tail, const int elemSize) {
 		tail.insert(tail.end(), it, it + elemSize);
 		it = container.erase(it, it + elemSize);
+		return (it);
 	};
 
 	/* moves it after elemSize elements.
 	 */
 	template <typename T, typename U = typename T::iterator>
-	void	_binarySearchInsert(T& main, U& tail_it, const int elemSize,
+	void	_binarySearchInsert(T& main, U tail_it, const int elemSize,
 		const int jacobNum) {
+		U	main_it;
+		int low = 1;
+		int high = std::min(main.size() / elemSize, jacobNum);
+		int	middle;
 
+		tail_it--;
+		while (high >= low) {
+			middle = (high + low) / 2;
+			main_it = main.begin() + (middle * elemSize - 1);
+
+			if (*tail_it == *main_it)
+				break;
+			if (*tail_it > *main_it)
+				low = middle + 1;
+			else
+				high = middle - 1;
+		}
 	};
 
 	std::vector<int>	_vector;

@@ -46,6 +46,7 @@ public:
 	static const std::string	ERR_NEGVALUE;
 	static const std::string	ERR_OUTRANGE;
 	static const std::string	ERR_MAPADD;
+	static const std::string	ERR_DATE_OUTRANGE;
 
 	class	Exception;
 	class	NameException;

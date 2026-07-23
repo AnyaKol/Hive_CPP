@@ -151,12 +151,12 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 	vec_iterator	end = container.end();
 
 // 1. Compare last element of pairs; elemSize - size of 1 element in pair
-// _swapPairs moves iterator 'it' to the last number of 'next'.
+// _swapPairs returns iterator to the last number of 'next'.
 	for (; end - it >= 2 * elemSize; it++) {
 		vec_iterator	next = it + elemSize;
 
 		if (*it > *next) {
-			_swapPairs(it - (elemSize - 1), elemSize);
+			it = _swapPairs(it - (elemSize - 1), elemSize);
 		}
 	}
 
@@ -169,12 +169,12 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 
 	it = container.begin() + (2 * elemSize);
 	for (; end - it > elemSize; it += elemSize) {
-		_pushElem(container, it, tail, elemSize);
+		it = _pushElem(container, it, tail, elemSize);
 		if (end - it < elemSize)
 			break;
 	}
 
-// 4. 
+// 4. 'it' points to number after current element of tail.
 	int	jacobIndex = 0;
 	int	jacobNum = 1;
 	int	groupSize;
@@ -184,7 +184,7 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 		groupSize = -jacobNum;
 		jacobNum = _getJacobsthalNumber(jacobIndex);
 		groupSize += jacobNum;
-		it = tail.begin() + groupSize * elemSize - 1;
+		it = tail.begin() + groupSize * elemSize;
 
 		for (int i = 0; i < groupSize; i++) {
 			_binarySearchInsert(container, it, elemSize, jacobNum);

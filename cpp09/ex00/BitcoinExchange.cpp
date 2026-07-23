@@ -192,6 +192,8 @@ void	BitcoinExchange::_convertLine(std::string_view line) const {
 		throw ( NameException(ERR_OUTRANGE, line) );
 
 	const_iterator	search = this->_data.upper_bound(value.first);
+	if (search == this->_data.begin())
+		throw ( NameException(ERR_DATE_OUTRANGE, line) );
 	search--;
 	result = value.second * search->second;
 
@@ -257,5 +259,6 @@ const std::string	BitcoinExchange::ERR_NOVALUE = "No value for date";
 const std::string	BitcoinExchange::ERR_NEGVALUE = "Value is negative number";
 const std::string	BitcoinExchange::ERR_OUTRANGE = "Value number is too large";
 const std::string	BitcoinExchange::ERR_MAPADD = "Failed to add date/value pair";
+const std::string	BitcoinExchange::ERR_DATE_OUTRANGE = "Date is before start of database";
 
 #pragma endregion
