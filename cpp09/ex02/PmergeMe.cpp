@@ -41,16 +41,16 @@ PmergeMe&	PmergeMe::operator=(const PmergeMe& other) {
 }
 
 // Getters
-const int	PmergeMe::getSize(void) const {
+int	PmergeMe::getSize(void) const {
 	return (this->_vector.size());
 }
 
-const double	PmergeMe::getTimeVector(void) const {
+double	PmergeMe::getTimeVector(void) const {
 
 	return (this->_timeVector.count());
 }
 
-const double	PmergeMe::getTimeDeque(void) const {
+double	PmergeMe::getTimeDeque(void) const {
 	return (this->_timeDeque.count());
 }
 #pragma endregion
@@ -144,7 +144,7 @@ void	PmergeMe::_sortDeque(void) {
  * 	4.	If tail isn't empty repeat with next Jacobsthal number.
 */
 void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {                                                            
-	if (container.size() < 2 * elemSize)
+	if (container.size() < static_cast<long unsigned int>(2 * elemSize))
 		return ;
 
 	vec_iterator	it = container.begin() + elemSize - 1;
@@ -187,7 +187,7 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 		it = tail.begin() + groupSize * elemSize;
 
 		for (int i = 0; i < groupSize; i++) {
-			_binarySearchInsert(container, it, elemSize, jacobNum);
+			it = _binarySearchInsert(container, tail, it, elemSize, jacobNum);
 		}
 	}
 }
@@ -195,6 +195,7 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 void	PmergeMe::_sort(std::deque<int>& container, const int elemSize) {
 	if (container.size() < 2)
 		return ;
+	(void) elemSize;
 }
 
 // Find Jacobsthal number at index 'i'.

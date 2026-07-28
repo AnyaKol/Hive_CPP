@@ -33,9 +33,9 @@ public:
 
 	typedef std::chrono::time_point<std::chrono::high_resolution_clock>	time_point;
 
-	const int		getSize(void) const;
-	const double	getTimeVector(void) const;
-	const double	getTimeDeque(void) const;
+	int		getSize(void) const;
+	double	getTimeVector(void) const;
+	double	getTimeDeque(void) const;
 
 	void	add(std::string_view str);
 	void	printSequence(void) const;
@@ -62,7 +62,7 @@ private:
 	/* Swaps 'elemSize' elements starting from 'it' and moves 'it' to the last
 	 * element of swapped sequence.
 	 */
-	template <typename T, typename U = typename T::iterator>
+	template <typename U>
 	U	_swapPairs(U it, const int elemSize) {
 		U	end = it + elemSize;
 		int	temp;
@@ -86,28 +86,42 @@ private:
 		return (it);
 	};
 
-	/* moves it after elemSize elements.
+	/* main_it points to last number of element at position 'middle';
+	 * 'insert_pos' is a position after which to insert; it can have values in range [0, high];
+	 * inserting after 'insert_pos' = 0 means inserting at the beginning of range;
+	 * 'main_insert_it' is calculated from 'insert_pos'; values in range [main.begin(), main.begin() + main.size()];
 	 */
 	template <typename T, typename U = typename T::iterator>
-	void	_binarySearchInsert(T& main, U tail_it, const int elemSize,
+	U	_binarySearchInsert(T& main, T& tail, U tail_end, const int elemSize,
 		const int jacobNum) {
-		U	main_it;
+	// 1. Find position in main after which to insert element from tail.
+		int	insert_pos = 0;
 		int low = 1;
 		int high = std::min(main.size() / elemSize, jacobNum);
 		int	middle;
 
-		tail_it--;
 		while (high >= low) {
 			middle = (high + low) / 2;
-			main_it = main.begin() + (middle * elemSize - 1);
+			U main_it = main.begin() + (middle * elemSize - 1);
 
-			if (*tail_it == *main_it)
-				break;
-			if (*tail_it > *main_it)
+			if (*(tail_end - 1) >= *main_it) {
+				insert_pos = middle;
+				if (*(tail_end - 1) == *main_it)
+					break;
 				low = middle + 1;
+			}
 			else
 				high = middle - 1;
 		}
+
+	// 2. Insert current element in tail to main and erase it from tail.
+		U main_insert = main.begin() + (insert_pos * elemSize);
+
+		for (U tail_start = tail_end - elemSize; tail_end != tail_start; tail_end--) {
+			main_insert = main.insert(main_insert, *(tail_end - 1));
+			tail_end = tail.erase(tail_end - 1);
+		}
+		return (tail_end);
 	};
 
 	std::vector<int>	_vector;
