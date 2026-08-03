@@ -17,6 +17,7 @@
 #include <vector>
 #include <deque>
 #include <chrono>
+#include <iostream>
 
 class PmergeMe {
 
@@ -33,13 +34,25 @@ public:
 
 	typedef std::chrono::time_point<std::chrono::high_resolution_clock>	time_point;
 
-	int		getSize(void) const;
-	double	getTimeVector(void) const;
-	double	getTimeDeque(void) const;
+	int						getSize(void) const;
+	double					getTimeVector(void) const;
+	double					getTimeDeque(void) const;
+	const std::vector<int>&	getSequence(void) const;
 
 	void	add(std::string_view str);
-	void	printSequence(void) const;
 	void	sort(void);
+
+	template <typename T, typename U = typename T::const_iterator>
+	static void	printSequence(T& container) {
+	U	it = container.cbegin();
+	U	end = container.cend();
+
+	for (; it != end; it++) {
+		std::cout << *it;
+		if (it + 1 != end)
+			std::cout << " ";
+	}
+}
 
 	static void	printError(std::string_view msg) noexcept;
 
@@ -51,9 +64,9 @@ public:
 
 private:
 
-	static void	_timeFunc(void (*func)(void), std::chrono::duration<double>& time);
-	static int	_getJacobsthalNumber(int& i);
+	static int	_getJacobsthalNumber(int i);
 
+	void	_timeFunc(void (PmergeMe::*func)(void), std::chrono::duration<double>& time);
 	void	_sortVector(void);
 	void	_sortDeque(void);
 	void	_sort(std::vector<int>& container, const int elemSize);
@@ -63,7 +76,7 @@ private:
 	 * element of swapped sequence.
 	 */
 	template <typename U>
-	U	_swapPairs(U it, const int elemSize) {
+	void	_swapPairs(U it, const int elemSize) {
 		U	end = it + elemSize;
 		int	temp;
 
@@ -74,7 +87,6 @@ private:
 			*it = *next;
 			*next = temp;
 		}
-		return (it + elemSize);
 	};
 
 	/* _pushElem moves iterator 'it' to the first number after pushed element.
@@ -97,7 +109,7 @@ private:
 	// 1. Find position in main after which to insert element from tail.
 		int	insert_pos = 0;
 		int low = 1;
-		int high = std::min(main.size() / elemSize, jacobNum);
+		int high = std::min(static_cast<int>(main.size() / elemSize), jacobNum);
 		int	middle;
 
 		while (high >= low) {
@@ -117,9 +129,11 @@ private:
 	// 2. Insert current element in tail to main and erase it from tail.
 		U main_insert = main.begin() + (insert_pos * elemSize);
 
-		for (U tail_start = tail_end - elemSize; tail_end != tail_start; tail_end--) {
+		for (int i = 0; i < elemSize; i++) {
 			main_insert = main.insert(main_insert, *(tail_end - 1));
 			tail_end = tail.erase(tail_end - 1);
+			if ( tail.empty() )
+				break;
 		}
 		return (tail_end);
 	};

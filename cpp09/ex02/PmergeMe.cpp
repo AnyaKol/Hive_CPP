@@ -11,9 +11,7 @@
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
-#include <iostream>
 #include <stdexcept>
-#include <thread>
 #include <cmath>
 #include <algorithm>
 
@@ -53,6 +51,10 @@ double	PmergeMe::getTimeVector(void) const {
 double	PmergeMe::getTimeDeque(void) const {
 	return (this->_timeDeque.count());
 }
+
+const std::vector<int>&	PmergeMe::getSequence(void) const {
+	return (this->_vector);
+}
 #pragma endregion
 
 #pragma region Public functions
@@ -74,38 +76,20 @@ void	PmergeMe::add(std::string_view str) {
 	this->_deque.push_back(num);
 }
 
-void	PmergeMe::printSequence(void) const {
-	vec_const_iterator	it = this->_vector.cbegin();
-	vec_const_iterator	end = this->_vector.cend();
-
-	for (; it != end; it++) {
-		std::cout << *it;
-		if (it + 1 != end)
-			std::cout << " ";
-	}
-}
-
-/* Each thread executes  _timeFunc  with arguments:
- * 	- function to sort container;
- * 	- reference to variable where to write time of execution.
- */
 void	PmergeMe::sort(void) {
 	if (this->getSize() < 2)
 		return ;
 
-	std::thread	vec(_timeFunc, _sortVector, this->_timeVector);
-	std::thread	deq(_timeFunc, _sortDeque, this->_timeDeque);
-
-	vec.join();
-	deq.join();
+	_timeFunc( &PmergeMe::_sortVector, this->_timeVector );
+	//_timeFunc( &PmergeMe::_sortDeque, this->_timeDeque );
 }
 #pragma endregion
 
 #pragma region Private functions
-void	PmergeMe::_timeFunc(void (*func)(void),
+void	PmergeMe::_timeFunc(void (PmergeMe::*func)(void),
 	std::chrono::duration<double>& time) {
 	const time_point	start{std::chrono::high_resolution_clock::now()};
-	func();
+	(this->*func)();
 	const time_point	end{std::chrono::high_resolution_clock::now()};
 	time = end - start;
 }
@@ -143,22 +127,30 @@ void	PmergeMe::_sortDeque(void) {
  * 	3.	Start inserting into main numbers from tail from end to start of group;
  * 	4.	If tail isn't empty repeat with next Jacobsthal number.
 */
-void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {                                                            
-	if (container.size() < static_cast<long unsigned int>(2 * elemSize))
-		return ;
+void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 
-	vec_iterator	it = container.begin() + elemSize - 1;
+	std::cout << elemSize;
+                                                           
+	if (container.size() < static_cast<long unsigned int>(2 * elemSize)) {
+		std::cout << "\n" << std::endl;
+		return ;
+	}
+
+	vec_iterator	it = container.begin();
 	vec_iterator	end = container.end();
 
 // 1. Compare last element of pairs; elemSize - size of 1 element in pair
-// _swapPairs returns iterator to the last number of 'next'.
-	for (; end - it >= 2 * elemSize; it++) {
+	for (; end - it >= 2 * elemSize; it += 2 * elemSize) {
 		vec_iterator	next = it + elemSize;
 
-		if (*it > *next) {
-			it = _swapPairs(it - (elemSize - 1), elemSize);
+		if ( *(it + (elemSize - 1)) > *(next + (elemSize - 1)) ) {
+			_swapPairs(it, elemSize);
 		}
 	}
+
+	std::cout << "\tStep 1. Swap in pairs:\t";
+	printSequence(this->_vector);
+	std::cout << "\n" << std::endl;
 
 // 2. Reccursion
 	_sort(container, elemSize * 2);
@@ -168,28 +160,51 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 	std::vector<int>	tail{};
 
 	it = container.begin() + (2 * elemSize);
-	for (; end - it > elemSize; it += elemSize) {
+	for (; end - it >= elemSize; it += elemSize) {
 		it = _pushElem(container, it, tail, elemSize);
+		end = container.end();
 		if (end - it < elemSize)
 			break;
 	}
 
+	std::cout << elemSize <<  "\tStep 3. Split into main and tail:\n\tMain:\t";
+	printSequence(this->_vector);
+	std::cout << "\n\tTail:\t";
+	printSequence(tail);
+	std::cout << "\n" << std::endl;
+
 // 4. 'it' points to number after current element of tail.
-	int	jacobIndex = 0;
+	int	jacobIndex = 1;
 	int	jacobNum = 1;
 	int	groupSize;
 
+	std::cout << elemSize << "\tStep 4. Binary search:\n";
 	while ( !tail.empty() ) {
-		jacobIndex++;
+		
 		groupSize = -jacobNum;
 		jacobNum = _getJacobsthalNumber(jacobIndex);
+		
 		groupSize += jacobNum;
-		it = tail.begin() + groupSize * elemSize;
+		it = tail.begin() + std::min(static_cast<int>(tail.size()), groupSize * elemSize);
 
+		std::cout << "\n\tJacobsthal number " << jacobIndex << ": " << jacobNum << "\n";
+		std::cout << "\tGroup size: " << groupSize << "\n";
 		for (int i = 0; i < groupSize; i++) {
 			it = _binarySearchInsert(container, tail, it, elemSize, jacobNum);
+			std::cout << "\n\tMain:\t";
+			printSequence(this->_vector);
+			std::cout << "\n\tTail:\t";
+			printSequence(tail);
+			std::cout << std::endl;
+			if ( tail.empty() )
+				break;
 		}
+		jacobIndex++;
 	}
+	std::cout << std::endl;
+	std::cout << elemSize << "\tFinal: ";
+	printSequence(this->_vector);
+	std::cout << "\n" << std::endl;
 }
 
 void	PmergeMe::_sort(std::deque<int>& container, const int elemSize) {
@@ -199,10 +214,8 @@ void	PmergeMe::_sort(std::deque<int>& container, const int elemSize) {
 }
 
 // Find Jacobsthal number at index 'i'.
-int	PmergeMe::_getJacobsthalNumber(int& i) {
-	int	res = (std::pow(2, i + 2) - std::pow(-1, i)) / 3;
-	i++;
-	return (res);
+int	PmergeMe::_getJacobsthalNumber(int i) {
+	return ( (std::pow(2, i + 2) - std::pow(-1, i)) / 3 );
 }
 #pragma endregion
 

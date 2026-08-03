@@ -21,7 +21,8 @@ int main( int argc, char** argv ) {
 	}
 
 	std::cout << "Before:\t";
-	base.printSequence();
+	PmergeMe::printSequence(base.getSequence());
+	std::cout << std::endl;
 
 	try {
 		base.sort();
@@ -29,14 +30,14 @@ int main( int argc, char** argv ) {
 		std::cerr << e.what() << std::endl;
 	}
 
-	std::cout << "\nAfter:\t";
-	base.printSequence();
+	std::cout << "After:\t";
+	PmergeMe::printSequence(base.getSequence());
 	std::cout << std::endl;
 
 	std::cout << "Time to process a range of " << base.getSize()
-		<< " elements with std::vector: " << base.getTimeVector() << "us\n"
+		<< " elements with std::vector: " << base.getTimeVector() << " us\n"
 		<< "Time to process a range of " << base.getSize()
-		<< " elements with std::deque: " << base.getTimeDeque() << "us" << std::endl;
+		<< " elements with std::deque: " << base.getTimeDeque() << " us" << std::endl;
 
 	return (0);
 }
