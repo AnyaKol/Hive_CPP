@@ -35,9 +35,9 @@ int main( int argc, char** argv ) {
 	std::cout << std::endl;
 
 	std::cout << "Time to process a range of " << base.getSize()
-		<< " elements with std::vector: " << base.getTimeVector() << " us\n"
+		<< " elements with std::vector: " << base.getTimeVector() << " ms\n"
 		<< "Time to process a range of " << base.getSize()
-		<< " elements with std::deque: " << base.getTimeDeque() << " us" << std::endl;
+		<< " elements with std::deque: " << base.getTimeDeque() << " ms" << std::endl;
 
 	return (0);
 }

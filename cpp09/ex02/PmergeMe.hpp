@@ -32,7 +32,7 @@ public:
 	typedef std::vector<int>::const_iterator	vec_const_iterator;
 	typedef std::deque<int>::iterator			deq_iterator;
 
-	typedef std::chrono::time_point<std::chrono::high_resolution_clock>	time_point;
+	typedef std::chrono::time_point<std::chrono::steady_clock>	time_point;
 
 	int						getSize(void) const;
 	double					getTimeVector(void) const;
@@ -44,15 +44,15 @@ public:
 
 	template <typename T, typename U = typename T::const_iterator>
 	static void	printSequence(T& container) {
-	U	it = container.cbegin();
-	U	end = container.cend();
+		U	it = container.cbegin();
+		U	end = container.cend();
 
-	for (; it != end; it++) {
-		std::cout << *it;
-		if (it + 1 != end)
-			std::cout << " ";
-	}
-}
+		for (; it != end; it++) {
+			std::cout << *it;
+			if (it + 1 != end)
+				std::cout << " ";
+		}
+	};
 
 	static void	printError(std::string_view msg) noexcept;
 
@@ -65,8 +65,9 @@ public:
 private:
 
 	static int	_getJacobsthalNumber(int i);
+	static int	_getBinarySearchRange(int jacobIndex);
 
-	void	_timeFunc(void (PmergeMe::*func)(void), std::chrono::duration<double>& time);
+	void	_timeFunc(void (PmergeMe::*func)(void), std::chrono::duration<double, std::milli>& time);
 	void	_sortVector(void);
 	void	_sortDeque(void);
 	void	_sort(std::vector<int>& container, const int elemSize);
@@ -105,11 +106,12 @@ private:
 	 */
 	template <typename T, typename U = typename T::iterator>
 	U	_binarySearchInsert(T& main, T& tail, U tail_end, const int elemSize,
-		const int jacobNum) {
+		const int jacobIndex) {
 	// 1. Find position in main after which to insert element from tail.
 		int	insert_pos = 0;
 		int low = 1;
-		int high = std::min(static_cast<int>(main.size() / elemSize), jacobNum);
+		int high = std::min(static_cast<int>(main.size() / elemSize),
+			_getBinarySearchRange(jacobIndex));
 		int	middle;
 
 		while (high >= low) {
@@ -138,10 +140,32 @@ private:
 		return (tail_end);
 	};
 
+	template <typename T, typename U = typename T::iterator>
+	void	_insertTail(T& main, T& tail, const int elemSize) {
+		int	jacobIndex = 1;
+		int	jacobNum = 1;
+		int	groupSize;
+		U	it;
+
+		while ( !tail.empty() ) {
+			groupSize = -jacobNum;
+			jacobNum = _getJacobsthalNumber(jacobIndex);
+			groupSize += jacobNum;
+			it = tail.begin() + std::min(static_cast<int>(tail.size()), groupSize * elemSize);
+
+			for (int i = 0; i < groupSize; i++) {
+				it = _binarySearchInsert(main, tail, it, elemSize, jacobIndex);
+				if ( tail.empty() )
+					break;
+			}
+			jacobIndex++;
+		}
+	};
+
 	std::vector<int>	_vector;
 	std::deque<int>		_deque;
-	std::chrono::duration<double>	_timeVector;
-	std::chrono::duration<double>	_timeDeque;
+	std::chrono::duration<double, std::milli>	_timeVector;
+	std::chrono::duration<double, std::milli>	_timeDeque;
 };
 
 class	PmergeMe::Exception : public std::exception {
