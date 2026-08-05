@@ -17,27 +17,32 @@ int main( int argc, char** argv ) {
 	PmergeMe	base;
 
 	for (int i = 1; i < argc; i++) {
-		base.add(argv[i]);
+		try {
+			base.add(argv[i]);
+		} catch (PmergeMe::NameException &e) {
+			PmergeMe::printError(e.what());
+		}
 	}
 
-	std::cout << "Before:\t";
+	std::cout << "\nBefore:\t";
 	PmergeMe::printSequence(base.getSequence());
 	std::cout << std::endl;
 
 	try {
 		base.sort();
 	} catch (PmergeMe::NameException &e) {
-		std::cerr << e.what() << std::endl;
+		PmergeMe::printError(e.what());
 	}
 
-	std::cout << "After:\t";
+	std::cout << "\nAfter:\t";
 	PmergeMe::printSequence(base.getSequence());
 	std::cout << std::endl;
 
-	std::cout << "Time to process a range of " << base.getSize()
+	std::cout << "\nTime to process a range of " << base.getSize()
 		<< " elements with std::vector: " << base.getTimeVector() << " ms\n"
 		<< "Time to process a range of " << base.getSize()
-		<< " elements with std::deque: " << base.getTimeDeque() << " ms" << std::endl;
+		<< " elements with std::deque: " << base.getTimeDeque() << " ms"
+		<< std::endl;
 
 	return (0);
 }

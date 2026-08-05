@@ -28,11 +28,11 @@ public:
 	PmergeMe&	operator=(const PmergeMe& other);
 	~PmergeMe() {};
 
-	typedef std::vector<int>::iterator			vec_iterator;
-	typedef std::vector<int>::const_iterator	vec_const_iterator;
-	typedef std::deque<int>::iterator			deq_iterator;
+	typedef std::vector<int>::iterator	vec_iterator;
+	typedef std::deque<int>::iterator	deq_iterator;
 
 	typedef std::chrono::time_point<std::chrono::steady_clock>	time_point;
+	typedef std::chrono::duration<double, std::milli>			duration;
 
 	int						getSize(void) const;
 	double					getTimeVector(void) const;
@@ -41,6 +41,11 @@ public:
 
 	void	add(std::string_view str);
 	void	sort(void);
+
+	static void	printError(std::string_view msg) noexcept;
+
+	static const std::string	ERR_WINPUT;
+	static const std::string	ERR_NOPAIR;
 
 	template <typename T, typename U = typename T::const_iterator>
 	static void	printSequence(T& container) {
@@ -54,24 +59,24 @@ public:
 		}
 	};
 
-	static void	printError(std::string_view msg) noexcept;
-
-	static const std::string	ERR_WINPUT;
-	static const std::string	ERR_NOPAIR;
-
 	class	Exception;
 	class	NameException;
 
 private:
 
 	static int	_getJacobsthalNumber(int i);
-	static int	_getBinarySearchRange(int jacobIndex);
+	static int	_getBinarySearchRange(int i);
 
-	void	_timeFunc(void (PmergeMe::*func)(void), std::chrono::duration<double, std::milli>& time);
+	void	_timeFunc(void (PmergeMe::*func)(void), duration& time);
 	void	_sortVector(void);
 	void	_sortDeque(void);
 	void	_sort(std::vector<int>& container, const int elemSize);
 	void	_sort(std::deque<int>& container, const int elemSize);
+
+	std::vector<int>	_vector;
+	std::deque<int>		_deque;
+	duration			_timeVector;
+	duration			_timeDeque;
 
 	/* Swaps 'elemSize' elements starting from 'it' and moves 'it' to the last
 	 * element of swapped sequence.
@@ -99,15 +104,16 @@ private:
 		return (it);
 	};
 
-	/* main_it points to last number of element at position 'middle';
-	 * 'insert_pos' is a position after which to insert; it can have values in range [0, high];
-	 * inserting after 'insert_pos' = 0 means inserting at the beginning of range;
-	 * 'main_insert_it' is calculated from 'insert_pos'; values in range [main.begin(), main.begin() + main.size()];
+	/* 'insert_pos' is a position after which to insert; it can have values in
+	 * range [0, high];
+	 * inserting after 'insert_pos' = 0 means inserting at the beginning of
+	 * range;
+	 * 'main_insert_it' is calculated from 'insert_pos'; values in range
+	 * [main.begin(), main.begin() + main.size()];
 	 */
 	template <typename T, typename U = typename T::iterator>
 	U	_binarySearchInsert(T& main, T& tail, U tail_end, const int elemSize,
 		const int jacobIndex) {
-	// 1. Find position in main after which to insert element from tail.
 		int	insert_pos = 0;
 		int low = 1;
 		int high = std::min(static_cast<int>(main.size() / elemSize),
@@ -128,7 +134,6 @@ private:
 				high = middle - 1;
 		}
 
-	// 2. Insert current element in tail to main and erase it from tail.
 		U main_insert = main.begin() + (insert_pos * elemSize);
 
 		for (int i = 0; i < elemSize; i++) {
@@ -151,7 +156,9 @@ private:
 			groupSize = -jacobNum;
 			jacobNum = _getJacobsthalNumber(jacobIndex);
 			groupSize += jacobNum;
-			it = tail.begin() + std::min(static_cast<int>(tail.size()), groupSize * elemSize);
+			it = tail.begin() + std::min(
+				static_cast<int>(tail.size()), groupSize * elemSize
+			);
 
 			for (int i = 0; i < groupSize; i++) {
 				it = _binarySearchInsert(main, tail, it, elemSize, jacobIndex);
@@ -161,11 +168,6 @@ private:
 			jacobIndex++;
 		}
 	};
-
-	std::vector<int>	_vector;
-	std::deque<int>		_deque;
-	std::chrono::duration<double, std::milli>	_timeVector;
-	std::chrono::duration<double, std::milli>	_timeDeque;
 };
 
 class	PmergeMe::Exception : public std::exception {

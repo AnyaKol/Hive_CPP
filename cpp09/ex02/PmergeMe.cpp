@@ -89,8 +89,7 @@ void	PmergeMe::sort(void) {
  * for measuring intervals.
  * For duration using std::ratio<1, 1000> - std::milli (milliseconds).
  */
-void	PmergeMe::_timeFunc(void (PmergeMe::*func)(void),
-	std::chrono::duration<double, std::milli>& time) {
+void	PmergeMe::_timeFunc(void (PmergeMe::*func)(void), duration& time) {
 	const time_point	start{std::chrono::steady_clock::now()};
 	(this->*func)();
 	const time_point	end{std::chrono::steady_clock::now()};
@@ -99,18 +98,16 @@ void	PmergeMe::_timeFunc(void (PmergeMe::*func)(void),
 
 void	PmergeMe::_sortVector(void) {
 	_sort(this->_vector, 1);
-	if ( std::is_sorted( this->_vector.begin(), this->_vector.end() ) )
-		std::cout << "Vector: Success!" << std::endl;
-	else
-		std::cout << "Vector: Fail!" << std::endl;
+	if ( !std::is_sorted(this->_vector.begin(), this->_vector.end()) ) {
+		std::cerr << "Vector: Fail!" << std::endl;
+	}
 }
 
 void	PmergeMe::_sortDeque(void) {
 	_sort(this->_deque, 1);
-	if ( std::is_sorted( this->_deque.begin(), this->_deque.end() ) )
-		std::cout << "Deque: Success!" << std::endl;
-	else
-		std::cout << "Deque: Fail!" << std::endl;
+	if ( !std::is_sorted(this->_deque.begin(), this->_deque.end()) ) {
+		std::cerr << "Deque: Fail!" << std::endl;
+	}
 }
 
 /* Sorting:
@@ -135,7 +132,6 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 	vec_iterator	it = container.begin();
 	vec_iterator	end = container.end();
 
-// 1. Compare last element of pairs; elemSize - size of 1 element in pair
 	for (; end - it >= 2 * elemSize; it += 2 * elemSize) {
 		vec_iterator	next = it + elemSize;
 
@@ -143,22 +139,18 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 			_swapPairs(it, elemSize);
 		}
 	}
-
-// 2. Reccursion
 	_sort(container, elemSize * 2);
 
-// 3. Create empty container and split pairs
 	std::vector<int>	tail{};
 
 	it = container.begin() + (2 * elemSize);
+	end = container.end();
 	for (; end - it >= elemSize; it += elemSize) {
 		it = _pushElem(container, it, tail, elemSize);
 		end = container.end();
 		if (end - it < elemSize)
 			break;
 	}
-
-// 4. Insert elements from tail back to main
 	_insertTail(container, tail, elemSize);
 }
 
@@ -181,6 +173,7 @@ void	PmergeMe::_sort(std::deque<int>& container, const int elemSize) {
 	std::deque<int>	tail{};
 
 	it = container.begin() + (2 * elemSize);
+	end = container.end();
 	for (; end - it >= elemSize; it += elemSize) {
 		it = _pushElem(container, it, tail, elemSize);
 		end = container.end();
@@ -195,8 +188,9 @@ int	PmergeMe::_getJacobsthalNumber(int i) {
 	return ( (std::pow(2, i + 2) - std::pow(-1, i)) / 3 );
 }
 
-int	PmergeMe::_getBinarySearchRange(int jacobIndex) {
-	return ( std::pow(2, jacobIndex + 1) - 1 );
+// Calculate binary search range for Jacobsthal number at index 'i'.
+int	PmergeMe::_getBinarySearchRange(int i) {
+	return ( std::pow(2, i + 1) - 1 );
 }
 #pragma endregion
 
@@ -206,9 +200,8 @@ void	PmergeMe::printError(std::string_view msg) noexcept {
 	std::cerr << "Error: " << msg << std::endl;
 }
 
-// Exception
-/* Not using string_view in exceptions because they need to construct a c-string
- * from msg.
+/* Not using string_view in exceptions because they need to construct a
+ * c-string from msg.
  */
 PmergeMe::Exception::Exception(const std::string& message)
 : _msg(message) {}
