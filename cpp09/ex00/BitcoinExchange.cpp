@@ -85,14 +85,29 @@ void	BitcoinExchange::_getDate(std::tm& date, std::string_view line,
 std::size_t& pos) {
 	std::size_t	processed{};
 
-	date.tm_year = std::stoi(&line[pos], &processed) - 1900;
-	pos += processed;
-	_checkSymbol(line, pos, '-');
-	date.tm_mon = std::stoi(&line[pos], &processed) - 1;
-	pos += processed;
-	_checkSymbol(line, pos, '-');
-	date.tm_mday = std::stoi(&line[pos], &processed);
-	pos += processed;
+	if (line.size() == 0 || pos > line.size() - 1)
+		return ;
+
+	try {
+		if (pos > line.size() - 1)
+			throw ( NameException(ERR_DATE_FORMAT, line) );
+		date.tm_year = std::stoi(&line[pos], &processed) - 1900;
+		pos += processed;
+		_checkSymbol(line, pos, '-');
+		if (pos > line.size() - 1)
+			throw ( NameException(ERR_DATE_FORMAT, line) );
+		date.tm_mon = std::stoi(&line[pos], &processed) - 1;
+		pos += processed;
+		_checkSymbol(line, pos, '-');
+		if (pos > line.size() - 1)
+			throw ( NameException(ERR_DATE_FORMAT, line) );
+		date.tm_mday = std::stoi(&line[pos], &processed);
+		pos += processed;
+	} catch (std::invalid_argument &e) {
+		throw (NameException(ERR_NOVALUE, line));
+	} catch (std::out_of_range &e) {
+		throw (Exception(e.what()));
+	}
 	try {
 		_checkDate(date);
 	} catch (Exception &e) {
@@ -112,6 +127,8 @@ void	BitcoinExchange::_getValue(float& num, std::string_view line,
 std::size_t& pos) {
 	std::size_t	processed{};
 
+	if (line.size() == 0 || pos > line.size() - 1)
+		return ;
 	try {
 		num = std::stof(&line[pos], &processed);
 		pos += processed;
@@ -132,12 +149,18 @@ std::size_t& pos) {
 
 void	BitcoinExchange::_checkSymbol(std::string_view line, std::size_t& pos,
 char c) {
+	
+	if (line.size() == 0 || pos > line.size() - 1)
+		return ;
+
 	while (line[pos] == ' ')
 		pos++;
 	if (line[pos] != c)
 		throw ( NameException(ERR_DATE_FORMAT, line) );
-	pos++;
-	while (line[pos] == ' ')
+
+	if (pos < line.size() - 1)
+		pos++;
+	while (pos <= line.size() - 1 && line[pos] == ' ')
 		pos++;
 }
 

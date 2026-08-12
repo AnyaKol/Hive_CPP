@@ -126,6 +126,7 @@ void	PmergeMe::_sortDeque(void) {
  * 	4.	If tail isn't empty repeat with next Jacobsthal number.
 */
 void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
+
 	if (container.size() < static_cast<long unsigned int>(2 * elemSize))
 		return ;
 
@@ -155,6 +156,7 @@ void	PmergeMe::_sort(std::vector<int>& container, const int elemSize) {
 }
 
 void	PmergeMe::_sort(std::deque<int>& container, const int elemSize) {
+
 	if (container.size() < static_cast<long unsigned int>(2 * elemSize))
 		return ;
 
